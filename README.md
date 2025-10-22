@@ -6,7 +6,7 @@ OpusDNS is a domain registrar providing domain registration and management servi
 
 ## Installation
 
-1. Download the latest release from the [Releases page](https://github.com/OpusDNS/opusdns-whmcs/releases)
+1. Download the latest release from the [Releases page](https://github.com/OpusDNS/opusdns-whmcs-registrar/releases)
 2. Extract the zip file
 3. Upload the `modules` folder to your WHMCS root directory
 4. The module files should be located at: `<whmcs_root>/modules/registrars/opusdns/`
