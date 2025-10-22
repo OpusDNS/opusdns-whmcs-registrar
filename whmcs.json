@@ -1,0 +1,28 @@
+{
+	"schema": "1.0",
+	"type": "whmcs-registrars",
+	"name": "opusdns",
+	"license": "MIT",
+	"category": "registrar",
+	"description": {
+		"name": "OpusDNS Registrar Module",
+		"tagline": "Your gateway to a seamless domain management experience. Designed to simplify buying, selling, and managing domains.",
+		"long": "The OpusDNS Registrar Module provides a seamless integration with OpusDNS API for managing domain registrations, transfers, and renewals directly within the WHMCS platform.",
+		"features": ["Domain Registration", "Domain Transfer", "Domain Renewal"]
+	},
+	"logo": {
+		"filename": "logo.png"
+	},
+	"support": {
+		"homepage": "https://www.opusdns.com/",
+		"email": "support@opusdns.com",
+		"support_url": "https://support.opusdns.com/",
+		"docs_url": "https://developers.opusdns.com/"
+	},
+	"authors": [
+		{
+			"name": "Zoltan Egresi",
+			"homepage": "https://www.opusdns.com/"
+		}
+	]
+}

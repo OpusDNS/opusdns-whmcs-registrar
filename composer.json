@@ -1,0 +1,24 @@
+{
+	"name": "opusdns/whmcs-registrar-module",
+	"description": "OpusDNS Registrar Module for WHMCS",
+	"keywords": [
+		"whmcs",
+		"opusdns",
+		"registrar module",
+		"domain registrar module"
+	],
+	"homepage": "https://www.opusdns.com/",
+	"license": "MIT",
+	"support": {
+		"email": "support@opusdns.com",
+		"wiki": "https://developers.opusdns.com/"
+	},
+	"require": {
+		"php": "^8.2",
+		"guzzlehttp/guzzle": "^7.0",
+		"ext-json": "*"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "@stable"
+	}
+}
