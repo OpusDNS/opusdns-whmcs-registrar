@@ -1,5 +1,3 @@
-# OpusDNS
-
 ## About OpusDNS
 
 OpusDNS is a domain registrar providing domain registration and management services.
