@@ -92,15 +92,10 @@ function opusdns_initApiClient(array $params): ApiClient
  * * When a pending domain registration order is accepted
  * * Upon manual request by an admin user
  *
- *
- * @see https://developers.whmcs.com/domain-registrars/module-parameters/
- *
  */
 function opusdns_RegisterDomain($params)
 {
-
-    $api = opusdns_initApiClient($params);
-
+    $domainName = $params['domain'];
     $contactData = [
         'first_name' => $params["firstname"],
         'last_name' => $params["lastname"],
@@ -127,6 +122,7 @@ function opusdns_RegisterDomain($params)
     }
 
     try {
+        $api = opusdns_initApiClient($params);
         $createdContact = $api->contacts()->create($contactData)->getData();
         $contactId = $createdContact->getContactId();
         $contacts = [
@@ -157,7 +153,7 @@ function opusdns_RegisterDomain($params)
     });
 
     $domainData = [
-        'name' => $params['sld'] . '.' . $params['tld'],
+        'name' => $domainName,
         'period' => ['value' => (int)$params['regperiod'], 'unit' => PeriodUnit::YEAR],
         'contacts' => $contacts,
         'nameservers' => $nameservers,
@@ -165,6 +161,7 @@ function opusdns_RegisterDomain($params)
     ];
 
     try {
+        $api = opusdns_initApiClient($params);
         $api->domains()->create($domainData);
         return ['success' => true];
     } catch (ApiException $e) {
@@ -224,10 +221,11 @@ function opusdns_RenewDomain($params)
 
 function opusdns_GetDomainInformation($params)
 {
-    $api = opusdns_initApiClient($params);
+    $domainName = $params['domain'];
 
     try {
-        $response = $api->domains()->getByName($params['sld'] . '.' . $params['tld'])->getData();
+        $api = opusdns_initApiClient($params);
+        $response = $api->domains()->getByName($domainName)->getData();
     } catch (ApiException $e) {
         return [
             'error' => $e->getMessage(),
@@ -259,9 +257,6 @@ function opusdns_GetDomainInformation($params)
  *
  * This function should return an array of nameservers for a given domain.
  *
- *
- * @see https://developers.whmcs.com/domain-registrars/module-parameters/
- *
  */
 function opusdns_GetNameservers($params) {}
 
@@ -271,13 +266,10 @@ function opusdns_GetNameservers($params) {}
  * This function should submit a change of nameservers request to the
  * domain registrar.
  *
- *
- * @see https://developers.whmcs.com/domain-registrars/module-parameters/
- *
  */
 function opusdns_SaveNameservers($params)
 {
-
+    $domainName = $params['domain'];
     $nameservers = [];
 
     for ($i = 1; $i <= 5; $i++) {
@@ -295,18 +287,10 @@ function opusdns_SaveNameservers($params)
 
     try {
         $api = opusdns_initApiClient($params);
-        $api->domains()->update(
-            $params['sld'] . '.' . $params['tld'],
-            ['nameservers' => $nameservers]
-        );
-        // If the update was successful, return success
-        return array(
-            'success' => true,
-        );
+        $api->domains()->update($domainName, ['nameservers' => $nameservers]);
+        return ['success' => true];
     } catch (ApiException $e) {
-        return array(
-            'error' => $e->getMessage(),
-        );
+        return ['error' => $e->getMessage()];
     }
 }
 
@@ -386,7 +370,7 @@ function opusdns_GetRegistrarLock($params) {}
  */
 function opusdns_SaveRegistrarLock($params)
 {
-    $domainName = $params['sld'] . '.' . $params['tld'];
+    $domainName = $params['domain'];
     $isLocked = $params['lockenabled'] === 'locked';
 
     try {
@@ -407,17 +391,13 @@ function opusdns_SaveRegistrarLock($params)
  * Supports both displaying the EPP Code directly to a user or indicating
  * that the EPP Code will be emailed to the registrant.
  *
- *
- * @see https://developers.whmcs.com/domain-registrars/module-parameters/
- *
- *
  */
 function opusdns_GetEPPCode($params)
 {
-    $api = opusdns_initApiClient($params);
-
+    $domainName = $params['domain'];
     try {
-        $response = $api->domains()->getByName($params['sld'] . '.' . $params['tld'])->getData();
+        $api = opusdns_initApiClient($params);
+        $response = $api->domains()->getByName($domainName)->getData();
         return ['eppcode' => $response->getAuthCode()];
     } catch (ApiException $e) {
         return ['error' => $e->getMessage()];
@@ -428,16 +408,13 @@ function opusdns_GetEPPCode($params)
 /**
  * Delete Domain.
  *
- *
- * @see https://developers.whmcs.com/domain-registrars/module-parameters/
- *
  */
 function opusdns_RequestDelete($params)
 {
-    $api = opusdns_initApiClient($params);
-
+    $domainName = $params['domain'];
     try {
-        $api->domains()->delete($params['sld'] . '.' . $params['tld']);
+        $api = opusdns_initApiClient($params);
+        $api->domains()->delete($domainName);
         return ['success' => true];
     } catch (ApiException $e) {
         return ['error' => $e->getMessage()];
@@ -452,20 +429,15 @@ function opusdns_RequestDelete($params)
  * changes made directly at the domain registrar are synced to WHMCS.
  * It is called periodically for a domain.
  *
- *
- * @see https://developers.whmcs.com/domain-registrars/module-parameters/
- *
  */
 function opusdns_Sync($params)
 {
-    $api = opusdns_initApiClient($params);
-
+    $domainName = $params['domain'];
     try {
-        $response = $api->domains()->getByName($params['sld'] . '.' . $params['tld'])->getData();
+        $api = opusdns_initApiClient($params);
+        $response = $api->domains()->getByName($domainName)->getData();
         return [
             'expirydate' => $response->getExpiresOn()->format('Y-m-d'),
-            //'active' => $response->registry_statuses && in_array('active', $response->registry_statuses),
-            //'transferredAway' => $response->registry_statuses && in_array('transferredAway', $response->registry_statuses),
         ];
     } catch (ApiException $e) {
         return ['error' => $e->getMessage()];
