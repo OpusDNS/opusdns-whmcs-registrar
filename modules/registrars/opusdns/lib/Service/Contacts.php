@@ -31,4 +31,36 @@ class Contacts extends BaseService
     {
         $this->deleteResource("/contacts/{$contactId}");
     }
+
+    public function buildContactDataFromParams(array $params): array
+    {
+        $contactData = [
+            'first_name' => $params['firstname'],
+            'last_name' => $params['lastname'],
+            'email' => $params['email'],
+            'street' => $params['address1'],
+            'city' => $params['city'],
+            'postal_code' => $params['postcode'],
+            'country' => $params['country'],
+            'disclose' => false,
+        ];
+
+        if (!empty($params['companyname'])) {
+            $contactData['org'] = $params['companyname'];
+        }
+
+        if (!empty($params['fullphonenumber'])) {
+            $phone = preg_replace('/[^\d+]/', '', $params['fullphonenumber']);
+            if (!str_starts_with($phone, '+')) {
+                $phone = '+' . $phone;
+            }
+            $contactData['phone'] = $phone;
+        }
+
+        if (!empty($params['state'])) {
+            $contactData['state'] = $params['state'];
+        }
+
+        return $contactData;
+    }
 }

@@ -208,4 +208,21 @@ class Tld
     {
         return $this->transfer_policies['authinfo_required'] ?? false;
     }
+
+    public function buildContactsArray(string $contactId): array
+    {
+        $contacts = [];
+        $supportedRoles = $this->contacts['supported_roles'] ?? [];
+
+        foreach ($supportedRoles as $role) {
+            $type = $role['type'] ?? null;
+            $min = $role['min'] ?? 0;
+
+            if ($type && $min > 0) {
+                $contacts[$type] = [['contact_id' => $contactId]];
+            }
+        }
+
+        return $contacts;
+    }
 }

@@ -96,40 +96,24 @@ function opusdns_initApiClient(array $params): ApiClient
 function opusdns_RegisterDomain($params)
 {
     $domainName = $params['domain'];
-    $contactData = [
-        'first_name' => $params["firstname"],
-        'last_name' => $params["lastname"],
-        'email' => $params['email'],
-        'street' => $params['address1'],
-        'city' => $params['city'],
-        'postal_code' => $params['postcode'],
-        'country' => $params['country'],
-        'disclose' => false,
-    ];
+    $tld = $params['tld'];
 
-    if (!empty($params['companyname'])) {
-        $contactData['org'] = $params['companyname'];
-    }
-    if (!empty($params['fullphonenumber'])) {
-        $phone = preg_replace('/[^\d+]/', '', $params['fullphonenumber']);
-        if (!str_starts_with($phone, '+')) {
-            $phone = '+' . $phone;
+    try {
+        $api = opusdns_initApiClient($params);
+        $tldInfo = $api->tlds()->getTld($tld);
+
+        if (!$tldInfo) {
+            return ['error' => "TLD .{$tld} is not supported"];
         }
-        $contactData['phone'] = $phone;
-    }
-    if (!empty($params['state'])) {
-        $contactData['state'] = $params['state'];
+    } catch (ApiException $e) {
+        return ['error' => $e->getMessage()];
     }
 
     try {
         $api = opusdns_initApiClient($params);
+        $contactData = $api->contacts()->buildContactDataFromParams($params);
         $createdContact = $api->contacts()->create($contactData)->getData();
         $contactId = $createdContact->getContactId();
-        $contacts = [
-            'registrant' => [['contact_id' => $contactId]],
-            'admin' => [['contact_id' => $contactId]],
-            'tech' => [['contact_id' => $contactId]],
-        ];
     } catch (ApiException $e) {
         $errors = $e->getErrors() ?? [];
         if ($errors) {
@@ -141,6 +125,8 @@ function opusdns_RegisterDomain($params)
         }
         return ['error' => $e->getMessage()];
     }
+
+    $contacts = $tldInfo->buildContactsArray($contactId);
 
     $nameservers = array_filter([
         ['hostname' => $params['ns1'] ?? null],
