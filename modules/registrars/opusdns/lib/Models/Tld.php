@@ -214,6 +214,24 @@ class Tld
         return $this->domain_lifecycle['explicit_renew'] ?? false;
     }
 
+    public function getRegistrationYears(): array
+    {
+        $registrationPeriods = $this->domain_lifecycle['registration_periods'] ?? [];
+
+        if (empty($registrationPeriods)) {
+            return [];
+        }
+
+        $years = array_map(function ($period) {
+            return ($period['unit'] === PeriodUnit::YEAR->value) ? (int)$period['value'] : 0;
+        }, $registrationPeriods);
+
+        $years = array_filter($years);
+        sort($years);
+
+        return $years;
+    }
+
     public function buildContactsArray(string $contactId): array
     {
         $contacts = [];

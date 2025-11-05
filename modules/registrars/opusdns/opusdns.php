@@ -31,7 +31,6 @@ function opusdns_MetaData()
     return array(
         'DisplayName' => 'OpusDNS',
         'APIVersion' => '1.1',
-        'NonLinearRegistrationPricing' => true,
     );
 }
 
@@ -454,8 +453,16 @@ function opusdns_GetTldPricing($params)
         foreach ($prices as $price) {
             $productClass = $price->getProductClass();
             $productAction = $price->getProductAction();
+            $period = $price->getPeriod();
 
             if (!$productClass || !$productAction) {
+                continue;
+            }
+
+            $periodValue = $period['value'] ?? null;
+            $periodUnit = $period['unit'] ?? null;
+
+            if ($periodValue !== 1 || $periodUnit !== PeriodUnit::YEAR->value) {
                 continue;
             }
 
@@ -484,19 +491,21 @@ function opusdns_GetTldPricing($params)
                 }
 
                 $tldPricing = $pricesByTld[$tldName];
+                $registrationYears = $tldGroup->getRegistrationYears();
                 $minYears = $tldGroup->getMinRegistrationYears();
-                $maxYears = $tldGroup->getMaxRegistrationYears();
+                $registerPrice = ($tldPricing[ProductAction::CREATE->value] ?? 0) * $minYears;
+                $renewPrice = isset($tldPricing[ProductAction::RENEW->value]) ? $tldPricing[ProductAction::RENEW->value] * $minYears : null;
+                $transferPrice = isset($tldPricing[ProductAction::TRANSFER->value]) ? $tldPricing[ProductAction::TRANSFER->value] * $minYears : null;
                 $graceDays = $tldGroup->getGracePeriodDays();
                 $redemptionDays = $tldGroup->getRedemptionPeriodDays();
                 $eppRequired = $tldGroup->isAuthInfoRequired();
 
                 $item = (new \WHMCS\Domain\TopLevel\ImportItem())
                     ->setExtension('.' . $tldName)
-                    ->setMinYears($minYears)
-                    ->setMaxYears($maxYears)
-                    ->setRegisterPrice($tldPricing[ProductAction::CREATE->value] ?? 0)
-                    ->setRenewPrice($tldPricing[ProductAction::RENEW->value] ?? null)
-                    ->setTransferPrice($tldPricing[ProductAction::TRANSFER->value] ?? null)
+                    ->setYears($registrationYears)
+                    ->setRegisterPrice($registerPrice)
+                    ->setRenewPrice($renewPrice)
+                    ->setTransferPrice($transferPrice)
                     ->setGraceFeeDays($graceDays)
                     ->setGraceFeePrice($graceDays > 0 ? 0 : null)
                     ->setRedemptionFeeDays($redemptionDays)
@@ -507,7 +516,6 @@ function opusdns_GetTldPricing($params)
                 $results[] = $item;
             }
         }
-
         return $results;
     } catch (ApiException $e) {
         return ['error' => $e->getMessage()];
