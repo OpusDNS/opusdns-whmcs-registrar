@@ -23,6 +23,8 @@ use WHMCS\Module\Registrar\OpusDNS\ApiClient;
 use WHMCS\Module\Registrar\OpusDNS\Enum\PeriodUnit;
 use WHMCS\Module\Registrar\OpusDNS\Enum\RenewalMode;
 use WHMCS\Module\Registrar\OpusDNS\ApiException;
+use WHMCS\Module\Registrar\OpusDNS\Enum\ProductAction;
+use WHMCS\Module\Registrar\OpusDNS\Enum\ProductType;
 
 function opusdns_MetaData()
 {
@@ -465,6 +467,79 @@ function opusdns_Sync($params)
             //'active' => $response->registry_statuses && in_array('active', $response->registry_statuses),
             //'transferredAway' => $response->registry_statuses && in_array('transferredAway', $response->registry_statuses),
         ];
+    } catch (ApiException $e) {
+        return ['error' => $e->getMessage()];
+    }
+}
+
+function opusdns_GetTldPricing($params)
+{
+    try {
+        $api = opusdns_initApiClient($params);
+        $tldGroups = $api->tlds()->getTlds();
+        $prices = $api->pricing()->getPrices($params['ClientID'], ProductType::DOMAIN);
+
+        $results = new \WHMCS\Results\ResultsList();
+
+        $pricesByTld = [];
+        foreach ($prices as $price) {
+            $productClass = $price->getProductClass();
+            $productAction = $price->getProductAction();
+
+            if (!$productClass || !$productAction) {
+                continue;
+            }
+
+            if (!isset($pricesByTld[$productClass])) {
+                $pricesByTld[$productClass] = [
+                    'currency' => $price->getCurrency(),
+                ];
+            }
+
+            $pricesByTld[$productClass][$productAction] = $price->getPrice();
+        }
+
+        foreach ($tldGroups as $tldGroup) {
+            if (!$tldGroup->isEnabled()) {
+                continue;
+            }
+
+            foreach ($tldGroup->getTlds() as $tld) {
+                $tldName = $tld['name'] ?? null;
+                if (!$tldName) {
+                    continue;
+                }
+
+                if (!isset($pricesByTld[$tldName])) {
+                    continue;
+                }
+
+                $tldPricing = $pricesByTld[$tldName];
+                $minYears = $tldGroup->getMinRegistrationYears();
+                $maxYears = $tldGroup->getMaxRegistrationYears();
+                $graceDays = $tldGroup->getGracePeriodDays();
+                $redemptionDays = $tldGroup->getRedemptionPeriodDays();
+                $eppRequired = $tldGroup->isAuthInfoRequired();
+
+                $item = (new \WHMCS\Domain\TopLevel\ImportItem())
+                    ->setExtension('.' . $tldName)
+                    ->setMinYears($minYears)
+                    ->setMaxYears($maxYears)
+                    ->setRegisterPrice($tldPricing[ProductAction::CREATE->value] ?? 0)
+                    ->setRenewPrice($tldPricing[ProductAction::RENEW->value] ?? null)
+                    ->setTransferPrice($tldPricing[ProductAction::TRANSFER->value] ?? null)
+                    ->setGraceFeeDays($graceDays)
+                    ->setGraceFeePrice($graceDays > 0 ? 0 : null)
+                    ->setRedemptionFeeDays($redemptionDays)
+                    ->setRedemptionFeePrice($tldPricing[ProductAction::RESTORE->value] ?? null)
+                    ->setCurrency($tldPricing['currency'])
+                    ->setEppRequired($eppRequired);
+
+                $results[] = $item;
+            }
+        }
+
+        return $results;
     } catch (ApiException $e) {
         return ['error' => $e->getMessage()];
     }
