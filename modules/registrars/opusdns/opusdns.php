@@ -247,6 +247,7 @@ function opusdns_GetDomainInformation($params)
     $domain->setDomain($response->getName());
     $domain->setNameservers($nameservers);
     $domain->setExpiryDate(Carbon::parse($response->getExpiresOn()->format('Y-m-d H:i:s')));
+    $domain->setTransferLock($response->isTransferLocked() ?? false);
 
     return $domain;
 }
@@ -374,34 +375,22 @@ function opusdns_CheckAvailability($params)
     }
 }
 
-/**
- * Get registrar lock status.
- *
- * Also known as Domain Lock or Transfer Lock status.
- *
- *
- * @see https://developers.whmcs.com/domain-registrars/module-parameters/
- *
- */
 function opusdns_GetRegistrarLock($params) {}
 
 /**
  * Set registrar lock status.
  *
- *
- * @see https://developers.whmcs.com/domain-registrars/module-parameters/
- *
+ * Also known as Domain Lock or Transfer Lock status.
  */
 function opusdns_SaveRegistrarLock($params)
 {
-    $api = opusdns_initApiClient($params);
-
-    $transferLock = $params['lockenabled'] === 'locked';
+    $domainName = $params['sld'] . '.' . $params['tld'];
+    $isLocked = $params['lockenabled'] === 'locked';
 
     try {
-        $api->domains()->update($params['sld'] . '.' . $params['tld'], [
-            'transfer_lock' => $transferLock
-        ]);
+        $api = opusdns_initApiClient($params);
+        $statuses = $isLocked ? ['clientTransferProhibited'] : [];
+        $api->domains()->update($domainName, ['statuses' => $statuses]);
         return ['success' => true];
     } catch (ApiException $e) {
         return ['error' => $e->getMessage()];
