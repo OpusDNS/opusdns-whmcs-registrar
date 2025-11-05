@@ -140,7 +140,7 @@ function opusdns_RegisterDomain($params)
 
     $domainData = [
         'name' => $domainName,
-        'period' => ['value' => (int)$params['regperiod'], 'unit' => PeriodUnit::YEAR],
+        'period' => ['value' => (int)$params['regperiod'], 'unit' => PeriodUnit::YEAR->value],
         'contacts' => $contacts,
         'nameservers' => $nameservers,
         'renewal_mode' => RenewalMode::EXPIRE,
@@ -169,11 +169,18 @@ function opusdns_RegisterDomain($params)
 function opusdns_RenewDomain($params)
 {
     $domainName = $params['domain'];
+    $tld = $params['tld'];
     $renewPeriod = (int)$params['regperiod'];
     $whmcsExpiryDate = $params['expiryDate'];
 
     try {
         $api = opusdns_initApiClient($params);
+        $tldInfo = $api->tlds()->getTld($tld);
+
+        if (!$tldInfo) {
+            return ['error' => "TLD .{$tld} is not supported"];
+        }
+
         $domainInfo = $api->domains()->getByName($domainName)->getData();
         $registryExpiryDate = $domainInfo->getExpiresOn();
 
@@ -184,12 +191,16 @@ function opusdns_RenewDomain($params)
             return ['error' => "Date mismatch: WHMCS has {$whmcsDate}, Registry has {$registryDate}. Please sync the domain first."];
         }
 
-        $renewRequest = [
-            'period' => ['value' => $renewPeriod, 'unit' => PeriodUnit::YEAR->value],
-            'current_expiry_date' => $registryExpiryDate->format('Y-m-d\TH:i:s')
-        ];
+        if ($tldInfo->supportsExplicitRenewal()) {
+            $renewRequest = [
+                'period' => ['value' => $renewPeriod, 'unit' => PeriodUnit::YEAR->value],
+                'current_expiry_date' => $registryExpiryDate->format('Y-m-d\TH:i:s')
+            ];
+            $api->domains()->renew($domainName, $renewRequest);
+        } else {
+            $api->domains()->update($domainName, ['renewal_mode' => RenewalMode::RENEW->value]);
+        }
 
-        $api->domains()->renew($domainName, $renewRequest);
         return ['success' => true];
     } catch (ApiException $e) {
         if (is_array($e->getErrors())) {

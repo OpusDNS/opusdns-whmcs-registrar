@@ -209,6 +209,11 @@ class Tld
         return $this->transfer_policies['authinfo_required'] ?? false;
     }
 
+    public function supportsExplicitRenewal(): bool
+    {
+        return $this->domain_lifecycle['explicit_renew'] ?? false;
+    }
+
     public function buildContactsArray(string $contactId): array
     {
         $contacts = [];
