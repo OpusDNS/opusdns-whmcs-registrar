@@ -180,39 +180,33 @@ function opusdns_RegisterDomain($params)
  * * When a pending domain renewal order is accepted
  * * Upon manual request by an admin user
  *
- *
- * @see https://developers.whmcs.com/domain-registrars/module-parameters/
- *
  */
 function opusdns_RenewDomain($params)
 {
-    $domain = WHMCS\Domain\Domain::find($params['domainid']);
-
-    if (!$domain) {
-        return array(
-            'error' => 'Domain information could not be retrieved.',
-        );
-    }
-
-    $domainName = $domain->domain;
-    $renewPeriod = $domain->registrationPeriod;
-    $expirationDate = $domain->expiryDate;
-
-    $renewRequest = [
-        'period' => ['value' => (int)$renewPeriod, 'unit' => PeriodUnit::YEAR->value],
-        'current_expiry_date' => $expirationDate->utc()->toIso8601String()
-    ];
+    $domainName = $params['domain'];
+    $renewPeriod = (int)$params['regperiod'];
+    $whmcsExpiryDate = $params['expiryDate'];
 
     try {
         $api = opusdns_initApiClient($params);
-        $api->domains()->renew($domainName, $renewRequest);
-        return array(
-            'success' => true,
-        );
-    } catch (ApiException $e) {
+        $domainInfo = $api->domains()->getByName($domainName)->getData();
+        $registryExpiryDate = $domainInfo->getExpiresOn();
 
-        print_r($e);
-        exit;
+        $whmcsDate = $whmcsExpiryDate->format('Y-m-d');
+        $registryDate = $registryExpiryDate->format('Y-m-d');
+
+        if ($whmcsDate !== $registryDate) {
+            return ['error' => "Date mismatch: WHMCS has {$whmcsDate}, Registry has {$registryDate}. Please sync the domain first."];
+        }
+
+        $renewRequest = [
+            'period' => ['value' => $renewPeriod, 'unit' => PeriodUnit::YEAR->value],
+            'current_expiry_date' => $registryExpiryDate->format('Y-m-d\TH:i:s')
+        ];
+
+        $api->domains()->renew($domainName, $renewRequest);
+        return ['success' => true];
+    } catch (ApiException $e) {
         if (is_array($e->getErrors())) {
             $errorMessages = [];
             foreach ($e->getErrors() as $field => $messages) {
@@ -224,6 +218,7 @@ function opusdns_RenewDomain($params)
         }
     }
 }
+
 
 function opusdns_GetDomainInformation($params)
 {
