@@ -25,6 +25,7 @@ use WHMCS\Module\Registrar\OpusDNS\Enum\RenewalMode;
 use WHMCS\Module\Registrar\OpusDNS\ApiException;
 use WHMCS\Module\Registrar\OpusDNS\Enum\ProductAction;
 use WHMCS\Module\Registrar\OpusDNS\Enum\ProductType;
+use WHMCS\Module\Registrar\OpusDNS\Models\Contact;
 
 function opusdns_MetaData()
 {
@@ -284,6 +285,91 @@ function opusdns_SaveNameservers($params)
     try {
         $api = opusdns_initApiClient($params);
         $api->domains()->update($domainName, ['nameservers' => $nameservers]);
+        return ['success' => true];
+    } catch (ApiException $e) {
+        return ['error' => $e->getMessage()];
+    }
+}
+
+function opusdns_GetContactDetails($params)
+{
+    try {
+        $api = opusdns_initApiClient($params);
+        $domain = $api->domains()->getByName($params['domain'])->getData();
+        $contacts = $domain->getContacts();
+
+        foreach ($contacts as $contact) {
+            $contactId = $contact['contact_id'] ?? null;
+            $contactType = strtolower($contact['contact_type'] ?? '');
+
+            if ($contactId && $contactType === 'registrant') {
+                return ['Registrant' => $api->contacts()->getContactInfo($contactId)];
+            }
+        }
+
+        return ['error' => 'Registrant contact not found'];
+    } catch (ApiException $e) {
+        return ['error' => $e->getMessage()];
+    }
+}
+
+function opusdns_SaveContactDetails($params)
+{
+    $submittedData = $params['contactdetails']['Registrant'] ?? null;
+
+    if (!$submittedData) {
+        return ['error' => 'Registrant contact data is required'];
+    }
+
+    try {
+        $api = opusdns_initApiClient($params);
+        $tld = $params['tld'];
+        $tldInfo = $api->tlds()->getTld($tld);
+
+        if (!$tldInfo) {
+            return ['error' => "TLD .{$tld} is not supported"];
+        }
+
+        $tldContacts = $tldInfo->getContacts();
+        $registrantChange = $tldContacts['registrant_change'] ?? null;
+
+        if ($registrantChange !== 'update') {
+            return ['error' => 'Contact updates are not supported for this TLD'];
+        }
+
+        $domain = $api->domains()->getByName($params['domain'])->getData();
+        $contacts = $domain->getContacts();
+
+        $registrantContactId = null;
+        foreach ($contacts as $contact) {
+            if (strtolower($contact['contact_type'] ?? '') === 'registrant') {
+                $registrantContactId = $contact['contact_id'] ?? null;
+                break;
+            }
+        }
+
+        if (!$registrantContactId) {
+            return ['error' => 'Registrant contact not found'];
+        }
+
+        $currentData = $api->contacts()->getContactInfo($registrantContactId);
+        $filteredSubmittedData = array_intersect_key($submittedData, $currentData);
+
+        if (isset($filteredSubmittedData['Phone Number'])) {
+            $filteredSubmittedData['Phone Number'] = Contact::normalizePhone($filteredSubmittedData['Phone Number']);
+        }
+
+        $differences = array_diff_assoc($filteredSubmittedData, $currentData);
+
+        if (empty($differences)) {
+            return ['success' => true];
+        }
+
+        $newContactId = $api->contacts()->createContactFromWhmcsDetails($submittedData);
+        $newContacts = $tldInfo->buildContactsArray($newContactId);
+
+        $api->domains()->update($params['domain'], ['contacts' => $newContacts]);
+
         return ['success' => true];
     } catch (ApiException $e) {
         return ['error' => $e->getMessage()];

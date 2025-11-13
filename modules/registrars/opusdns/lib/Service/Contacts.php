@@ -11,25 +11,38 @@ use WHMCS\Module\Registrar\OpusDNS\Models\Contact;
 class Contacts extends BaseService
 {
     protected const MODEL_CLASS = Contact::class;
-    
+
     public function list(array $options = []): ApiResponse
     {
         return $this->getResource('/contacts', $options);
     }
-    
+
     public function create(array $attributes): ApiResponse
     {
         return $this->postResource('/contacts', $attributes);
     }
-    
+
     public function getById(string $contactId): ApiResponse
     {
         return $this->getResource("/contacts/{$contactId}");
     }
-    
+
     public function delete(string $contactId): void
     {
         $this->deleteResource("/contacts/{$contactId}");
+    }
+
+    public function getContactInfo(string $contactId): array
+    {
+        $contact = $this->getById($contactId)->getData();
+        return $contact->toWhmcsArray();
+    }
+
+    public function createContactFromWhmcsDetails(array $details): string
+    {
+        $contactData = Contact::fromWhmcsArray($details);
+        $newContact = $this->create($contactData)->getData();
+        return $newContact->getContactId();
     }
 
     public function buildContactDataFromParams(array $params): array
@@ -50,11 +63,7 @@ class Contacts extends BaseService
         }
 
         if (!empty($params['fullphonenumber'])) {
-            $phone = preg_replace('/[^\d+]/', '', $params['fullphonenumber']);
-            if (!str_starts_with($phone, '+')) {
-                $phone = '+' . $phone;
-            }
-            $contactData['phone'] = $phone;
+            $contactData['phone'] = Contact::normalizePhone($params['fullphonenumber']);
         }
 
         if (!empty($params['state'])) {

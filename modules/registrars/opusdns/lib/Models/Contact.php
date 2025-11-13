@@ -152,4 +152,63 @@ class Contact
     {
         return $this->deleted_on;
     }
+
+    public static function normalizePhone(string $phone): string
+    {
+        if (!$phone) {
+            return '';
+        }
+
+        $phone = preg_replace('/[^\d+]/', '', $phone);
+        
+        if ($phone && !str_starts_with($phone, '+')) {
+            $phone = '+' . $phone;
+        }
+
+        return $phone;
+    }
+
+    public function toWhmcsArray(): array
+    {
+        $street = $this->getStreet();
+
+        return [
+            'First Name' => $this->getFirstName(),
+            'Last Name' => $this->getLastName(),
+            'Company Name' => $this->getOrg() ?? '',
+            'Email Address' => $this->getEmail(),
+            'Address 1' => is_array($street) ? ($street[0] ?? '') : $street,
+            'Address 2' => is_array($street) ? ($street[1] ?? '') : '',
+            'City' => $this->getCity(),
+            'State' => $this->getState() ?? '',
+            'Postcode' => $this->getPostalCode(),
+            'Country' => strtoupper($this->getCountry()),
+            'Phone Number' => self::normalizePhone($this->getPhone() ?? ''),
+        ];
+    }
+
+    public static function fromWhmcsArray(array $details): array
+    {
+        $contactData = [
+            'first_name' => $details['First Name'] ?? '',
+            'last_name' => $details['Last Name'] ?? '',
+            'email' => $details['Email Address'] ?? '',
+            'street' => implode(', ', array_filter([
+                $details['Address 1'] ?? '',
+                $details['Address 2'] ?? '',
+            ])),
+            'city' => $details['City'] ?? '',
+            'state' => $details['State'] ?? '',
+            'postal_code' => $details['Postcode'] ?? '',
+            'country' => $details['Country'] ?? '',
+            'phone' => self::normalizePhone($details['Phone Number'] ?? ''),
+            'disclose' => false,
+        ];
+
+        if (!empty($details['Company Name'])) {
+            $contactData['org'] = $details['Company Name'];
+        }
+
+        return $contactData;
+    }
 }
