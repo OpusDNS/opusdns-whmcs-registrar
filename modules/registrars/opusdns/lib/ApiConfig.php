@@ -11,7 +11,7 @@ const VERSION = "1.0.0";
 class ApiConfig
 {
     public const PRODUCTION_BASE_URL = "https://api.opusdns.com";
-    public const SANDBOX_BASE_URL = "https://staging.opusdns.com";
+    public const SANDBOX_BASE_URL = "https://sandbox.opusdns.com";
     public const DEFAULT_API_VERSION = "v1";
     public const DEFAULT_USER_AGENT = "OpusDNS-whmcs/" . VERSION;
     public const DEFAULT_TIMEOUT = 300;
