@@ -10,31 +10,28 @@ class DomainAvailability
 {
     use ModelTrait;
     
-    private string $domain_name = '';
+    private string $domain = '';
     
-    private bool $available = false;
-    
-    private ?string $reason = null;
+    private string $status = '';
     
     public function __construct(array $data = [])
     {
-        $this->domain_name = (string)($data['domain_name'] ?? '');
-        $this->available = (bool)($data['available'] ?? false);
-        $this->reason = isset($data['reason']) ? (string)$data['reason'] : null;
+        $this->domain = (string)($data['domain'] ?? '');
+        $this->status = (string)($data['status'] ?? '');
     }
     
-    public function getDomainName(): string
+    public function getDomain(): string
     {
-        return $this->domain_name;
+        return $this->domain;
+    }
+    
+    public function getStatus(): string
+    {
+        return $this->status;
     }
     
     public function isAvailable(): bool
     {
-        return $this->available;
-    }
-    
-    public function getReason(): ?string
-    {
-        return $this->reason;
+        return $this->status === 'available';
     }
 }

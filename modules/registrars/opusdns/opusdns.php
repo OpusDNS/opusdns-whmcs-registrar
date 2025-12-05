@@ -382,64 +382,84 @@ function opusdns_SaveContactDetails($params)
  * Determine if a domain or group of domains are available for
  * registration or transfer.
  *
- * @see https://developers.whmcs.com/domain-registrars/module-parameters/
- *
- * @see \WHMCS\Domains\DomainLookup\SearchResult
- * @see \WHMCS\Domains\DomainLookup\ResultsList
- *
- * @throws Exception Upon domain availability check failure.
- *
  */
 function opusdns_CheckAvailability($params)
 {
     $searchTerm = strtolower($params['searchTerm']);
-    $tldsToInclude = $params['tldsToInclude'];
-    $domains = [];
-
-    foreach (array_chunk($tldsToInclude, 10) as $tlds) {
-        foreach ($tlds as $tld) {
-            $domains[] = [
-                'domain_name' => $searchTerm . $tld,
-                'sld' => $searchTerm,
-                'tld' => $tld,
-            ];
-        }
-    }
+    $domainsToCheck = array_map(fn($tld) => $searchTerm . $tld, $params['tldsToInclude']);
 
     try {
         $api = opusdns_initApiClient($params);
         $results = new ResultsList();
-        $domainsToCheck = array_map(function ($domain) {
-            return $domain['domain_name'];
-        }, $domains);
-        $apiCheck = $api->domains()->check($domainsToCheck)->getData();
+        $apiAvailabilityResults = $api->availability()->bulk($domainsToCheck)->getResults();
 
-        foreach ($domains as $domain) {
-            $searchResult = new SearchResult($domain['sld'], $domain['tld']);
-
-            $domainApiCheckStatus = null;
-            foreach ($apiCheck as $item) {
-                if ($item->getDomainName() === $domain['domain_name']) {
-                    $domainApiCheckStatus = $item;
-                    break;
-                }
-            }
-
-            if (!$domainApiCheckStatus) {
-                $searchResult->setStatus(SearchResult::STATUS_TLD_NOT_SUPPORTED);
-            } elseif ($domainApiCheckStatus->isAvailable()) {
-                $searchResult->setStatus(SearchResult::STATUS_NOT_REGISTERED);
-            } else {
-                $searchResult->setStatus(SearchResult::STATUS_REGISTERED);
-            }
-
+        foreach ($apiAvailabilityResults as $item) {
+            $domainObj = new \WHMCS\Domains\Domain($item->getDomain());
+            $searchResult = SearchResult::factoryFromDomain($domainObj);
+            $searchResult->setStatus($item->isAvailable() ? SearchResult::STATUS_NOT_REGISTERED : SearchResult::STATUS_REGISTERED);
             $results->append($searchResult);
         }
+
         return $results;
     } catch (ApiException $e) {
-        return array(
-            'error' => $e->getMessage(),
-        );
+        return ['error' => $e->getMessage()];
+    }
+}
+
+/**
+ * Domain Suggestion Settings.
+ *
+ * Defines the settings relating to domain suggestions (optional).
+ * It follows the same convention as `getConfigArray`.
+ *
+ */
+function opusdns_DomainSuggestionOptions()
+{
+    return [
+        'maxDomainSuggestionsResults' => [
+            'FriendlyName' => 'Maximum Results',
+            'Type' => 'text',
+            'Size' => '5',
+            'Default' => '25',
+            'Description' => 'The maximum number of domain suggestions to return (1-100).',
+        ],
+    ];
+}
+
+/**
+ * Get Domain Suggestions.
+ *
+ * Provide domain suggestions based on the domain lookup term provided.
+ *
+ */
+function opusdns_GetDomainSuggestions($params)
+{
+    $suggestionSettings = $params['suggestionSettings'];
+    $searchTerm = $params['searchTerm'];
+    $tldsToInclude = array_map(fn($tld) => ltrim($tld, '.'), $params['tldsToInclude']);
+    $limit = min(100, max(1, (int)($suggestionSettings['maxDomainSuggestionsResults'] ?? 25)));
+    $includePremium = false;
+
+    try {
+        $api = opusdns_initApiClient($params);
+        $results = new ResultsList();
+
+        $apiSuggestionResults = $api->domainSearch()->suggest($searchTerm, [
+            'tlds' => $tldsToInclude,
+            'limit' => $limit,
+            'premium' => $includePremium,
+        ])->getResults();
+
+        foreach ($apiSuggestionResults as $item) {
+            $domainObj = new \WHMCS\Domains\Domain($item->getDomain());
+            $searchResult = SearchResult::factoryFromDomain($domainObj);
+            $searchResult->setStatus($item->isAvailable() ? SearchResult::STATUS_NOT_REGISTERED : SearchResult::STATUS_REGISTERED);
+            $results->append($searchResult);
+        }
+
+        return $results;
+    } catch (ApiException $e) {
+        return ['error' => $e->getMessage()];
     }
 }
 
