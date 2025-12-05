@@ -36,6 +36,7 @@ To configure the module:
 - EPP Code Retrieval
 - Domain Deletion
 - Domain Availability Checks
+- Domain Suggestions
 - Domain Expiration Date Sync
 - TLD & Pricing Sync
 
