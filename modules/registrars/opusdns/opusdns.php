@@ -156,6 +156,78 @@ function opusdns_RegisterDomain($params)
 }
 
 /**
+ * Transfer a domain.
+ *
+ * Attempt to create a domain transfer request.
+ *
+ * This is triggered when the following events occur:
+ * * Payment received for a domain transfer order
+ * * When a pending domain transfer order is accepted
+ * * Upon manual request by an admin user
+ *
+ */
+function opusdns_TransferDomain($params)
+{
+    $domainName = $params['domain'];
+    $tld = $params['tld'];
+    $authCode = $params['eppcode'] ?? $params['transfersecret'] ?? '';
+
+    try {
+        $api = opusdns_initApiClient($params);
+        $tldInfo = $api->tlds()->getTld($tld);
+
+        if (!$tldInfo) {
+            return ['error' => "TLD .{$tld} is not supported"];
+        }
+    } catch (ApiException $e) {
+        return ['error' => $e->getMessage()];
+    }
+
+    try {
+        $api = opusdns_initApiClient($params);
+        $contactData = $api->contacts()->buildContactDataFromParams($params);
+        $createdContact = $api->contacts()->create($contactData)->getData();
+        $contactId = $createdContact->getContactId();
+    } catch (ApiException $e) {
+        $errors = $e->getErrors() ?? [];
+        if ($errors) {
+            $errorMessages = [];
+            foreach ($errors as $field => $messages) {
+                $errorMessages[] = "Contact Field: {$field} - " . implode(', ', (array)$messages);
+            }
+            return ['error' => implode(', ', $errorMessages)];
+        }
+        return ['error' => $e->getMessage()];
+    }
+
+    $contacts = $tldInfo->buildContactsArray($contactId);
+
+    $nameservers = array_filter([
+        ['hostname' => $params['ns1'] ?? null],
+        ['hostname' => $params['ns2'] ?? null],
+        ['hostname' => $params['ns3'] ?? null],
+        ['hostname' => $params['ns4'] ?? null],
+        ['hostname' => $params['ns5'] ?? null],
+    ], fn($ns) => !empty($ns['hostname']));
+
+    $transferData = [
+        'name' => $domainName,
+        'auth_code' => $authCode,
+        'contacts' => $contacts,
+        'nameservers' => array_values($nameservers),
+        'renewal_mode' => RenewalMode::EXPIRE->value,
+    ];
+
+    try {
+        $api = opusdns_initApiClient($params);
+        $api->domains()->transfer($transferData);
+        return ['success' => true];
+    } catch (ApiException $e) {
+        return ['error' => $e->getMessage()];
+    }
+}
+
+/**
  * Renew a domain.
  *
  * Attempt to renew/extend a domain for a given number of years.
@@ -183,6 +255,10 @@ function opusdns_RenewDomain($params)
 
         $domainInfo = $api->domains()->getByName($domainName)->getData();
         $registryExpiryDate = $domainInfo->getExpiresOn();
+
+        if (!$registryExpiryDate) {
+            return ['error' => 'Domain has no registry expiry date (may be pending transfer)'];
+        }
 
         $whmcsDate = $whmcsExpiryDate->format('Y-m-d');
         $registryDate = $registryExpiryDate->format('Y-m-d');
@@ -243,7 +319,10 @@ function opusdns_GetDomainInformation($params)
     $domain->setIsIrtpEnabled(false);
     $domain->setDomain($response->getName());
     $domain->setNameservers($nameservers);
-    $domain->setExpiryDate(Carbon::parse($response->getExpiresOn()->format('Y-m-d H:i:s')));
+    $expiresOn = $response->getExpiresOn();
+    if ($expiresOn) {
+        $domain->setExpiryDate(Carbon::parse($expiresOn->format('Y-m-d H:i:s')));
+    }
     $domain->setTransferLock($response->isTransferLocked() ?? false);
 
     return $domain;
@@ -538,10 +617,57 @@ function opusdns_Sync($params)
     try {
         $api = opusdns_initApiClient($params);
         $response = $api->domains()->getByName($domainName)->getData();
+        $expiresOn = $response->getExpiresOn();
+
+        if (!$expiresOn) {
+            return ['error' => 'Domain has no expiry date (may be pending transfer)'];
+        }
+
         return [
-            'expirydate' => $response->getExpiresOn()->format('Y-m-d'),
+            'expirydate' => $expiresOn->format('Y-m-d'),
         ];
     } catch (ApiException $e) {
+        return ['error' => $e->getMessage()];
+    }
+}
+
+/**
+ * Incoming Domain Transfer Sync.
+ *
+ * Check status of incoming domain transfers and notify end-user upon
+ * completion. This function is called daily for incoming domains.
+ *
+ */
+function opusdns_TransferSync($params)
+{
+    $domainName = $params['domain'];
+    try {
+        $api = opusdns_initApiClient($params);
+        $response = $api->domains()->getByName($domainName)->getData();
+        $registryStatuses = $response->getRegistryStatuses() ?? [];
+
+        if (in_array('pendingTransfer', $registryStatuses)) {
+            return [];
+        }
+
+        $expiresOn = $response->getExpiresOn();
+        if ($expiresOn) {
+            return [
+                'completed' => true,
+                'expirydate' => $expiresOn->format('Y-m-d'),
+            ];
+        }
+
+        return [
+            'completed' => true,
+        ];
+    } catch (ApiException $e) {
+        if ($e->getStatusCode() === 404) {
+            return [
+                'failed' => true,
+                'reason' => 'Domain not found or transfer failed or was rejected',
+            ];
+        }
         return ['error' => $e->getMessage()];
     }
 }
