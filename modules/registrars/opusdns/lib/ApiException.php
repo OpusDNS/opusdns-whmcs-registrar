@@ -44,9 +44,9 @@ class ApiException extends Exception
 
         // Extract error information
         $title = $errorData['title'] ?? 'HTTP Error';
-        $detail = $errorData['detail'] ?? '';
+        $detail = $errorData['detail'] ?? ($errorData['error'] ?? '');
         $type = $errorData['type'] ?? 'api-error';
-        $errors = $errorData['errors'] ?? null;
+        $errors = isset($errorData['errors']) && is_array($errorData['errors']) ? $errorData['errors'] : null;
 
         // Build comprehensive error message
         $message = $title;
