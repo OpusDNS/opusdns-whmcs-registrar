@@ -1,0 +1,42 @@
+{
+	"id": "github-pages",
+	"name": "GitHub Pages",
+	"description": "DNS records for GitHub Pages static site hosting",
+	"category": "hosting",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site",
+	"supports_subdomain": true,
+	"records": [
+		{
+			"type": "A",
+			"name": "@",
+			"ttl": 3600,
+			"values": [
+				"185.199.108.153",
+				"185.199.109.153",
+				"185.199.110.153",
+				"185.199.111.153"
+			],
+			"description": "GitHub Pages A records"
+		},
+		{
+			"type": "CNAME",
+			"name": "www",
+			"ttl": 3600,
+			"values": ["{{github_username}}.github.io."],
+			"description": "GitHub Pages CNAME for www subdomain"
+		}
+	],
+	"variables": [
+		{
+			"name": "github_username",
+			"label": "GitHub Username",
+			"type": "text",
+			"required": true,
+			"placeholder": "username",
+			"description": "Your GitHub username or organization name",
+			"help_url": "https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site"
+		}
+	]
+}

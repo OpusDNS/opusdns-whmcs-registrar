@@ -1,0 +1,27 @@
+{
+	"id": "vercel",
+	"name": "Vercel",
+	"description": "A and CNAME records for Vercel deployment platform",
+	"category": "hosting",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://vercel.com/docs/concepts/projects/domains/add-a-domain",
+	"supports_subdomain": true,
+	"records": [
+		{
+			"type": "A",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["76.76.21.21"],
+			"description": "Vercel A record for root domain"
+		},
+		{
+			"type": "CNAME",
+			"name": "www",
+			"ttl": 3600,
+			"values": ["cname.vercel-dns.com."],
+			"description": "Vercel CNAME for www subdomain"
+		}
+	],
+	"variables": []
+}

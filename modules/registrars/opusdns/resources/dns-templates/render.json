@@ -1,0 +1,36 @@
+{
+	"id": "render",
+	"name": "Render",
+	"description": "DNS records for Render cloud application platform",
+	"category": "hosting",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://render.com/docs/custom-domains",
+	"supports_subdomain": true,
+	"records": [
+		{
+			"type": "A",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["216.24.57.1"],
+			"description": "Render A record for root domain"
+		},
+		{
+			"type": "CNAME",
+			"name": "www",
+			"ttl": 3600,
+			"values": ["{{service_name}}.onrender.com."],
+			"description": "Render CNAME for www subdomain"
+		}
+	],
+	"variables": [
+		{
+			"name": "service_name",
+			"label": "Service Name",
+			"type": "text",
+			"required": true,
+			"placeholder": "my-service",
+			"description": "Your Render service name (from my-service.onrender.com)"
+		}
+	]
+}

@@ -1,0 +1,41 @@
+{
+	"id": "heroku",
+	"name": "Heroku",
+	"description": "DNS records for Heroku app hosting",
+	"category": "hosting",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://devcenter.heroku.com/articles/custom-domains",
+	"supports_subdomain": true,
+	"records": [],
+	"variables": [
+		{
+			"name": "dns_target",
+			"label": "DNS Target",
+			"type": "text",
+			"required": true,
+			"placeholder": "example-app-12345.herokudns.com",
+			"description": "DNS target from Heroku app settings (heroku domains command)",
+			"record_template": {
+				"type": "CNAME",
+				"name": "@",
+				"ttl": 3600,
+				"value": "{{dns_target}}"
+			}
+		},
+		{
+			"name": "www_target",
+			"label": "WWW DNS Target",
+			"type": "text",
+			"required": false,
+			"placeholder": "example-app-12345.herokudns.com",
+			"description": "Optional DNS target for www subdomain",
+			"record_template": {
+				"type": "CNAME",
+				"name": "www",
+				"ttl": 3600,
+				"value": "{{www_target}}"
+			}
+		}
+	]
+}

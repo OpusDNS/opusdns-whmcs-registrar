@@ -30,8 +30,7 @@
 			"type": "text",
 			"required": true,
 			"placeholder": "mysite",
-			"description": "Your WordPress.com site name (from mysite.wordpress.com)",
-			"help_url": "https://wordpress.com/support/domains/map-existing-domain/"
+			"description": "Your WordPress.com site name (from mysite.wordpress.com)"
 		}
 	]
 }
