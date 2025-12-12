@@ -1,0 +1,37 @@
+{
+	"id": "wordpress-com",
+	"name": "WordPress.com",
+	"description": "A and CNAME records for WordPress.com managed hosting",
+	"category": "hosting",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://wordpress.com/support/domains/map-existing-domain/",
+	"supports_subdomain": true,
+	"records": [
+		{
+			"type": "A",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["192.0.78.12", "192.0.78.13"],
+			"description": "WordPress.com A records for root domain"
+		},
+		{
+			"type": "CNAME",
+			"name": "www",
+			"ttl": 3600,
+			"values": ["{{site_name}}.wordpress.com."],
+			"description": "WordPress.com CNAME for www subdomain"
+		}
+	],
+	"variables": [
+		{
+			"name": "site_name",
+			"label": "WordPress.com Site Name",
+			"type": "text",
+			"required": true,
+			"placeholder": "mysite",
+			"description": "Your WordPress.com site name (from mysite.wordpress.com)",
+			"help_url": "https://wordpress.com/support/domains/map-existing-domain/"
+		}
+	]
+}

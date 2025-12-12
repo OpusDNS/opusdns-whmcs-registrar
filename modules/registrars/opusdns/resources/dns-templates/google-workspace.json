@@ -1,0 +1,49 @@
+{
+	"id": "google-workspace",
+	"name": "Google Workspace",
+	"description": "MX and verification records for Google Workspace (Gmail for Business)",
+	"category": "email",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://support.google.com/a/answer/140034",
+	"supports_subdomain": false,
+	"records": [
+		{
+			"type": "MX",
+			"name": "@",
+			"ttl": 3600,
+			"values": [
+				"1 aspmx.l.google.com.",
+				"5 alt1.aspmx.l.google.com.",
+				"5 alt2.aspmx.l.google.com.",
+				"10 alt3.aspmx.l.google.com.",
+				"10 alt4.aspmx.l.google.com."
+			],
+			"description": "Google Workspace MX records"
+		},
+		{
+			"type": "TXT",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["\"v=spf1 include:_spf.google.com ~all\""],
+			"description": "SPF record for Google Workspace",
+			"optional": false
+		}
+	],
+	"variables": [
+		{
+			"name": "verification_code",
+			"label": "Google Verification Code",
+			"type": "text",
+			"required": false,
+			"placeholder": "google-site-verification=XXXXXXXXXXXX",
+			"description": "Optional verification TXT record from Google Admin Console",
+			"record_template": {
+				"type": "TXT",
+				"name": "@",
+				"ttl": 3600,
+				"value": "{{verification_code}}"
+			}
+		}
+	]
+}

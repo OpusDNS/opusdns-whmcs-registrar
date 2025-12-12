@@ -1,0 +1,59 @@
+{
+	"id": "microsoft-365",
+	"name": "Microsoft 365",
+	"description": "MX and configuration records for Microsoft 365 (Office 365)",
+	"category": "email",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://docs.microsoft.com/en-us/microsoft-365/admin/setup/add-domain",
+	"supports_subdomain": false,
+	"records": [
+		{
+			"type": "MX",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["0 {{tenant}}.mail.protection.outlook.com."],
+			"description": "Microsoft 365 MX record"
+		},
+		{
+			"type": "TXT",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["\"v=spf1 include:spf.protection.outlook.com -all\""],
+			"description": "SPF record for Microsoft 365"
+		},
+		{
+			"type": "CNAME",
+			"name": "autodiscover",
+			"ttl": 3600,
+			"values": ["autodiscover.outlook.com."],
+			"description": "Autodiscover CNAME for Microsoft 365"
+		}
+	],
+	"variables": [
+		{
+			"name": "tenant",
+			"label": "Tenant Name",
+			"type": "text",
+			"required": true,
+			"placeholder": "contoso-com",
+			"description": "Your Microsoft 365 tenant name (e.g., contoso-com)",
+			"help_url": "https://docs.microsoft.com/en-us/microsoft-365/admin/setup/domains-faq"
+		},
+		{
+			"name": "verification_code",
+			"label": "Verification Code",
+			"type": "text",
+			"required": false,
+			"placeholder": "MS=msXXXXXXXX",
+			"description": "Optional verification TXT record from Microsoft 365 admin center",
+			"help_url": "https://docs.microsoft.com/en-us/microsoft-365/admin/setup/add-domain",
+			"record_template": {
+				"type": "TXT",
+				"name": "@",
+				"ttl": 3600,
+				"value": "{{verification_code}}"
+			}
+		}
+	]
+}

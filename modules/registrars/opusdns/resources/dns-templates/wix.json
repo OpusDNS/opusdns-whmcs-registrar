@@ -1,0 +1,36 @@
+{
+	"id": "wix",
+	"name": "Wix",
+	"description": "DNS records for Wix website builder",
+	"category": "hosting",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://support.wix.com/en/article/connecting-a-domain-to-wix-using-the-pointing-method",
+	"supports_subdomain": true,
+	"records": [
+		{
+			"type": "A",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["185.230.60.1"],
+			"description": "Wix A record for root domain"
+		},
+		{
+			"type": "CNAME",
+			"name": "www",
+			"ttl": 3600,
+			"values": ["{{site_address}}.wixdns.net."],
+			"description": "Wix CNAME for www subdomain"
+		}
+	],
+	"variables": [
+		{
+			"name": "site_address",
+			"label": "Site Address",
+			"type": "text",
+			"required": true,
+			"placeholder": "username.wixsite.com/sitename",
+			"description": "Your Wix site address (from Wix dashboard)"
+		}
+	]
+}

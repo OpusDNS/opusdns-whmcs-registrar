@@ -1,0 +1,27 @@
+{
+	"id": "weebly",
+	"name": "Weebly",
+	"description": "DNS records for Weebly website hosting",
+	"category": "hosting",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://www.weebly.com/app/help/us/en/topics/connect-domain",
+	"supports_subdomain": true,
+	"records": [
+		{
+			"type": "A",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["199.34.228.48"],
+			"description": "Weebly A record"
+		},
+		{
+			"type": "CNAME",
+			"name": "www",
+			"ttl": 3600,
+			"values": ["www.weebly.com."],
+			"description": "Weebly CNAME for www subdomain"
+		}
+	],
+	"variables": []
+}

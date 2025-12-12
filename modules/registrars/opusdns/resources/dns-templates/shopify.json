@@ -1,0 +1,27 @@
+{
+	"id": "shopify",
+	"name": "Shopify",
+	"description": "DNS records for Shopify online store",
+	"category": "ecommerce",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://help.shopify.com/en/manual/domains/add-a-domain/connecting-domains",
+	"supports_subdomain": true,
+	"records": [
+		{
+			"type": "A",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["23.227.38.65"],
+			"description": "Shopify A record"
+		},
+		{
+			"type": "CNAME",
+			"name": "www",
+			"ttl": 3600,
+			"values": ["shops.myshopify.com."],
+			"description": "Shopify CNAME for www subdomain"
+		}
+	],
+	"variables": []
+}
