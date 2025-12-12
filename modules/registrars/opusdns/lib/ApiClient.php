@@ -14,6 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 use WHMCS\Module\Registrar\OpusDNS\ApiException;
 use WHMCS\Module\Registrar\OpusDNS\Service\Availability;
 use WHMCS\Module\Registrar\OpusDNS\Service\Contacts;
+use WHMCS\Module\Registrar\OpusDNS\Service\Dns;
 use WHMCS\Module\Registrar\OpusDNS\Service\DomainSearch;
 use WHMCS\Module\Registrar\OpusDNS\Service\Domains;
 use WHMCS\Module\Registrar\OpusDNS\Service\Pricing;
@@ -192,5 +193,10 @@ class ApiClient
     public function tlds(): Tlds
     {
         return new Tlds($this);
+    }
+
+    public function dns(): Dns
+    {
+        return new Dns($this);
     }
 }
