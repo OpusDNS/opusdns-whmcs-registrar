@@ -42,7 +42,7 @@
 				"type": "TXT",
 				"name": "@",
 				"ttl": 3600,
-				"value": "{{verification_code}}"
+				"value": "\"{{verification_code}}\""
 			}
 		}
 	]
