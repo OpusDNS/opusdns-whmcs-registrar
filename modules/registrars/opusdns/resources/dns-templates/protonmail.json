@@ -1,0 +1,84 @@
+{
+	"id": "protonmail",
+	"name": "ProtonMail",
+	"description": "MX and verification records for ProtonMail encrypted email service",
+	"category": "email",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://proton.me/support/custom-domain",
+	"supports_subdomain": false,
+	"records": [
+		{
+			"type": "MX",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["10 mail.protonmail.ch.", "20 mailsec.protonmail.ch."],
+			"description": "ProtonMail MX records"
+		},
+		{
+			"type": "TXT",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["\"v=spf1 include:_spf.protonmail.ch ~all\""],
+			"description": "SPF record for ProtonMail"
+		}
+	],
+	"variables": [
+		{
+			"name": "verification_code",
+			"label": "ProtonMail Verification Code",
+			"type": "text",
+			"required": false,
+			"placeholder": "protonmail-verification=...",
+			"description": "Optional verification TXT record from ProtonMail settings",
+			"record_template": {
+				"type": "TXT",
+				"name": "@",
+				"ttl": 3600,
+				"value": "\"{{verification_code}}\""
+			}
+		},
+		{
+			"name": "dkim_key",
+			"label": "DKIM Public Key",
+			"type": "text",
+			"required": false,
+			"placeholder": "v=DKIM1; k=rsa; p=...",
+			"description": "Optional DKIM key from ProtonMail domain settings",
+			"record_template": {
+				"type": "TXT",
+				"name": "protonmail._domainkey",
+				"ttl": 3600,
+				"value": "\"{{dkim_key}}\""
+			}
+		},
+		{
+			"name": "dkim_key2",
+			"label": "DKIM Public Key 2",
+			"type": "text",
+			"required": false,
+			"placeholder": "v=DKIM1; k=rsa; p=...",
+			"description": "Optional second DKIM key from ProtonMail domain settings",
+			"record_template": {
+				"type": "TXT",
+				"name": "protonmail2._domainkey",
+				"ttl": 3600,
+				"value": "\"{{dkim_key2}}\""
+			}
+		},
+		{
+			"name": "dkim_key3",
+			"label": "DKIM Public Key 3",
+			"type": "text",
+			"required": false,
+			"placeholder": "v=DKIM1; k=rsa; p=...",
+			"description": "Optional third DKIM key from ProtonMail domain settings",
+			"record_template": {
+				"type": "TXT",
+				"name": "protonmail3._domainkey",
+				"ttl": 3600,
+				"value": "\"{{dkim_key3}}\""
+			}
+		}
+	]
+}

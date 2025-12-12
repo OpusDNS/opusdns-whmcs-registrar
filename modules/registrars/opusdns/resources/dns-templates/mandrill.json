@@ -1,0 +1,35 @@
+{
+	"id": "mandrill",
+	"name": "Mandrill",
+	"description": "SPF, DKIM, and tracking records for Mandrill transactional email",
+	"category": "email",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://mailchimp.com/developer/transactional/guides/send-first-email/",
+	"supports_subdomain": true,
+	"records": [
+		{
+			"type": "TXT",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["\"v=spf1 include:spf.mandrillapp.com ?all\""],
+			"description": "SPF record for Mandrill"
+		}
+	],
+	"variables": [
+		{
+			"name": "dkim_value",
+			"label": "DKIM Public Key",
+			"type": "text",
+			"required": true,
+			"placeholder": "v=DKIM1; k=rsa; p=MIGfMA0...",
+			"description": "DKIM public key from Mandrill sending domain settings",
+			"record_template": {
+				"type": "TXT",
+				"name": "mandrill._domainkey",
+				"ttl": 3600,
+				"value": "\"{{dkim_value}}\""
+			}
+		}
+	]
+}

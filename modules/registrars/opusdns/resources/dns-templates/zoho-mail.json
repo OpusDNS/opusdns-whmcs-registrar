@@ -1,0 +1,42 @@
+{
+	"id": "zoho-mail",
+	"name": "Zoho Mail",
+	"description": "MX and verification records for Zoho Mail",
+	"category": "email",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://www.zoho.com/mail/help/adminconsole/configure-email-delivery.html",
+	"supports_subdomain": false,
+	"records": [
+		{
+			"type": "MX",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["10 mx.zoho.com.", "20 mx2.zoho.com.", "50 mx3.zoho.com."],
+			"description": "Zoho Mail MX records"
+		},
+		{
+			"type": "TXT",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["\"v=spf1 include:zoho.com ~all\""],
+			"description": "SPF record for Zoho Mail"
+		}
+	],
+	"variables": [
+		{
+			"name": "verification_code",
+			"label": "Zoho Verification Code",
+			"type": "text",
+			"required": false,
+			"placeholder": "zb12345678",
+			"description": "Optional verification code from Zoho Mail admin console",
+			"record_template": {
+				"type": "TXT",
+				"name": "@",
+				"ttl": 3600,
+				"value": "\"zoho-verification={{verification_code}}\""
+			}
+		}
+	]
+}

@@ -1,0 +1,57 @@
+{
+	"id": "sendgrid",
+	"name": "SendGrid",
+	"description": "CNAME records for SendGrid email delivery platform",
+	"category": "email",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://docs.sendgrid.com/ui/account-and-settings/how-to-set-up-domain-authentication",
+	"supports_subdomain": true,
+	"records": [],
+	"variables": [
+		{
+			"name": "domain_key_1",
+			"label": "Domain Key CNAME 1",
+			"type": "text",
+			"required": true,
+			"placeholder": "s1._domainkey",
+			"description": "First domain key subdomain from SendGrid authentication settings"
+		},
+		{
+			"name": "domain_key_1_value",
+			"label": "Domain Key Value 1",
+			"type": "text",
+			"required": true,
+			"placeholder": "s1.domainkey.u12345.wl.sendgrid.net",
+			"description": "First domain key CNAME target from SendGrid",
+			"record_template": {
+				"type": "CNAME",
+				"name": "{{domain_key_1}}",
+				"ttl": 3600,
+				"value": "{{domain_key_1_value}}"
+			}
+		},
+		{
+			"name": "domain_key_2",
+			"label": "Domain Key CNAME 2",
+			"type": "text",
+			"required": true,
+			"placeholder": "s2._domainkey",
+			"description": "Second domain key subdomain from SendGrid authentication settings"
+		},
+		{
+			"name": "domain_key_2_value",
+			"label": "Domain Key Value 2",
+			"type": "text",
+			"required": true,
+			"placeholder": "s2.domainkey.u12345.wl.sendgrid.net",
+			"description": "Second domain key CNAME target from SendGrid",
+			"record_template": {
+				"type": "CNAME",
+				"name": "{{domain_key_2}}",
+				"ttl": 3600,
+				"value": "{{domain_key_2_value}}"
+			}
+		}
+	]
+}

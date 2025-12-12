@@ -1,0 +1,56 @@
+{
+	"id": "mailgun",
+	"name": "Mailgun",
+	"description": "MX, SPF, and DKIM records for Mailgun transactional email API",
+	"category": "email",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://documentation.mailgun.com/en/latest/user_manual.html#verifying-your-domain",
+	"supports_subdomain": true,
+	"records": [
+		{
+			"type": "TXT",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["\"v=spf1 include:mailgun.org ~all\""],
+			"description": "SPF record for Mailgun"
+		},
+		{
+			"type": "MX",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["10 mxa.mailgun.org.", "10 mxb.mailgun.org."],
+			"description": "Mailgun MX records for receiving emails"
+		}
+	],
+	"variables": [
+		{
+			"name": "dkim_key",
+			"label": "DKIM Public Key",
+			"type": "text",
+			"required": true,
+			"placeholder": "k=rsa; p=MIGfMA0GCSq...",
+			"description": "DKIM public key from Mailgun domain settings",
+			"record_template": {
+				"type": "TXT",
+				"name": "smtp._domainkey",
+				"ttl": 3600,
+				"value": "\"{{dkim_key}}\""
+			}
+		},
+		{
+			"name": "tracking_domain",
+			"label": "Tracking Domain CNAME",
+			"type": "text",
+			"required": false,
+			"placeholder": "mailgun.org",
+			"description": "Optional CNAME value for email tracking subdomain",
+			"record_template": {
+				"type": "CNAME",
+				"name": "email",
+				"ttl": 3600,
+				"value": "{{tracking_domain}}"
+			}
+		}
+	]
+}

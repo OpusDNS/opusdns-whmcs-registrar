@@ -1,0 +1,57 @@
+{
+	"id": "postmark",
+	"name": "Postmark",
+	"description": "CNAME and TXT records for Postmark transactional email service",
+	"category": "email",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://postmarkapp.com/support/article/1046-how-do-i-verify-a-domain",
+	"supports_subdomain": true,
+	"records": [],
+	"variables": [
+		{
+			"name": "dkim_host",
+			"label": "DKIM Host",
+			"type": "text",
+			"required": true,
+			"placeholder": "20230101._domainkey",
+			"description": "DKIM hostname from Postmark sender signature settings"
+		},
+		{
+			"name": "dkim_value",
+			"label": "DKIM Value",
+			"type": "text",
+			"required": true,
+			"placeholder": "k=rsa;p=MIGfMA0GCSq...",
+			"description": "DKIM TXT record value from Postmark",
+			"record_template": {
+				"type": "TXT",
+				"name": "{{dkim_host}}",
+				"ttl": 3600,
+				"value": "\"{{dkim_value}}\""
+			}
+		},
+		{
+			"name": "return_path_host",
+			"label": "Return-Path Host",
+			"type": "text",
+			"required": true,
+			"placeholder": "pm-bounces",
+			"description": "Return-Path subdomain from Postmark settings"
+		},
+		{
+			"name": "return_path_value",
+			"label": "Return-Path Value",
+			"type": "text",
+			"required": true,
+			"placeholder": "pm.mtasv.net",
+			"description": "Return-Path CNAME target from Postmark",
+			"record_template": {
+				"type": "CNAME",
+				"name": "{{return_path_host}}",
+				"ttl": 3600,
+				"value": "{{return_path_value}}"
+			}
+		}
+	]
+}
