@@ -1,0 +1,49 @@
+{
+	"id": "zoom",
+	"name": "Zoom",
+	"description": "DNS records for Zoom vanity URL and domain verification",
+	"category": "verification",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0061540",
+	"supports_subdomain": true,
+	"records": [],
+	"variables": [
+		{
+			"name": "verification_code",
+			"label": "Verification Code",
+			"type": "text",
+			"required": false,
+			"placeholder": "zoom-domain-verification=...",
+			"description": "Optional: Domain verification TXT record",
+			"record_template": {
+				"type": "TXT",
+				"name": "@",
+				"ttl": 3600,
+				"value": "\"{{verification_code}}\""
+			}
+		},
+		{
+			"name": "vanity_subdomain",
+			"label": "Vanity URL Subdomain",
+			"type": "text",
+			"required": false,
+			"placeholder": "meet",
+			"description": "Optional: Subdomain for Zoom vanity URL"
+		},
+		{
+			"name": "vanity_cname",
+			"label": "Vanity URL CNAME",
+			"type": "text",
+			"required": false,
+			"placeholder": "cname.zoom.us",
+			"description": "Optional: CNAME target for vanity URL",
+			"record_template": {
+				"type": "CNAME",
+				"name": "{{vanity_subdomain}}",
+				"ttl": 3600,
+				"value": "{{vanity_cname}}"
+			}
+		}
+	]
+}

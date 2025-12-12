@@ -1,0 +1,27 @@
+{
+	"id": "slack",
+	"name": "Slack",
+	"description": "TXT record for Slack workspace domain verification",
+	"category": "verification",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://slack.com/help/articles/221837958-Verify-your-domain-with-Slack",
+	"supports_subdomain": false,
+	"records": [],
+	"variables": [
+		{
+			"name": "verification_code",
+			"label": "Slack Verification Code",
+			"type": "text",
+			"required": true,
+			"placeholder": "slack-verify=...",
+			"description": "Domain verification code from Slack workspace settings",
+			"record_template": {
+				"type": "TXT",
+				"name": "@",
+				"ttl": 3600,
+				"value": "\"{{verification_code}}\""
+			}
+		}
+	]
+}

@@ -1,0 +1,27 @@
+{
+	"id": "facebook",
+	"name": "Facebook Business",
+	"description": "TXT record for Facebook Business Manager domain verification",
+	"category": "verification",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://www.facebook.com/business/help/286768115176155",
+	"supports_subdomain": false,
+	"records": [],
+	"variables": [
+		{
+			"name": "verification_code",
+			"label": "Verification Code",
+			"type": "text",
+			"required": true,
+			"placeholder": "facebook-domain-verification=...",
+			"description": "Domain verification code from Facebook Business Manager",
+			"record_template": {
+				"type": "TXT",
+				"name": "@",
+				"ttl": 3600,
+				"value": "\"{{verification_code}}\""
+			}
+		}
+	]
+}

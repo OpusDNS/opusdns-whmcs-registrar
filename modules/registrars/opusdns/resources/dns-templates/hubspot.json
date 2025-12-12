@@ -1,0 +1,57 @@
+{
+	"id": "hubspot",
+	"name": "HubSpot",
+	"description": "DNS records for HubSpot marketing automation and CMS",
+	"category": "hosting",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://knowledge.hubspot.com/domains-and-urls/connect-a-domain-to-hubspot",
+	"supports_subdomain": true,
+	"records": [],
+	"variables": [
+		{
+			"name": "hubspot_subdomain",
+			"label": "Subdomain",
+			"type": "text",
+			"required": true,
+			"placeholder": "www",
+			"description": "Subdomain to connect to HubSpot (e.g., www, blog)"
+		},
+		{
+			"name": "cname_value",
+			"label": "CNAME Value",
+			"type": "text",
+			"required": true,
+			"placeholder": "1234567.group8.sites.hubspot.net",
+			"description": "CNAME target from HubSpot domain settings",
+			"record_template": {
+				"type": "CNAME",
+				"name": "{{hubspot_subdomain}}",
+				"ttl": 3600,
+				"value": "{{cname_value}}"
+			}
+		},
+		{
+			"name": "email_subdomain",
+			"label": "Email Subdomain",
+			"type": "text",
+			"required": false,
+			"placeholder": "hs1-12345678",
+			"description": "Optional: Email sending subdomain from HubSpot"
+		},
+		{
+			"name": "email_cname_value",
+			"label": "Email CNAME Value",
+			"type": "text",
+			"required": false,
+			"placeholder": "mail.hs-inbox.com",
+			"description": "Optional: Email CNAME target from HubSpot",
+			"record_template": {
+				"type": "CNAME",
+				"name": "{{email_subdomain}}",
+				"ttl": 3600,
+				"value": "{{email_cname_value}}"
+			}
+		}
+	]
+}

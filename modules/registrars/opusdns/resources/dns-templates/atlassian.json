@@ -1,0 +1,49 @@
+{
+	"id": "atlassian",
+	"name": "Atlassian",
+	"description": "DNS records for Atlassian products (Confluence, Jira) custom domains",
+	"category": "hosting",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://support.atlassian.com/user-management/docs/verify-a-domain-to-manage-accounts/",
+	"supports_subdomain": true,
+	"records": [],
+	"variables": [
+		{
+			"name": "verification_code",
+			"label": "Verification Code",
+			"type": "text",
+			"required": false,
+			"placeholder": "atlassian-domain-verification=...",
+			"description": "Optional: Domain verification TXT record from Atlassian admin",
+			"record_template": {
+				"type": "TXT",
+				"name": "@",
+				"ttl": 3600,
+				"value": "\"{{verification_code}}\""
+			}
+		},
+		{
+			"name": "subdomain",
+			"label": "Custom Domain Subdomain",
+			"type": "text",
+			"required": false,
+			"placeholder": "confluence",
+			"description": "Optional: Subdomain for Atlassian product"
+		},
+		{
+			"name": "cname_target",
+			"label": "CNAME Target",
+			"type": "text",
+			"required": false,
+			"placeholder": "your-site.atlassian.net",
+			"description": "Optional: CNAME target from Atlassian settings",
+			"record_template": {
+				"type": "CNAME",
+				"name": "{{subdomain}}",
+				"ttl": 3600,
+				"value": "{{cname_target}}"
+			}
+		}
+	]
+}
