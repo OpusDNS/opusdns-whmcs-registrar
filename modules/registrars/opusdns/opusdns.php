@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * OpusDNS Registrar Module for WHMCS
  *
@@ -26,16 +28,17 @@ use WHMCS\Module\Registrar\OpusDNS\ApiException;
 use WHMCS\Module\Registrar\OpusDNS\Enum\ProductAction;
 use WHMCS\Module\Registrar\OpusDNS\Enum\ProductType;
 use WHMCS\Module\Registrar\OpusDNS\Models\Contact;
+use WHMCS\Module\Registrar\OpusDNS\Helper\NameserverHelper;
 
-function opusdns_MetaData()
+function opusdns_MetaData(): array
 {
-    return array(
+    return [
         'DisplayName' => 'OpusDNS',
         'APIVersion' => '1.1',
-    );
+    ];
 }
 
-function opusdns_getConfigArray()
+function opusdns_getConfigArray(): array
 {
     return [
         'FriendlyName' => [
@@ -71,7 +74,6 @@ function opusdns_getConfigArray()
 
 /**
  * Initialize API client with credentials from params
- *
  */
 function opusdns_initApiClient(array $params): ApiClient
 {
@@ -80,6 +82,29 @@ function opusdns_initApiClient(array $params): ApiClient
         'ClientSecret' => $params['ClientSecret'],
         'TestMode' => $params['TestMode'],
     ]);
+}
+
+
+/**
+ * Load registrar module language file
+ */
+function opusdns_loadLanguage(): array
+{
+    global $CONFIG;
+
+    $language = isset($_SESSION['Language']) ? $_SESSION['Language'] : $CONFIG['Language'];
+    $langFile = __DIR__ . '/lang/' . $language . '.php';
+
+    if (!file_exists($langFile)) {
+        $langFile = __DIR__ . '/lang/english.php';
+    }
+
+    $_LANG = [];
+    if (file_exists($langFile)) {
+        include $langFile;
+    }
+
+    return $_LANG;
 }
 
 /**
@@ -93,7 +118,7 @@ function opusdns_initApiClient(array $params): ApiClient
  * * Upon manual request by an admin user
  *
  */
-function opusdns_RegisterDomain($params)
+function opusdns_RegisterDomain(array $params): array
 {
     $domainName = $params['domain'];
     $tld = $params['tld'];
@@ -127,16 +152,7 @@ function opusdns_RegisterDomain($params)
     }
 
     $contacts = $tldInfo->buildContactsArray($contactId);
-
-    $nameservers = array_filter([
-        ['hostname' => $params['ns1'] ?? null],
-        ['hostname' => $params['ns2'] ?? null],
-        ['hostname' => $params['ns3'] ?? null],
-        ['hostname' => $params['ns4'] ?? null],
-        ['hostname' => $params['ns5'] ?? null],
-    ], function ($ns) {
-        return !empty($ns['hostname']);
-    });
+    $nameservers = NameserverHelper::extractFromParams($params);
 
     $domainData = [
         'name' => $domainName,
@@ -166,7 +182,7 @@ function opusdns_RegisterDomain($params)
  * * Upon manual request by an admin user
  *
  */
-function opusdns_TransferDomain($params)
+function opusdns_TransferDomain(array $params): array
 {
     $domainName = $params['domain'];
     $tld = $params['tld'];
@@ -201,14 +217,7 @@ function opusdns_TransferDomain($params)
     }
 
     $contacts = $tldInfo->buildContactsArray($contactId);
-
-    $nameservers = array_filter([
-        ['hostname' => $params['ns1'] ?? null],
-        ['hostname' => $params['ns2'] ?? null],
-        ['hostname' => $params['ns3'] ?? null],
-        ['hostname' => $params['ns4'] ?? null],
-        ['hostname' => $params['ns5'] ?? null],
-    ], fn($ns) => !empty($ns['hostname']));
+    $nameservers = NameserverHelper::extractFromParams($params);
 
     $transferData = [
         'name' => $domainName,
@@ -238,7 +247,7 @@ function opusdns_TransferDomain($params)
  * * Upon manual request by an admin user
  *
  */
-function opusdns_RenewDomain($params)
+function opusdns_RenewDomain(array $params): array
 {
     $domainName = $params['domain'];
     $tld = $params['tld'];
@@ -292,7 +301,7 @@ function opusdns_RenewDomain($params)
 }
 
 
-function opusdns_GetDomainInformation($params)
+function opusdns_GetDomainInformation(array $params): Domain | array
 {
     $domainName = $params['domain'];
 
@@ -305,20 +314,10 @@ function opusdns_GetDomainInformation($params)
         ];
     }
 
-    $nameservers = [];
-    $i = 1;
-    $responseNameservers = $response->getNameservers();
-    if ($responseNameservers) {
-        foreach ($responseNameservers as $nameserver) {
-            $nameservers["ns" . $i] = $nameserver['hostname'] ?? '';
-            $i++;
-        }
-    }
-
     $domain = new Domain();
     $domain->setIsIrtpEnabled(false);
     $domain->setDomain($response->getName());
-    $domain->setNameservers($nameservers);
+    $domain->setNameservers($response->getNameserversForWhmcs());
     $expiresOn = $response->getExpiresOn();
     if ($expiresOn) {
         $domain->setExpiryDate(Carbon::parse($expiresOn->format('Y-m-d H:i:s')));
@@ -334,7 +333,10 @@ function opusdns_GetDomainInformation($params)
  * This function should return an array of nameservers for a given domain.
  *
  */
-function opusdns_GetNameservers($params) {}
+function opusdns_GetNameservers(array $params): array
+{
+    return [];
+}
 
 /**
  * Save nameserver changes.
@@ -343,22 +345,13 @@ function opusdns_GetNameservers($params) {}
  * domain registrar.
  *
  */
-function opusdns_SaveNameservers($params)
+function opusdns_SaveNameservers(array $params): array
 {
     $domainName = $params['domain'];
-    $nameservers = [];
-
-    for ($i = 1; $i <= 5; $i++) {
-        $ns = $params['ns' . $i] ?? null;
-        if (!empty($ns)) {
-            $nameservers[] = ['hostname' => $ns];
-        }
-    }
+    $nameservers = NameserverHelper::extractFromParams($params);
 
     if (empty($nameservers)) {
-        return [
-            'error' => 'No nameservers provided for update.',
-        ];
+        return ['error' => 'No nameservers provided for update.'];
     }
 
     try {
@@ -370,7 +363,7 @@ function opusdns_SaveNameservers($params)
     }
 }
 
-function opusdns_GetContactDetails($params)
+function opusdns_GetContactDetails(array $params): array
 {
     try {
         $api = opusdns_initApiClient($params);
@@ -392,7 +385,7 @@ function opusdns_GetContactDetails($params)
     }
 }
 
-function opusdns_SaveContactDetails($params)
+function opusdns_SaveContactDetails(array $params): array
 {
     $submittedData = $params['contactdetails']['Registrant'] ?? null;
 
@@ -462,7 +455,7 @@ function opusdns_SaveContactDetails($params)
  * registration or transfer.
  *
  */
-function opusdns_CheckAvailability($params)
+function opusdns_CheckAvailability(array $params): ResultsList | array
 {
     $searchTerm = strtolower($params['searchTerm']);
     $domainsToCheck = array_map(fn($tld) => $searchTerm . $tld, $params['tldsToInclude']);
@@ -475,7 +468,11 @@ function opusdns_CheckAvailability($params)
         foreach ($apiAvailabilityResults as $item) {
             $domainObj = new \WHMCS\Domains\Domain($item->getDomain());
             $searchResult = SearchResult::factoryFromDomain($domainObj);
-            $searchResult->setStatus($item->isAvailable() ? SearchResult::STATUS_NOT_REGISTERED : SearchResult::STATUS_REGISTERED);
+            $status = match ($item->isAvailable()) {
+                true => SearchResult::STATUS_NOT_REGISTERED,
+                false => SearchResult::STATUS_REGISTERED,
+            };
+            $searchResult->setStatus($status);
             $results->append($searchResult);
         }
 
@@ -492,7 +489,7 @@ function opusdns_CheckAvailability($params)
  * It follows the same convention as `getConfigArray`.
  *
  */
-function opusdns_DomainSuggestionOptions()
+function opusdns_DomainSuggestionOptions(): array
 {
     return [
         'maxDomainSuggestionsResults' => [
@@ -511,7 +508,7 @@ function opusdns_DomainSuggestionOptions()
  * Provide domain suggestions based on the domain lookup term provided.
  *
  */
-function opusdns_GetDomainSuggestions($params)
+function opusdns_GetDomainSuggestions(array $params): ResultsList | array
 {
     $suggestionSettings = $params['suggestionSettings'];
     $searchTerm = $params['searchTerm'];
@@ -532,7 +529,11 @@ function opusdns_GetDomainSuggestions($params)
         foreach ($apiSuggestionResults as $item) {
             $domainObj = new \WHMCS\Domains\Domain($item->getDomain());
             $searchResult = SearchResult::factoryFromDomain($domainObj);
-            $searchResult->setStatus($item->isAvailable() ? SearchResult::STATUS_NOT_REGISTERED : SearchResult::STATUS_REGISTERED);
+            $status = match ($item->isAvailable()) {
+                true => SearchResult::STATUS_NOT_REGISTERED,
+                false => SearchResult::STATUS_REGISTERED,
+            };
+            $searchResult->setStatus($status);
             $results->append($searchResult);
         }
 
@@ -542,14 +543,17 @@ function opusdns_GetDomainSuggestions($params)
     }
 }
 
-function opusdns_GetRegistrarLock($params) {}
+function opusdns_GetRegistrarLock(array $params): string
+{
+    return '';
+}
 
 /**
  * Set registrar lock status.
  *
  * Also known as Domain Lock or Transfer Lock status.
  */
-function opusdns_SaveRegistrarLock($params)
+function opusdns_SaveRegistrarLock(array $params): array
 {
     $domainName = $params['domain'];
     $isLocked = $params['lockenabled'] === 'locked';
@@ -573,7 +577,7 @@ function opusdns_SaveRegistrarLock($params)
  * that the EPP Code will be emailed to the registrant.
  *
  */
-function opusdns_GetEPPCode($params)
+function opusdns_GetEPPCode(array $params): array
 {
     $domainName = $params['domain'];
     try {
@@ -590,7 +594,7 @@ function opusdns_GetEPPCode($params)
  * Delete Domain.
  *
  */
-function opusdns_RequestDelete($params)
+function opusdns_RequestDelete(array $params): array
 {
     $domainName = $params['domain'];
     try {
@@ -611,7 +615,7 @@ function opusdns_RequestDelete($params)
  * It is called periodically for a domain.
  *
  */
-function opusdns_Sync($params)
+function opusdns_Sync(array $params): array
 {
     $domainName = $params['domain'];
     try {
@@ -638,7 +642,7 @@ function opusdns_Sync($params)
  * completion. This function is called daily for incoming domains.
  *
  */
-function opusdns_TransferSync($params)
+function opusdns_TransferSync(array $params): array
 {
     $domainName = $params['domain'];
     try {
@@ -672,14 +676,14 @@ function opusdns_TransferSync($params)
     }
 }
 
-function opusdns_GetTldPricing($params)
+function opusdns_GetTldPricing(array $params): ResultsList | array
 {
     try {
         $api = opusdns_initApiClient($params);
         $tldGroups = $api->tlds()->getTlds();
         $prices = $api->pricing()->getPrices($params['ClientID'], ProductType::DOMAIN);
 
-        $results = new \WHMCS\Results\ResultsList();
+        $results = new ResultsList();
 
         $pricesByTld = [];
         foreach ($prices as $price) {
@@ -754,15 +758,11 @@ function opusdns_GetTldPricing($params)
     }
 }
 
-function opusdns_ClientAreaCustomButtonArray($params)
+function opusdns_ClientAreaCustomButtonArray(array $params): array
 {
-    $buttons = [];
-
-    return $buttons;
+    return [];
 }
-
-function opusdns_ClientAreaAllowedFunctions($params)
+function opusdns_ClientAreaAllowedFunctions(array $params): array
 {
-    $functions = [];
-    return $functions;
+    return [];
 }
