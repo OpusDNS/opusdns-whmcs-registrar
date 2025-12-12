@@ -1,0 +1,55 @@
+{
+	"id": "microsoft-teams",
+	"name": "Microsoft Teams",
+	"description": "TXT and SRV records for Microsoft Teams domain verification and federation",
+	"category": "verification",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://learn.microsoft.com/en-us/microsoftteams/domains-skypeforbusiness",
+	"supports_subdomain": false,
+	"records": [
+		{
+			"type": "SRV",
+			"name": "_sip._tls",
+			"ttl": 3600,
+			"values": ["100 1 443 sipdir.online.lync.com."],
+			"description": "SRV record for Teams federation"
+		},
+		{
+			"type": "SRV",
+			"name": "_sipfederationtls._tcp",
+			"ttl": 3600,
+			"values": ["100 1 5061 sipfed.online.lync.com."],
+			"description": "SRV record for Teams SIP federation"
+		},
+		{
+			"type": "CNAME",
+			"name": "sip",
+			"ttl": 3600,
+			"values": ["sipdir.online.lync.com."],
+			"description": "CNAME record for Teams SIP"
+		},
+		{
+			"type": "CNAME",
+			"name": "lyncdiscover",
+			"ttl": 3600,
+			"values": ["webdir.online.lync.com."],
+			"description": "CNAME record for Teams autodiscovery"
+		}
+	],
+	"variables": [
+		{
+			"name": "verification_code",
+			"label": "Domain Verification Code",
+			"type": "text",
+			"required": false,
+			"placeholder": "MS=msXXXXXXXX",
+			"record_template": {
+				"type": "TXT",
+				"name": "@",
+				"ttl": 3600,
+				"value": "\"{{verification_code}}\""
+			}
+		}
+	]
+}

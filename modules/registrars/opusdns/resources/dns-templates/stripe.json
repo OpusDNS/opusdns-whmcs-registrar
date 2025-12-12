@@ -1,0 +1,49 @@
+{
+	"id": "stripe",
+	"name": "Stripe",
+	"description": "TXT record for Stripe domain verification and payment links",
+	"category": "verification",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://docs.stripe.com/payments/checkout/custom-domains",
+	"supports_subdomain": true,
+	"records": [],
+	"variables": [
+		{
+			"name": "verification_code",
+			"label": "Verification Code",
+			"type": "text",
+			"required": true,
+			"placeholder": "stripe-verification=...",
+			"description": "Domain verification code from Stripe Dashboard",
+			"record_template": {
+				"type": "TXT",
+				"name": "@",
+				"ttl": 3600,
+				"value": "\"{{verification_code}}\""
+			}
+		},
+		{
+			"name": "payment_link_subdomain",
+			"label": "Payment Link Subdomain",
+			"type": "text",
+			"required": false,
+			"placeholder": "pay",
+			"description": "Optional: Subdomain for Stripe payment links"
+		},
+		{
+			"name": "payment_link_value",
+			"label": "Payment Link CNAME",
+			"type": "text",
+			"required": false,
+			"placeholder": "hosted-checkout.stripecdn.com",
+			"description": "Optional: CNAME target for payment links",
+			"record_template": {
+				"type": "CNAME",
+				"name": "{{payment_link_subdomain}}",
+				"ttl": 3600,
+				"value": "{{payment_link_value}}"
+			}
+		}
+	]
+}
