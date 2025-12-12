@@ -1,0 +1,36 @@
+{
+	"id": "bigcommerce",
+	"name": "BigCommerce",
+	"description": "A and CNAME records for BigCommerce online store",
+	"category": "ecommerce",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://support.bigcommerce.com/s/article/Connecting-a-Domain",
+	"supports_subdomain": true,
+	"records": [
+		{
+			"type": "A",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["198.180.150.2"],
+			"description": "BigCommerce A record for root domain"
+		},
+		{
+			"type": "CNAME",
+			"name": "www",
+			"ttl": 3600,
+			"values": ["{{store_hash}}.bigcommerce.com."],
+			"description": "BigCommerce CNAME for www subdomain"
+		}
+	],
+	"variables": [
+		{
+			"name": "store_hash",
+			"label": "Store Hash",
+			"type": "text",
+			"required": true,
+			"placeholder": "stores/abcdefgh",
+			"description": "Your BigCommerce store hash from domain settings"
+		}
+	]
+}
