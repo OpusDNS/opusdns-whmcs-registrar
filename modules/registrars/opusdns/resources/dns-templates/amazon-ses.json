@@ -1,0 +1,85 @@
+{
+	"id": "amazon-ses",
+	"name": "Amazon SES",
+	"description": "MX, SPF, and DKIM records for Amazon Simple Email Service",
+	"category": "email",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://docs.aws.amazon.com/ses/latest/dg/verify-domain-procedure.html",
+	"supports_subdomain": true,
+	"records": [
+		{
+			"type": "MX",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["10 feedback-smtp.{{region}}.amazonses.com."],
+			"description": "Amazon SES MX record for receiving bounce/complaint notifications"
+		}
+	],
+	"variables": [
+		{
+			"name": "region",
+			"label": "AWS Region",
+			"type": "text",
+			"required": true,
+			"placeholder": "us-east-1",
+			"description": "Your AWS SES region (e.g., us-east-1, eu-west-1)"
+		},
+		{
+			"name": "verification_token",
+			"label": "Domain Verification Token",
+			"type": "text",
+			"required": true,
+			"placeholder": "abcd1234...",
+			"description": "TXT verification token from Amazon SES console",
+			"record_template": {
+				"type": "TXT",
+				"name": "_amazonses",
+				"ttl": 3600,
+				"value": "\"{{verification_token}}\""
+			}
+		},
+		{
+			"name": "dkim_token_1",
+			"label": "DKIM Token 1",
+			"type": "text",
+			"required": true,
+			"placeholder": "abcdefghijklmnopqrstuvwxyz",
+			"description": "First DKIM token from Amazon SES",
+			"record_template": {
+				"type": "CNAME",
+				"name": "{{dkim_token_1}}._domainkey",
+				"ttl": 3600,
+				"value": "{{dkim_token_1}}.dkim.amazonses.com."
+			}
+		},
+		{
+			"name": "dkim_token_2",
+			"label": "DKIM Token 2",
+			"type": "text",
+			"required": true,
+			"placeholder": "abcdefghijklmnopqrstuvwxyz",
+			"description": "Second DKIM token from Amazon SES",
+			"record_template": {
+				"type": "CNAME",
+				"name": "{{dkim_token_2}}._domainkey",
+				"ttl": 3600,
+				"value": "{{dkim_token_2}}.dkim.amazonses.com."
+			}
+		},
+		{
+			"name": "dkim_token_3",
+			"label": "DKIM Token 3",
+			"type": "text",
+			"required": true,
+			"placeholder": "abcdefghijklmnopqrstuvwxyz",
+			"description": "Third DKIM token from Amazon SES",
+			"record_template": {
+				"type": "CNAME",
+				"name": "{{dkim_token_3}}._domainkey",
+				"ttl": 3600,
+				"value": "{{dkim_token_3}}.dkim.amazonses.com."
+			}
+		}
+	]
+}

@@ -1,0 +1,49 @@
+{
+	"id": "apple-icloud",
+	"name": "Apple iCloud+",
+	"description": "MX and verification records for iCloud+ custom email domain",
+	"category": "email",
+	"version": "1.0.0",
+	"author": "OpusDNS",
+	"documentation_url": "https://support.apple.com/en-us/HT212524",
+	"supports_subdomain": false,
+	"records": [
+		{
+			"type": "MX",
+			"name": "@",
+			"ttl": 3600,
+			"values": ["10 mx01.mail.icloud.com.", "10 mx02.mail.icloud.com."],
+			"description": "iCloud+ MX records"
+		}
+	],
+	"variables": [
+		{
+			"name": "verification_code",
+			"label": "Domain Verification Code",
+			"type": "text",
+			"required": true,
+			"placeholder": "apple-domain=...",
+			"description": "Domain verification TXT record from iCloud Mail settings",
+			"record_template": {
+				"type": "TXT",
+				"name": "@",
+				"ttl": 3600,
+				"value": "\"{{verification_code}}\""
+			}
+		},
+		{
+			"name": "spf_include",
+			"label": "SPF Record",
+			"type": "text",
+			"required": false,
+			"placeholder": "v=spf1 include:icloud.com ~all",
+			"description": "Optional: SPF record for iCloud Mail",
+			"record_template": {
+				"type": "TXT",
+				"name": "@",
+				"ttl": 3600,
+				"value": "\"{{spf_include}}\""
+			}
+		}
+	]
+}
