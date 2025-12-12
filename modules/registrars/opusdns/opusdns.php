@@ -29,6 +29,7 @@ use WHMCS\Module\Registrar\OpusDNS\Enum\ProductAction;
 use WHMCS\Module\Registrar\OpusDNS\Enum\ProductType;
 use WHMCS\Module\Registrar\OpusDNS\Models\Contact;
 use WHMCS\Module\Registrar\OpusDNS\Helper\NameserverHelper;
+use WHMCS\Module\Registrar\OpusDNS\Helper\ErrorHelper;
 
 function opusdns_MetaData(): array
 {
@@ -760,9 +761,261 @@ function opusdns_GetTldPricing(array $params): ResultsList | array
 
 function opusdns_ClientAreaCustomButtonArray(array $params): array
 {
-    return [];
+    $lang = opusdns_loadLanguage();
+    $dns_zone_label = $lang['opusdns']['dns_zone']['menu_label'] ?? 'Manage DNS Zone';
+    return [
+        $dns_zone_label => 'dns_zone',
+    ];
 }
+
 function opusdns_ClientAreaAllowedFunctions(array $params): array
 {
-    return [];
+    $lang = opusdns_loadLanguage();
+    $dns_zone_label = $lang['opusdns']['dns_zone']['menu_label'] ?? 'Manage DNS Zone';
+
+    return [
+        $dns_zone_label => 'dns_zone',
+        'dns_zone_get' => 'dns_zone_get',
+        'dns_zone_create' => 'dns_zone_create',
+        'dns_zone_delete' => 'dns_zone_delete',
+        'dns_zone_add_rrset' => 'dns_zone_add_rrset',
+        'dns_zone_update_rrset' => 'dns_zone_update_rrset',
+        'dns_zone_delete_rrset' => 'dns_zone_delete_rrset',
+        'dns_zone_delete_rrsets' => 'dns_zone_delete_rrsets',
+        'dns_zone_set_nameservers' => 'dns_zone_set_nameservers',
+        'dns_zone_dnssec_enable' => 'dns_zone_dnssec_enable',
+        'dns_zone_dnssec_disable' => 'dns_zone_dnssec_disable',
+        'dns_zone_template_list' => 'dns_zone_template_list',
+        'dns_zone_template_get' => 'dns_zone_template_get',
+        'dns_zone_upsert_rrsets' => 'dns_zone_upsert_rrsets',
+    ];
+}
+
+
+function opusdns_dns_zone(array $params): array
+{
+    $lang = opusdns_loadLanguage();
+    $domainId = $params['domainid'];
+    $token = trim($_REQUEST['token'] ?? '');
+    $currentpagelinkback = 'clientarea.php?action=domaindetails&id=' . $domainId . '&modop=custom&a=dns_zone&token=' . $token . '&';
+
+    return [
+        'templatefile' => 'dns_zone',
+        'vars' => [
+            'domain' => $params['domain'],
+            'domainid' => $params['domainid'],
+            'currentpagelinkback' => $currentpagelinkback,
+            'LANG' => $lang,
+        ],
+    ];
+}
+
+function opusdns_dns_zone_get(array $params): array
+{
+    header('Content-Type: application/json');
+    $domainName = $params['domain'];
+
+    try {
+        $api = opusdns_initApiClient($params);
+        $zone = $api->dns()->getZone($domainName)->getData();
+        $rrsets = $zone->getUserEditableRecords($domainName);
+
+        $domainInfo = opusdns_GetDomainInformation($params);
+        if (is_array($domainInfo) && isset($domainInfo['error'])) {
+            echo json_encode($domainInfo);
+            exit;
+        }
+
+        $domainNameservers = array_map('strtolower', array_values($domainInfo->getNameservers()));
+        $zoneNameservers = array_map('strtolower', $zone->getZoneNsRecords());
+
+        $sortedDomainNs = $domainNameservers;
+        $sortedZoneNs = $zoneNameservers;
+        sort($sortedDomainNs);
+        sort($sortedZoneNs);
+
+        $delegated = !empty($sortedZoneNs) && $sortedDomainNs === $sortedZoneNs;
+
+        $result = [
+            'success' => true,
+            'zone' => [
+                'name' => $zone->getName(),
+                'soa' => $zone->getZoneSoaRecord(),
+                'nameservers' => $zoneNameservers,
+                'dnssec' => [
+                    'enabled' => $zone->getDnssecStatus() === 'enabled',
+                    'ds_records' => $zone->getZoneDsRecords(),
+                    'dnskey_records' => $zone->getZoneDnskeyRecords(),
+                ],
+                'created_on' => $zone->getCreatedOn() ? $zone->getCreatedOn()->format('Y-m-d H:i:s') : null,
+                'updated_on' => $zone->getUpdatedOn() ? $zone->getUpdatedOn()->format('Y-m-d H:i:s') : null,
+            ],
+            'domain' => [
+                'name' => $domainInfo->getDomain(),
+                'nameservers' => $domainNameservers,
+                'delegated' => $delegated,
+            ],
+            'rrsets' => $rrsets,
+        ];
+
+        echo json_encode($result);
+        exit;
+    } catch (ApiException $e) {
+        if ($e->getStatusCode() === 404) {
+            echo json_encode(['error' => 'Zone not found', 'not_found' => true]);
+            exit;
+        }
+        echo json_encode(['error' => 'Failed to load DNS records']);
+        exit;
+    }
+}
+
+function opusdns_api_json_wrapper(array $params, callable $handler): array
+{
+    header('Content-Type: application/json');
+
+    try {
+        $api = opusdns_initApiClient($params);
+        $result = $handler($api, $params);
+        echo json_encode($result);
+        exit;
+    } catch (ApiException $e) {
+        $errors = $e->getErrors();
+        $errorMessage = is_array($errors) ? ErrorHelper::extractRrsetErrors($errors) : $e->getMessage();
+
+        $response = ['error' => $errorMessage ?: 'Operation failed'];
+
+        if ($e->getStatusCode() === 404) {
+            $response['not_found'] = true;
+        }
+
+        echo json_encode($response);
+        exit;
+    }
+}
+
+function opusdns_dns_zone_add_rrset(array $params): array
+{
+    return opusdns_api_json_wrapper($params, function ($api, $params) {
+        $api->dns()->addRrsetFromFormData($params['domain'], $_POST);
+        return ['success' => true];
+    });
+}
+
+function opusdns_dns_zone_update_rrset(array $params): array
+{
+    return opusdns_api_json_wrapper($params, function ($api, $params) {
+        $api->dns()->updateRrsetFromFormData($params['domain'], $_POST);
+        return ['success' => true];
+    });
+}
+
+function opusdns_dns_zone_upsert_rrsets(array $params): array
+{
+    return opusdns_api_json_wrapper($params, function ($api, $params) {
+        $rrsetsRaw = html_entity_decode($_POST['rrsets'] ?? '[]');
+        $rrsets = json_decode($rrsetsRaw, true);
+
+        if (empty($rrsets) || !is_array($rrsets)) {
+            throw new ApiException('No records provided');
+        }
+
+        $api->dns()->upsertRrsets($params['domain'], $rrsets);
+
+        return ['success' => true];
+    });
+}
+
+function opusdns_dns_zone_delete_rrset(array $params): array
+{
+    return opusdns_api_json_wrapper($params, function ($api, $params) {
+        $api->dns()->deleteRrsetFromFormData($params['domain'], $_POST);
+        return ['success' => true];
+    });
+}
+
+function opusdns_dns_zone_delete_rrsets(array $params): array
+{
+    return opusdns_api_json_wrapper($params, function ($api, $params) {
+        $rrsetsRaw = html_entity_decode($_POST['rrsets'] ?? '[]');
+        $rrsets = json_decode($rrsetsRaw, true);
+
+        if (empty($rrsets) || !is_array($rrsets)) {
+            throw new ApiException('No records provided');
+        }
+
+        $api->dns()->deleteRrsets($params['domain'], $rrsets);
+
+        return ['success' => true];
+    });
+}
+
+function opusdns_dns_zone_set_nameservers(array $params): array
+{
+    return opusdns_api_json_wrapper($params, function ($api, $params) {
+        $rawNameservers = html_entity_decode($_POST['nameservers'] ?? '[]');
+        $nameservers = json_decode($rawNameservers, true);
+
+        if (empty($nameservers)) {
+            throw new ApiException('No nameservers provided');
+        }
+
+        $nameserverData = NameserverHelper::buildApiFormat($nameservers);
+        $api->domains()->update($params['domain'], ['nameservers' => $nameserverData]);
+
+        return ['success' => true];
+    });
+}
+
+function opusdns_dns_zone_create(array $params): array
+{
+    return opusdns_api_json_wrapper($params, function ($api, $params) {
+        $api->dns()->createZone($params['domain']);
+        return ['success' => true];
+    });
+}
+
+function opusdns_dns_zone_delete(array $params): array
+{
+    return opusdns_api_json_wrapper($params, function ($api, $params) {
+        $api->dns()->deleteZone($params['domain']);
+        return ['success' => true];
+    });
+}
+
+function opusdns_dns_zone_dnssec_enable(array $params): array
+{
+    return opusdns_api_json_wrapper($params, function ($api, $params) {
+        $api->dns()->enableDnssec($params['domain']);
+        return ['success' => true];
+    });
+}
+
+function opusdns_dns_zone_dnssec_disable(array $params): array
+{
+    return opusdns_api_json_wrapper($params, function ($api, $params) {
+        $api->dns()->disableDnssec($params['domain']);
+        return ['success' => true];
+    });
+}
+
+function opusdns_dns_zone_template_list(array $params): array
+{
+    header('Content-Type: application/json');
+
+    try {
+        $templates = \WHMCS\Module\Registrar\OpusDNS\Service\DnsTemplates::listTemplates();
+
+        echo json_encode([
+            'success' => true,
+            'templates' => array_values($templates),
+        ]);
+        exit;
+    } catch (Exception $e) {
+        echo json_encode([
+            'success' => false,
+            'error' => 'Failed to load templates: ' . $e->getMessage(),
+        ]);
+        exit;
+    }
 }
