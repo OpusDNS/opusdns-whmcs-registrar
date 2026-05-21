@@ -17,6 +17,8 @@ class DomainSearchSuggestion
     private bool $premium = false;
     
     private ?array $price = null;
+
+    private ?array $renewal_price = null;
     
     public function __construct(array $data = [])
     {
@@ -24,6 +26,7 @@ class DomainSearchSuggestion
         $this->available = (bool)($data['available'] ?? false);
         $this->premium = (bool)($data['premium'] ?? false);
         $this->price = $data['price'] ?? null;
+        $this->renewal_price = $data['renewal_price'] ?? null;
     }
     
     public function getDomain(): string
@@ -54,5 +57,20 @@ class DomainSearchSuggestion
     public function getPriceCurrency(): ?string
     {
         return $this->price['currency'] ?? null;
+    }
+
+    public function getRenewalPrice(): ?array
+    {
+        return $this->renewal_price;
+    }
+
+    public function getRenewalPriceAmount(): ?string
+    {
+        return $this->renewal_price['amount'] ?? null;
+    }
+
+    public function getRenewalPriceCurrency(): ?string
+    {
+        return $this->renewal_price['currency'] ?? null;
     }
 }

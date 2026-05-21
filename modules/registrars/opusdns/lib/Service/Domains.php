@@ -7,7 +7,7 @@ namespace WHMCS\Module\Registrar\OpusDNS\Service;
 use WHMCS\Module\Registrar\OpusDNS\ApiResponse;
 use WHMCS\Module\Registrar\OpusDNS\Service\BaseService;
 use WHMCS\Module\Registrar\OpusDNS\Models\Domain;
-use WHMCS\Module\Registrar\OpusDNS\Models\DomainAvailability;
+use WHMCS\Module\Registrar\OpusDNS\Models\DomainCheck;
 use WHMCS\Module\Registrar\OpusDNS\Models\Response\DomainRenew;
 
 class Domains extends BaseService
@@ -56,6 +56,6 @@ class Domains extends BaseService
     
     public function check(array $domains): ApiResponse
     {
-        return $this->getResource("/domains/check", ['domains' => $domains], DomainAvailability::class);
+        return $this->getResource("/domains/check", ['domains' => $domains], DomainCheck::class);
     }
 }

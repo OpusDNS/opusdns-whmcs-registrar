@@ -123,6 +123,8 @@ function opusdns_RegisterDomain(array $params): array
 {
     $domainName = $params['domain'];
     $tld = $params['tld'];
+    $premiumEnabled = (bool)($params['premiumEnabled'] ?? false);
+    $premiumCost = $params['premiumCost'] ?? null;
 
     try {
         $api = opusdns_initApiClient($params);
@@ -163,6 +165,10 @@ function opusdns_RegisterDomain(array $params): array
         'renewal_mode' => RenewalMode::EXPIRE,
     ];
 
+    if ($premiumEnabled && $premiumCost) {
+        $domainData['expected_price'] = number_format((float)$premiumCost, 2, '.', '');
+    }
+
     try {
         $api = opusdns_initApiClient($params);
         $api->domains()->create($domainData);
@@ -188,6 +194,8 @@ function opusdns_TransferDomain(array $params): array
     $domainName = $params['domain'];
     $tld = $params['tld'];
     $authCode = $params['eppcode'] ?? $params['transfersecret'] ?? '';
+    $premiumEnabled = (bool)($params['premiumEnabled'] ?? false);
+    $premiumCost = $params['premiumCost'] ?? null;
 
     try {
         $api = opusdns_initApiClient($params);
@@ -228,6 +236,10 @@ function opusdns_TransferDomain(array $params): array
         'renewal_mode' => RenewalMode::EXPIRE->value,
     ];
 
+    if ($premiumEnabled && $premiumCost) {
+        $transferData['expected_price'] = number_format((float)$premiumCost, 2, '.', '');
+    }
+
     try {
         $api = opusdns_initApiClient($params);
         $api->domains()->transfer($transferData);
@@ -254,6 +266,8 @@ function opusdns_RenewDomain(array $params): array
     $tld = $params['tld'];
     $renewPeriod = (int)$params['regperiod'];
     $whmcsExpiryDate = $params['expiryDate'];
+    $premiumEnabled = (bool)($params['premiumEnabled'] ?? false);
+    $premiumCost = $params['premiumCost'] ?? null;
 
     try {
         $api = opusdns_initApiClient($params);
@@ -282,6 +296,11 @@ function opusdns_RenewDomain(array $params): array
                 'period' => ['value' => $renewPeriod, 'unit' => PeriodUnit::YEAR->value],
                 'current_expiry_date' => $registryExpiryDate->format('Y-m-d\TH:i:s')
             ];
+
+            if ($premiumEnabled && $premiumCost) {
+                $renewRequest['expected_price'] = number_format((float)$premiumCost, 2, '.', '');
+            }
+
             $api->domains()->renew($domainName, $renewRequest);
         } else {
             $api->domains()->update($domainName, ['renewal_mode' => RenewalMode::RENEW->value]);
@@ -460,20 +479,38 @@ function opusdns_CheckAvailability(array $params): ResultsList | array
 {
     $searchTerm = strtolower($params['searchTerm']);
     $domainsToCheck = array_map(fn($tld) => $searchTerm . $tld, $params['tldsToInclude']);
+    $isPremiumEnabled = (bool)($params['premiumEnabled'] ?? false);
 
     try {
         $api = opusdns_initApiClient($params);
         $results = new ResultsList();
-        $apiAvailabilityResults = $api->availability()->bulk($domainsToCheck)->getResults();
+        $apiAvailabilityResults = $api->domains()->check($domainsToCheck)->getResults();
 
         foreach ($apiAvailabilityResults as $item) {
             $domainObj = new \WHMCS\Domains\Domain($item->getDomain());
             $searchResult = SearchResult::factoryFromDomain($domainObj);
-            $status = match ($item->isAvailable()) {
-                true => SearchResult::STATUS_NOT_REGISTERED,
-                false => SearchResult::STATUS_REGISTERED,
-            };
-            $searchResult->setStatus($status);
+
+            $searchResult->setStatus(
+                $item->isAvailable()
+                    ? SearchResult::STATUS_NOT_REGISTERED
+                    : SearchResult::STATUS_REGISTERED
+            );
+
+            $registerPrice = $item->getPremiumRegisterPrice();
+            $renewPrice    = $item->getPremiumRenewPrice();
+            $currency      = $item->getPremiumCurrency();
+
+            if ($item->isAvailable() && $item->isPremium() && $isPremiumEnabled && $registerPrice !== null && $renewPrice !== null && $currency !== null) {
+                $searchResult->setPremiumDomain(true);
+                $searchResult->setPremiumCostPricing([
+                    'register'     => $registerPrice,
+                    'renew'        => $renewPrice,
+                    'CurrencyCode' => $currency,
+                ]);
+            } elseif ($item->isPremium()) {
+                $searchResult->setStatus(SearchResult::STATUS_REGISTERED);
+            }
+
             $results->append($searchResult);
         }
 
@@ -515,7 +552,7 @@ function opusdns_GetDomainSuggestions(array $params): ResultsList | array
     $searchTerm = $params['searchTerm'];
     $tldsToInclude = array_map(fn($tld) => ltrim($tld, '.'), $params['tldsToInclude']);
     $limit = min(100, max(1, (int)($suggestionSettings['maxDomainSuggestionsResults'] ?? 25)));
-    $includePremium = false;
+    $includePremium = (bool)($params['premiumEnabled'] ?? false);
 
     try {
         $api = opusdns_initApiClient($params);
@@ -527,6 +564,21 @@ function opusdns_GetDomainSuggestions(array $params): ResultsList | array
             'premium' => $includePremium,
         ])->getResults();
 
+        $premiumDomains = [];
+        foreach ($apiSuggestionResults as $item) {
+            if ($item->isPremium()) {
+                $premiumDomains[] = $item->getDomain();
+            }
+        }
+
+        $checkMap = [];
+        if (!empty($premiumDomains)) {
+            $checkResults = $api->domains()->check($premiumDomains)->getResults();
+            foreach ($checkResults as $checkItem) {
+                $checkMap[$checkItem->getDomain()] = $checkItem;
+            }
+        }
+
         foreach ($apiSuggestionResults as $item) {
             $domainObj = new \WHMCS\Domains\Domain($item->getDomain());
             $searchResult = SearchResult::factoryFromDomain($domainObj);
@@ -535,9 +587,29 @@ function opusdns_GetDomainSuggestions(array $params): ResultsList | array
                 false => SearchResult::STATUS_REGISTERED,
             };
             $searchResult->setStatus($status);
+
+            if ($item->isAvailable() && $item->isPremium() && $includePremium) {
+                $checkItem = $checkMap[$item->getDomain()] ?? null;
+                $registerPrice = $checkItem?->getPremiumRegisterPrice();
+                $renewPrice = $checkItem?->getPremiumRenewPrice();
+                $currency = $checkItem?->getPremiumCurrency();
+
+                if ($registerPrice !== null && $renewPrice !== null && $currency !== null) {
+                    $searchResult->setPremiumDomain(true);
+                    $searchResult->setPremiumCostPricing([
+                        'register'     => $registerPrice,
+                        'renew'        => $renewPrice,
+                        'CurrencyCode' => $currency,
+                    ]);
+                } else {
+                    $searchResult->setStatus(SearchResult::STATUS_REGISTERED);
+                }
+            } elseif ($item->isPremium()) {
+                $searchResult->setStatus(SearchResult::STATUS_REGISTERED);
+            }
+
             $results->append($searchResult);
         }
-
         return $results;
     } catch (ApiException $e) {
         return ['error' => $e->getMessage()];

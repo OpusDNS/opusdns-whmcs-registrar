@@ -39,4 +39,5 @@ To configure the module:
 - Domain Suggestions
 - Domain Expiration Date Sync
 - TLD & Pricing Sync
+- Premium Domains
 
