@@ -616,6 +616,91 @@ function opusdns_GetDomainSuggestions(array $params): ResultsList | array
     }
 }
 
+/**
+ * Register a Nameserver.
+ *
+ * Adds a child nameserver for the given domain name.
+ *
+ */
+function opusdns_RegisterNameserver(array $params): array
+{
+    $tld        = $params['tld'];
+    $nameserver = $params['nameserver'];
+    $ipAddress  = $params['ipaddress'];
+
+    try {
+        $api     = opusdns_initApiClient($params);
+        $tldInfo = $api->tlds()->getTld($tld);
+
+        if (!$tldInfo || !$tldInfo->supportsHostObjects()) {
+            return ['error' => "The .{$tld} registry does not support host objects"];
+        }
+
+        $api->hosts()->create([
+            'hostname'     => $nameserver,
+            'ip_addresses' => [$ipAddress],
+        ]);
+        return ['success' => true];
+    } catch (ApiException $e) {
+        return ['error' => $e->getMessage()];
+    }
+}
+
+/**
+ * Modify a Nameserver.
+ *
+ * Modifies the IP of a child nameserver.
+ *
+ */
+function opusdns_ModifyNameserver(array $params): array
+{
+    $tld        = $params['tld'];
+    $nameserver = $params['nameserver'];
+    $newIp      = $params['newipaddress'];
+
+    try {
+        $api     = opusdns_initApiClient($params);
+        $tldInfo = $api->tlds()->getTld($tld);
+
+        if (!$tldInfo || !$tldInfo->supportsHostObjects()) {
+            return ['error' => "The .{$tld} registry does not support host objects"];
+        }
+
+        $api->hosts()->update($nameserver, [
+            'ip_addresses' => [$newIp],
+        ]);
+        return ['success' => true];
+    } catch (ApiException $e) {
+        return ['error' => $e->getMessage()];
+    }
+}
+
+/**
+ * Delete a Nameserver.
+ *
+ * Deletes a child nameserver for the given domain name.
+ *
+ */
+function opusdns_DeleteNameserver(array $params): array
+{
+    $tld        = $params['tld'];
+    $nameserver = $params['nameserver'];
+
+    try {
+        $api     = opusdns_initApiClient($params);
+        $tldInfo = $api->tlds()->getTld($tld);
+
+        if (!$tldInfo || !$tldInfo->supportsHostObjects()) {
+            return ['error' => "The .{$tld} registry does not support host objects"];
+        }
+
+        $api->hosts()->delete($nameserver);
+        return ['success' => true];
+    } catch (ApiException $e) {
+        return ['error' => $e->getMessage()];
+    }
+}
+
 function opusdns_GetRegistrarLock(array $params): string
 {
     return '';

@@ -214,6 +214,11 @@ class Tld
         return $this->domain_lifecycle['explicit_renew'] ?? false;
     }
 
+    public function supportsHostObjects(): bool
+    {
+        return (bool)($this->dns_configuration['host_objects'] ?? false);
+    }
+
     public function getRegistrationYears(): array
     {
         $registrationPeriods = $this->domain_lifecycle['registration_periods'] ?? [];

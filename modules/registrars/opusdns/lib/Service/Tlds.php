@@ -18,6 +18,7 @@ class Tlds extends BaseService
         'domain_statuses',
         'contacts',
         'transfer_policies',
+        'dns_configuration',
     ];
 
     public function list(?array $fields = null): ApiResponse

@@ -17,6 +17,7 @@ use WHMCS\Module\Registrar\OpusDNS\Service\Contacts;
 use WHMCS\Module\Registrar\OpusDNS\Service\Dns;
 use WHMCS\Module\Registrar\OpusDNS\Service\DomainSearch;
 use WHMCS\Module\Registrar\OpusDNS\Service\Domains;
+use WHMCS\Module\Registrar\OpusDNS\Service\Hosts;
 use WHMCS\Module\Registrar\OpusDNS\Service\Pricing;
 use WHMCS\Module\Registrar\OpusDNS\Service\Tlds;
 
@@ -198,5 +199,10 @@ class ApiClient
     public function dns(): Dns
     {
         return new Dns($this);
+    }
+
+    public function hosts(): Hosts
+    {
+        return new Hosts($this);
     }
 }
