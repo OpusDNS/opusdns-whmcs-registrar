@@ -28,6 +28,7 @@ use WHMCS\Module\Registrar\OpusDNS\ApiException;
 use WHMCS\Module\Registrar\OpusDNS\Enum\ProductAction;
 use WHMCS\Module\Registrar\OpusDNS\Enum\ProductType;
 use WHMCS\Module\Registrar\OpusDNS\Models\Contact;
+use WHMCS\Module\Registrar\OpusDNS\Helper\AttributeHelper;
 use WHMCS\Module\Registrar\OpusDNS\Helper\NameserverHelper;
 use WHMCS\Module\Registrar\OpusDNS\Helper\ErrorHelper;
 
@@ -126,6 +127,11 @@ function opusdns_RegisterDomain(array $params): array
     $premiumEnabled = (bool)($params['premiumEnabled'] ?? false);
     $premiumCost = $params['premiumCost'] ?? null;
 
+    $missingAttribute = AttributeHelper::validateRequired($tld, $params);
+    if ($missingAttribute !== null) {
+        return ['error' => $missingAttribute];
+    }
+
     try {
         $api = opusdns_initApiClient($params);
         $tldInfo = $api->tlds()->getTld($tld);
@@ -169,6 +175,11 @@ function opusdns_RegisterDomain(array $params): array
         $domainData['expected_price'] = number_format((float)$premiumCost, 2, '.', '');
     }
 
+    $attributes = AttributeHelper::extractFromParams($tld, $params);
+    if ($attributes) {
+        $domainData['attributes'] = $attributes;
+    }
+
     try {
         $api = opusdns_initApiClient($params);
         $api->domains()->create($domainData);
@@ -196,6 +207,11 @@ function opusdns_TransferDomain(array $params): array
     $authCode = $params['eppcode'] ?? $params['transfersecret'] ?? '';
     $premiumEnabled = (bool)($params['premiumEnabled'] ?? false);
     $premiumCost = $params['premiumCost'] ?? null;
+
+    $missingAttribute = AttributeHelper::validateRequired($tld, $params);
+    if ($missingAttribute !== null) {
+        return ['error' => $missingAttribute];
+    }
 
     try {
         $api = opusdns_initApiClient($params);
@@ -238,6 +254,11 @@ function opusdns_TransferDomain(array $params): array
 
     if ($premiumEnabled && $premiumCost) {
         $transferData['expected_price'] = number_format((float)$premiumCost, 2, '.', '');
+    }
+
+    $attributes = AttributeHelper::extractFromParams($tld, $params);
+    if ($attributes) {
+        $transferData['attributes'] = $attributes;
     }
 
     try {
