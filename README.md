@@ -41,3 +41,12 @@ To configure the module:
 - TLD & Pricing Sync
 - Premium Domains
 
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Support
+
+- **Documentation:** [developers.opusdns.com](https://developers.opusdns.com)
+- **Issues:** [GitHub Issues](https://github.com/OpusDNS/opusdns-whmcs-registrar/issues)
+- **Email:** support@opusdns.com
