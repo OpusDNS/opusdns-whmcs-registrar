@@ -26,9 +26,10 @@ class ApiClient
     private GuzzleClient $httpClient;
     
     public function __construct(
-        private readonly string $accessToken,
+        private readonly ?string $accessToken,
         private readonly ApiConfig $config,
-        ?GuzzleClient $httpClient = null
+        ?GuzzleClient $httpClient = null,
+        private readonly ?string $apiKey = null
     ) {
         $this->httpClient = $httpClient ?? $this->createHttpClient();
     }
@@ -39,6 +40,10 @@ class ApiClient
         ?ApiAuth $auth = null
     ): self {
         $configInstance = new ApiConfig($config);
+
+        if ($configInstance->isApiKeyAuth()) {
+            return new self(null, $configInstance, null, $configInstance->getApiKey());
+        }
 
         if ($auth === null) {
             $httpClient = $authClient ?? new GuzzleClient([
@@ -84,12 +89,15 @@ class ApiClient
     
     public function request(string $method, string $path, array $options = []): ResponseInterface
     {
+        $authHeader = $this->apiKey !== null
+            ? ['X-Api-Key' => $this->apiKey]
+            : ['Authorization' => 'Bearer ' . $this->accessToken];
+
         $requestOptions = array_merge_recursive($options, [
-            "headers" => [
-                "Authorization" => "Bearer " . $this->accessToken,
+            "headers" => array_merge($authHeader, [
                 "Accept" => "application/json",
                 "User-Agent" => $this->config->getUserAgent(),
-            ],
+            ]),
         ]);
 
         try {

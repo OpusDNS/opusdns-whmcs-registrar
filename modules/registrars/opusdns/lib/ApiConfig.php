@@ -86,10 +86,23 @@ class ApiConfig
     
     public function validateAuthCredentials(): void
     {
-        $required = ['ClientID', 'ClientSecret'];
-        $missing = [];
+        $hasApiKey   = !empty($this->config['ApiKey']);
+        $hasOAuth    = !empty($this->config['ClientID']) || !empty($this->config['ClientSecret']);
 
-        foreach ($required as $field) {
+        if ($hasApiKey && $hasOAuth) {
+            throw new ApiException(
+                'Only one authentication method may be configured: provide either an API Key or OAuth credentials, not both',
+                0,
+                'configuration_error'
+            );
+        }
+
+        if ($hasApiKey) {
+            return;
+        }
+
+        $missing = [];
+        foreach (['ClientID', 'ClientSecret'] as $field) {
             if (empty($this->config[$field])) {
                 $missing[] = $field;
             }
@@ -97,7 +110,7 @@ class ApiConfig
 
         if ($missing !== []) {
             throw new ApiException(
-                "Missing required auth credentials: " . implode(', ', $missing),
+                'Missing required auth credentials: ' . implode(', ', $missing),
                 0,
                 'authentication_error'
             );
@@ -117,6 +130,16 @@ class ApiConfig
     public function getClientSecret(): string
     {
         return $this->config['ClientSecret'];
+    }
+
+    public function isApiKeyAuth(): bool
+    {
+        return !empty($this->config['ApiKey']);
+    }
+
+    public function getApiKey(): string
+    {
+        return $this->config['ApiKey'] ?? '';
     }
     
     public function getBaseUrl(): string

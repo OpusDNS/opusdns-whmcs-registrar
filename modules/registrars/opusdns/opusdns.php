@@ -31,6 +31,7 @@ use WHMCS\Module\Registrar\OpusDNS\Models\Contact;
 use WHMCS\Module\Registrar\OpusDNS\Helper\AttributeHelper;
 use WHMCS\Module\Registrar\OpusDNS\Helper\NameserverHelper;
 use WHMCS\Module\Registrar\OpusDNS\Helper\ErrorHelper;
+use WHMCS\Exception\Module\InvalidConfiguration;
 
 function opusdns_MetaData(): array
 {
@@ -51,19 +52,26 @@ function opusdns_getConfigArray(): array
             'Type' => 'System',
             'Value' => 'Your gateway to a seamless domain management experience. Designed to simplify buying, selling, and managing domains.',
         ],
+        'ApiKey' => [
+            'FriendlyName' => 'API Key',
+            'Type' => 'password',
+            'Size' => '50',
+            'Default' => '',
+            'Description' => 'Your OpusDNS API key.',
+        ],
         'ClientID' => [
             'FriendlyName' => 'Client ID',
             'Type' => 'text',
             'Size' => '50',
             'Default' => '',
-            'Description' => 'Enter your Client ID here',
+            'Description' => 'OAuth Client ID.',
         ],
         'ClientSecret' => [
             'FriendlyName' => 'Client Secret',
             'Type' => 'password',
             'Size' => '50',
             'Default' => '',
-            'Description' => 'Enter your Client Secret here',
+            'Description' => 'OAuth Client Secret.',
         ],
         'TestMode' => [
             'FriendlyName' => 'Test Mode',
@@ -80,10 +88,21 @@ function opusdns_getConfigArray(): array
 function opusdns_initApiClient(array $params): ApiClient
 {
     return ApiClient::create([
-        'ClientID' => $params['ClientID'],
-        'ClientSecret' => $params['ClientSecret'],
-        'TestMode' => $params['TestMode'],
+        'ApiKey'       => $params['ApiKey'] ?? '',
+        'ClientID'     => $params['ClientID'] ?? '',
+        'ClientSecret' => $params['ClientSecret'] ?? '',
+        'TestMode'     => $params['TestMode'],
     ]);
+}
+
+function opusdns_config_validate(array $params): void
+{
+    try {
+        $api = opusdns_initApiClient($params);
+        $api->tlds()->list(['enabled']);
+    } catch (\Throwable $e) {
+        throw new InvalidConfiguration($e->getMessage());
+    }
 }
 
 
