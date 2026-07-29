@@ -36,6 +36,21 @@ class Dns extends BaseService
         ]);
     }
 
+    public function addRecords(string $zoneName, string $name, string $type, int $ttl, array $records): ApiResponse
+    {
+        $ops = array_map(fn($record) => [
+            'op' => DnsOperation::UPSERT->value,
+            'record' => [
+                'name' => $name,
+                'type' => $type,
+                'ttl' => $ttl,
+                'rdata' => $record['rdata'],
+            ],
+        ], $records);
+
+        return $this->patchResource("/dns/{$zoneName}/records", ['ops' => $ops]);
+    }
+
     public function updateRrset(string $zoneName, string $name, string $type, int $ttl, array $records): ApiResponse
     {
         return $this->addRrset($zoneName, $name, $type, $ttl, $records);
@@ -128,6 +143,20 @@ class Dns extends BaseService
         }
 
         return $this->addRrset($zoneName, $name, $type, $ttl, $records);
+    }
+
+    public function addRecordsFromFormData(string $zoneName, array $formData): ApiResponse
+    {
+        $name = $this->buildRrsetName($zoneName, $formData['name'] ?? '');
+        $type = trim($formData['type'] ?? '');
+        $ttl = (int)($formData['ttl'] ?? 3600);
+        $records = $this->buildRecordsFromFormData($formData, $type);
+
+        if (empty($type) || empty($records)) {
+            throw new \InvalidArgumentException('Invalid record data');
+        }
+
+        return $this->addRecords($zoneName, $name, $type, $ttl, $records);
     }
 
     public function updateRrsetFromFormData(string $zoneName, array $formData): ApiResponse

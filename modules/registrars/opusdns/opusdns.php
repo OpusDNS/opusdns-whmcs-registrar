@@ -1094,7 +1094,7 @@ function opusdns_api_json_wrapper(array $params, callable $handler): array
 function opusdns_dns_zone_add_rrset(array $params): array
 {
     return opusdns_api_json_wrapper($params, function ($api, $params) {
-        $api->dns()->addRrsetFromFormData($params['domain'], $_POST);
+        $api->dns()->addRecordsFromFormData($params['domain'], $_POST);
         return ['success' => true];
     });
 }
