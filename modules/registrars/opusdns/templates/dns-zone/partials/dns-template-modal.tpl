@@ -59,7 +59,7 @@
                                         </button>
                                     </div>
                                 </template>
-                                <div x-show="templates.length === 0" class="text-center text-muted py-3" style="font-size: 14px;">
+                                <div x-show="templates.length === 0" class="text-center text-muted py-3 fs-14">
                                     {$LANG.opusdns.dns_zone.templates.no_templates_found}
                                 </div>
                             </div>
@@ -90,7 +90,7 @@
                     </template>
                 </div>
                 <div x-show="selectedTemplate && templatePreviewRecords.length > 0" class="pt-2 mt-2">
-                    <div class="alert alert-warning py-2 px-2 mb-2" style="font-size: 14px;">
+                    <div class="alert alert-warning py-2 px-2 mb-2 fs-14">
                         <i class="fas fa-exclamation-triangle mr-1"></i> {$LANG.opusdns.dns_zone.templates.general_warning}
                     </div>
                     <div class="d-flex align-items-center justify-content-between py-2">
