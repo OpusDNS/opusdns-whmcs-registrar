@@ -51,7 +51,7 @@
                                 <span class="badge badge-light" x-text="getTypeCount(type)"></span>
                             </label>
                         </template>
-                        <div x-show="filteredRecordTypes.length === 0" class="text-center text-muted py-2" style="font-size: 14px;">
+                        <div x-show="filteredRecordTypes.length === 0" class="text-center text-muted py-2 fs-14">
                             {$LANG.opusdns.dns_zone.records.filters.no_types_found}
                         </div>
                     </div>

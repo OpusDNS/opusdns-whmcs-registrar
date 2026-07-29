@@ -12,7 +12,7 @@
                 <div>
                     <div class="mb-1">
                         <small class="text-muted d-block">{$LANG.opusdns.dns_zone.records.table.name}</small>
-                        <strong x-text="recordToDelete?.name" class="text-break" style="font-size: 14px;"></strong>
+                        <strong x-text="recordToDelete?.name" class="text-break fs-14"></strong>
                     </div>
                     <div class="mb-1">
                         <small class="text-muted d-block">{$LANG.opusdns.dns_zone.records.table.type}</small>
@@ -21,7 +21,7 @@
                     <div>
                         <small class="text-muted d-block">{$LANG.opusdns.dns_zone.records.table.value}</small>
                         <template x-for="(entry, index) in recordToDelete?.records || []" :key="index">
-                            <code class="small d-block text-break" style="font-size: 13px;" x-text="entry.rdata"></code>
+                            <code class="small d-block text-break fs-13" x-text="entry.rdata"></code>
                         </template>
                     </div>
                 </div>
