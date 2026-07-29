@@ -108,7 +108,9 @@ class DnsZone
             if ($rrset->getType() === DnsRrsetType::SOA->value) {
                 $records = $rrset->getRecords();
                 if (!empty($records)) {
-                    return $this->parseSoaRdata($records[0]->getRdata());
+                    $soa = $this->parseSoaRdata($records[0]->getRdata());
+                    $soa['ttl'] = $rrset->getTtl();
+                    return $soa;
                 }
             }
         }
