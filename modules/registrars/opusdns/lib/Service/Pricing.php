@@ -10,14 +10,14 @@ use WHMCS\Module\Registrar\OpusDNS\Models\Price;
 
 class Pricing extends BaseService
 {
-    public function getProductTypePricing(string $clientId, ProductType $productType): ApiResponse
+    public function getProductTypePricing(string $organizationId, ProductType $productType): ApiResponse
     {
-        return $this->getResource("/organizations/{$clientId}/pricing/product-type/{$productType->value}", [], null);
+        return $this->getResource("/organizations/{$organizationId}/pricing/product-type/{$productType->value}", [], null);
     }
 
-    public function getPrices(string $clientId, ProductType $productType): array
+    public function getPrices(string $organizationId, ProductType $productType): array
     {
-        $response = $this->getProductTypePricing($clientId, $productType);
+        $response = $this->getProductTypePricing($organizationId, $productType);
         $data = $response->getData();
 
         if (!isset($data['prices']) || !is_array($data['prices'])) {
