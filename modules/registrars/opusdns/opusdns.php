@@ -879,7 +879,8 @@ function opusdns_GetTldPricing(array $params): ResultsList | array
     try {
         $api = opusdns_initApiClient($params);
         $tldGroups = $api->tlds()->getTlds();
-        $prices = $api->pricing()->getPrices($params['ClientID'], ProductType::DOMAIN);
+        $organizationId = $api->auth()->getOrganizationId();
+        $prices = $api->pricing()->getPrices($organizationId, ProductType::DOMAIN);
 
         $results = new ResultsList();
 

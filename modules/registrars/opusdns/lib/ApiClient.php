@@ -12,6 +12,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use Psr\Http\Message\ResponseInterface;
 use WHMCS\Module\Registrar\OpusDNS\ApiException;
+use WHMCS\Module\Registrar\OpusDNS\Service\Auth;
 use WHMCS\Module\Registrar\OpusDNS\Service\Availability;
 use WHMCS\Module\Registrar\OpusDNS\Service\Contacts;
 use WHMCS\Module\Registrar\OpusDNS\Service\Dns;
@@ -24,7 +25,7 @@ use WHMCS\Module\Registrar\OpusDNS\Service\Tlds;
 class ApiClient
 {
     private GuzzleClient $httpClient;
-    
+
     public function __construct(
         private readonly ?string $accessToken,
         private readonly ApiConfig $config,
@@ -81,7 +82,7 @@ class ApiClient
     {
         return $this->config;
     }
-    
+
     public function getHttpClient(): GuzzleClient
     {
         return $this->httpClient;
@@ -174,6 +175,11 @@ class ApiClient
         ]);
     }
     
+    public function auth(): Auth
+    {
+        return new Auth($this);
+    }
+
     public function availability(): Availability
     {
         return new Availability($this);
