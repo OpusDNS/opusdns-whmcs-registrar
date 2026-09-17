@@ -331,20 +331,16 @@ function opusdns_RenewDomain(array $params): array
             return ['error' => "Date mismatch: WHMCS has {$whmcsDate}, Registry has {$registryDate}. Please sync the domain first."];
         }
 
-        if ($tldInfo->supportsExplicitRenewal()) {
-            $renewRequest = [
-                'period' => ['value' => $renewPeriod, 'unit' => PeriodUnit::YEAR->value],
-                'current_expiry_date' => $registryExpiryDate->format('Y-m-d\TH:i:s')
-            ];
+        $renewRequest = [
+            'period' => ['value' => $renewPeriod, 'unit' => PeriodUnit::YEAR->value],
+            'current_expiry_date' => $registryExpiryDate->format('Y-m-d\TH:i:s')
+        ];
 
-            if ($premiumEnabled && $premiumCost) {
-                $renewRequest['expected_price'] = number_format((float)$premiumCost, 2, '.', '');
-            }
-
-            $api->domains()->renew($domainName, $renewRequest);
-        } else {
-            $api->domains()->update($domainName, ['renewal_mode' => RenewalMode::RENEW->value]);
+        if ($premiumEnabled && $premiumCost) {
+            $renewRequest['expected_price'] = number_format((float)$premiumCost, 2, '.', '');
         }
+
+        $api->domains()->renew($domainName, $renewRequest);
 
         return ['success' => true];
     } catch (ApiException $e) {
