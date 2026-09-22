@@ -1,0 +1,17 @@
+{
+	"name": "opusdns/whmcs-registrar-module",
+	"description": "Dependencies shipped with the OpusDNS registrar module for WHMCS. The vendor directory is committed because WHMCS modules are installed by copying files.",
+	"license": "MIT",
+	"require": {
+		"php": "^8.3",
+		"ext-json": "*",
+		"opusdns/php-client": "^1.1"
+	},
+	"config": {
+		"optimize-autoloader": true,
+		"platform": {
+			"php": "8.3.0"
+		},
+		"sort-packages": true
+	}
+}

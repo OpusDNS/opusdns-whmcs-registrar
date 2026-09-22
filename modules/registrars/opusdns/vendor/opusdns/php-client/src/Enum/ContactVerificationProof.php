@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * This file is generated from the OpenAPI specification by bin/generate.
+ * Do not edit it by hand; regenerate it instead.
+ */
+
+declare(strict_types=1);
+
+namespace OpusDNS\Client\Enum;
+
+enum ContactVerificationProof: string
+{
+    case IDCARD = 'IDCARD';
+    case PASSPORT = 'PASSPORT';
+    case POPULATION_REGISTER = 'POPULATION_REGISTER';
+    case RESIDENCE_PERMIT = 'RESIDENCE_PERMIT';
+    case PROOF_OF_ARRIVAL = 'PROOF_OF_ARRIVAL';
+    case DRIVERS_LICENCE = 'DRIVERS_LICENCE';
+    case COMPANY_REGISTER = 'COMPANY_REGISTER';
+    case COMPANY_STATEMENT = 'COMPANY_STATEMENT';
+    case BANK_ACCOUNT = 'BANK_ACCOUNT';
+    case ONLINE_PAYMENT_ACCOUNT = 'ONLINE_PAYMENT_ACCOUNT';
+    case UTILITY_ACCOUNT = 'UTILITY_ACCOUNT';
+    case BANK_STATEMENT = 'BANK_STATEMENT';
+    case TAX_STATEMENT = 'TAX_STATEMENT';
+    case WRITTEN_ATTESTATION = 'WRITTEN_ATTESTATION';
+    case DIGITAL_ATTESTATION = 'DIGITAL_ATTESTATION';
+    case POSTAL_VER_TRANSACTION_LOG = 'POSTAL_VER_TRANSACTION_LOG';
+    case EMAIL_VER_TRANSACTION_LOG = 'EMAIL_VER_TRANSACTION_LOG';
+    case PHONE_VER_TRANSACTION_LOG = 'PHONE_VER_TRANSACTION_LOG';
+    case ADDRESS_DATABASE = 'ADDRESS_DATABASE';
+}

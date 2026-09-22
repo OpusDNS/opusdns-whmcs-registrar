@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace WHMCS\Module\Registrar\OpusDNS\Service;
 
-use WHMCS\Module\Registrar\OpusDNS\ApiResponse;
+use OpusDNS\Client\Client;
 use WHMCS\Module\Registrar\OpusDNS\Models\Tld;
 
-class Tlds extends BaseService
+/**
+ * The TLD specifications, fetched with the fields the module reads and cached on disk for a day.
+ */
+class Tlds
 {
     private const CACHE_FILE = 'tlds.json';
     private const CACHE_TTL = 86400;
@@ -21,36 +24,42 @@ class Tlds extends BaseService
         'dns_configuration',
     ];
 
-    public function list(?array $fields = null): ApiResponse
+    public function __construct(private readonly Client $client)
     {
-        $queryParams = [];
-        
-        if ($fields === null) {
-            $fields = self::DEFAULT_TLD_FIELDS;
-        }
-        
-        if (!empty($fields)) {
-            $queryParams['fields'] = implode(',', $fields);
-        }
-        
-        return $this->getResource('/tlds', $queryParams, null);
     }
 
+    /**
+     * The listing as the API returns it, limited to the given fields.
+     *
+     * @param list<string>|null $fields
+     * @return array<string, mixed>
+     */
+    public function list(?array $fields = null): array
+    {
+        $fields ??= self::DEFAULT_TLD_FIELDS;
+
+        return $this->client->tld()->getTldSpecifications(fields: $fields === [] ? null : implode(',', $fields));
+    }
+
+    /**
+     * @return list<Tld>
+     */
     public function getTlds(bool $useCache = true): array
     {
-        if ($useCache && $cached = $this->loadCache()) {
-            return $cached;
-        }
-
-        $response = $this->list();
-        $data = $response->getData();
-        $tlds = array_map(fn($tldData) => new Tld($tldData), $data['tlds'] ?? []);
-        
         if ($useCache) {
-            $this->saveCache($data['tlds'] ?? []);
+            $cached = $this->loadCache();
+            if ($cached) {
+                return $cached;
+            }
         }
 
-        return $tlds;
+        $tldData = $this->list()['tlds'] ?? [];
+
+        if ($useCache) {
+            $this->saveCache($tldData);
+        }
+
+        return array_map(static fn (array $entry): Tld => new Tld($entry), $tldData);
     }
 
     public function getTld(string $tldName, bool $useCache = true): ?Tld
@@ -62,7 +71,7 @@ class Tlds extends BaseService
                 }
             }
         }
-        
+
         return null;
     }
 
@@ -71,29 +80,37 @@ class Tlds extends BaseService
         try {
             $this->getTlds(false);
             return true;
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             return false;
         }
     }
 
+    /**
+     * @return list<Tld>|null
+     */
     private function loadCache(): ?array
     {
         $cacheFile = $this->getCacheFilePath();
-        
+
         if (!file_exists($cacheFile) || (time() - filemtime($cacheFile)) > self::CACHE_TTL) {
             return null;
         }
 
-        $data = json_decode(file_get_contents($cacheFile), true);
-        return is_array($data) ? array_map(fn($tldData) => new Tld($tldData), $data) : null;
+        $data = json_decode((string) file_get_contents($cacheFile), true);
+
+        return is_array($data) ? array_map(static fn (array $entry): Tld => new Tld($entry), $data) : null;
     }
 
+    /**
+     * @param list<array<string, mixed>> $tlds
+     */
     private function saveCache(array $tlds): void
     {
         $cacheFile = $this->getCacheFilePath();
-        
-        if (!is_dir($dir = dirname($cacheFile))) {
-            mkdir($dir, 0755, true);
+        $directory = dirname($cacheFile);
+
+        if (!is_dir($directory)) {
+            mkdir($directory, 0755, true);
         }
 
         file_put_contents($cacheFile, json_encode($tlds, JSON_PRETTY_PRINT));

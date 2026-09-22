@@ -1,0 +1,252 @@
+<?php
+
+/**
+ * This file is generated from the OpenAPI specification by bin/generate.
+ * Do not edit it by hand; regenerate it instead.
+ */
+
+declare(strict_types=1);
+
+namespace OpusDNS\Client;
+
+/**
+ * Permissions the API requires per endpoint and HTTP method, from the x-required-permissions extension.
+ */
+final class Permission
+{
+    /** @var array<string, array<string, list<string>>> */
+    public const REQUIRED = [
+        '/v1/ai-concierge/contexts/{context_id}' => ['GET' => ['ai_concierge:manage']],
+        '/v1/ai-concierge/conversations' => ['GET' => ['ai_concierge:manage'], 'POST' => ['ai_concierge:manage']],
+        '/v1/ai-concierge/conversations/{conversation_id}' => [
+            'GET' => ['ai_concierge:manage'],
+            'PATCH' => ['ai_concierge:manage'],
+            'DELETE' => ['ai_concierge:manage'],
+        ],
+        '/v1/ai-concierge/conversations/{conversation_id}/contexts' => [
+            'GET' => ['ai_concierge:manage'],
+            'POST' => ['ai_concierge:manage'],
+        ],
+        '/v1/ai-concierge/conversations/{conversation_id}/messages' => [
+            'GET' => ['ai_concierge:manage'],
+            'POST' => ['ai_concierge:manage'],
+        ],
+        '/v1/ai-concierge/conversations/{conversation_id}/messages/{message_id}' => ['GET' => ['ai_concierge:manage']],
+        '/v1/ai-concierge/memory/facts' => ['GET' => ['ai_concierge:manage'], 'POST' => ['ai_concierge:manage']],
+        '/v1/ai-concierge/memory/facts/{fact_id}' => [
+            'PATCH' => ['ai_concierge:manage'],
+            'DELETE' => ['ai_concierge:manage'],
+        ],
+        '/v1/archive/email-forward-logs/aliases/{email_forward_alias_id}' => ['GET' => ['email_forwards:read']],
+        '/v1/archive/email-forward-logs/{email_forward_id}' => ['GET' => ['email_forwards:read']],
+        '/v1/archive/object-logs' => ['GET' => ['organization:read']],
+        '/v1/archive/object-logs/{object_id}' => ['GET' => ['organization:read']],
+        '/v1/archive/request-history' => ['GET' => ['organization:read']],
+        '/v1/contacts' => ['GET' => ['contacts:read'], 'POST' => ['contacts:manage']],
+        '/v1/contacts/attribute-sets' => ['GET' => ['contacts:read'], 'POST' => ['contacts:manage']],
+        '/v1/contacts/attribute-sets/{contact_attribute_set_id}' => [
+            'GET' => ['contacts:read'],
+            'PATCH' => ['contacts:manage'],
+            'DELETE' => ['contacts:manage'],
+        ],
+        '/v1/contacts/{contact_id}' => ['GET' => ['contacts:read'], 'DELETE' => ['contacts:delete']],
+        '/v1/contacts/{contact_id}/link/{contact_attribute_set_id}' => ['PATCH' => ['contacts:manage']],
+        '/v1/contacts/{contact_id}/verification' => [
+            'GET' => ['contacts:manage'],
+            'POST' => ['contacts:manage'],
+            'PUT' => ['contacts:manage'],
+            'DELETE' => ['contacts:manage'],
+        ],
+        '/v1/contacts/{contact_id}/verifications' => ['GET' => ['contacts:read']],
+        '/v1/contacts/{contact_id}/verifications/attest' => ['POST' => ['contacts:manage']],
+        '/v1/dns' => ['GET' => ['dns:read'], 'POST' => ['dns:manage']],
+        '/v1/dns/domain-forwards' => ['GET' => ['dns:read']],
+        '/v1/dns/email-forwards' => ['GET' => ['dns:read']],
+        '/v1/dns/summary' => ['GET' => ['dns:read']],
+        '/v1/dns/{zone_name}' => ['GET' => ['dns:read'], 'DELETE' => ['dns:delete']],
+        '/v1/dns/{zone_name}/dnssec/disable' => ['POST' => ['dns:manage']],
+        '/v1/dns/{zone_name}/dnssec/enable' => ['POST' => ['dns:manage']],
+        '/v1/dns/{zone_name}/domain-forwards' => ['GET' => ['dns:read']],
+        '/v1/dns/{zone_name}/email-forwards' => ['GET' => ['dns:read']],
+        '/v1/dns/{zone_name}/records' => ['PATCH' => ['dns:manage']],
+        '/v1/dns/{zone_name}/rrsets' => ['PUT' => ['dns:manage'], 'PATCH' => ['dns:manage']],
+        '/v1/dns/{zone_name}/vanity-set' => ['PATCH' => ['dns:manage', 'vanity_ns:manage']],
+        '/v1/domain-forwards' => [
+            'GET' => ['domain_forwards:read'],
+            'POST' => ['domain_forwards:manage'],
+            'PATCH' => ['domain_forwards:manage'],
+        ],
+        '/v1/domain-forwards/metrics' => ['GET' => ['domain_forwards:read']],
+        '/v1/domain-forwards/metrics/browser' => ['GET' => ['domain_forwards:read']],
+        '/v1/domain-forwards/metrics/geo' => ['GET' => ['domain_forwards:read']],
+        '/v1/domain-forwards/metrics/platform' => ['GET' => ['domain_forwards:read']],
+        '/v1/domain-forwards/metrics/referrer' => ['GET' => ['domain_forwards:read']],
+        '/v1/domain-forwards/metrics/status-code' => ['GET' => ['domain_forwards:read']],
+        '/v1/domain-forwards/metrics/time-series' => ['GET' => ['domain_forwards:read']],
+        '/v1/domain-forwards/metrics/user-agent' => ['GET' => ['domain_forwards:read']],
+        '/v1/domain-forwards/metrics/visits-by-key' => ['GET' => ['domain_forwards:read']],
+        '/v1/domain-forwards/{hostname}' => [
+            'GET' => ['domain_forwards:read'],
+            'POST' => ['domain_forwards:manage'],
+            'DELETE' => ['domain_forwards:delete'],
+        ],
+        '/v1/domain-forwards/{hostname}/disable' => ['PATCH' => ['domain_forwards:manage']],
+        '/v1/domain-forwards/{hostname}/enable' => ['PATCH' => ['domain_forwards:manage']],
+        '/v1/domain-forwards/{hostname}/{protocol}' => [
+            'GET' => ['domain_forwards:read'],
+            'PUT' => ['domain_forwards:manage'],
+            'DELETE' => ['domain_forwards:delete'],
+        ],
+        '/v1/domains' => ['GET' => ['domains:read'], 'POST' => ['domains:manage']],
+        '/v1/domains/check' => ['GET' => ['domains:read']],
+        '/v1/domains/claims-notices' => ['POST' => ['domains:manage']],
+        '/v1/domains/statistics' => ['GET' => ['domains:read']],
+        '/v1/domains/summary' => ['GET' => ['domains:read']],
+        '/v1/domains/tld-specific/at/{domain_reference}/withdraw' => ['POST' => ['domains:manage']],
+        '/v1/domains/tld-specific/be/{domain_reference}/auth_code/request' => ['POST' => ['domains:manage']],
+        '/v1/domains/tld-specific/cymru/{domain_reference}/auth_code/request' => ['POST' => ['domains:manage']],
+        '/v1/domains/tld-specific/cz/{domain_reference}/auth_code/request' => ['POST' => ['domains:manage']],
+        '/v1/domains/tld-specific/de/{domain_reference}/transit' => ['POST' => ['domains:manage']],
+        '/v1/domains/tld-specific/dk/{domain_reference}/auth_code/request' => ['POST' => ['domains:manage']],
+        '/v1/domains/tld-specific/eu/{domain_reference}/auth_code/request' => ['POST' => ['domains:manage']],
+        '/v1/domains/tld-specific/lt/{domain_reference}/auth_code/request' => ['POST' => ['domains:manage']],
+        '/v1/domains/tld-specific/no/{domain_reference}/applicant-declaration' => ['POST' => ['domains:manage']],
+        '/v1/domains/tld-specific/no/{domain_reference}/resend-declaration-email' => ['POST' => ['domains:manage']],
+        '/v1/domains/tld-specific/nu/{domain_reference}/auth_code/request' => ['POST' => ['domains:manage']],
+        '/v1/domains/tld-specific/se/{domain_reference}/auth_code/request' => ['POST' => ['domains:manage']],
+        '/v1/domains/tld-specific/wales/{domain_reference}/auth_code/request' => ['POST' => ['domains:manage']],
+        '/v1/domains/transfer' => ['POST' => ['domains:manage']],
+        '/v1/domains/{domain_reference}' => [
+            'GET' => ['domains:read'],
+            'PATCH' => ['domains:manage'],
+            'DELETE' => ['domains:delete'],
+        ],
+        '/v1/domains/{domain_reference}/dnssec' => [
+            'GET' => ['domains:read'],
+            'PUT' => ['domains:manage'],
+            'DELETE' => ['domains:manage'],
+        ],
+        '/v1/domains/{domain_reference}/dnssec/disable' => ['POST' => ['domains:manage']],
+        '/v1/domains/{domain_reference}/dnssec/enable' => ['POST' => ['domains:manage']],
+        '/v1/domains/{domain_reference}/renew' => ['POST' => ['domains:manage']],
+        '/v1/domains/{domain_reference}/restore' => ['POST' => ['domains:manage']],
+        '/v1/domains/{domain_reference}/transfer' => ['DELETE' => ['domains:manage']],
+        '/v1/domains/{domain_reference}/transfer/outbound' => ['POST' => ['domains:manage']],
+        '/v1/email-forwards' => ['GET' => ['email_forwards:read'], 'POST' => ['dns:manage', 'email_forwards:manage']],
+        '/v1/email-forwards/{email_forward_id}' => [
+            'GET' => ['email_forwards:read'],
+            'DELETE' => ['email_forwards:delete'],
+        ],
+        '/v1/email-forwards/{email_forward_id}/aliases' => ['POST' => ['email_forwards:manage']],
+        '/v1/email-forwards/{email_forward_id}/aliases/{alias_id}' => [
+            'PUT' => ['email_forwards:manage'],
+            'DELETE' => ['email_forwards:manage'],
+        ],
+        '/v1/email-forwards/{email_forward_id}/disable' => ['PATCH' => ['email_forwards:manage']],
+        '/v1/email-forwards/{email_forward_id}/enable' => ['PATCH' => ['email_forwards:manage']],
+        '/v1/email-forwards/{email_forward_id}/metrics' => ['GET' => ['email_forwards:read']],
+        '/v1/events' => ['GET' => ['events:read']],
+        '/v1/events/{event_id}' => ['GET' => ['events:read'], 'PATCH' => ['events:manage']],
+        '/v1/hosts' => ['POST' => ['domains:manage', 'hosts:manage']],
+        '/v1/hosts/{host_reference}' => ['GET' => ['hosts:read'], 'PUT' => ['hosts:manage'], 'DELETE' => ['hosts:delete']],
+        '/v1/job/{job_id}' => ['GET' => ['jobs:read'], 'DELETE' => ['jobs:manage']],
+        '/v1/job/{job_id}/pause' => ['POST' => ['jobs:manage']],
+        '/v1/job/{job_id}/resume' => ['POST' => ['jobs:manage']],
+        '/v1/job/{job_id}/retry' => ['POST' => ['jobs:manage']],
+        '/v1/jobs' => [
+            'GET' => ['jobs:read'],
+            'POST' => [
+                'contacts:manage',
+                'dns:manage',
+                'domains:manage',
+                'jobs:manage',
+                'parking:manage',
+                'vanity_ns:manage',
+            ],
+        ],
+        '/v1/jobs/{batch_id}' => ['GET' => ['jobs:read'], 'DELETE' => ['jobs:manage']],
+        '/v1/jobs/{batch_id}/jobs' => ['GET' => ['jobs:read']],
+        '/v1/jobs/{batch_id}/pause' => ['POST' => ['jobs:manage']],
+        '/v1/jobs/{batch_id}/resume' => ['POST' => ['jobs:manage']],
+        '/v1/jobs/{batch_id}/retry' => ['POST' => ['jobs:manage']],
+        '/v1/organizations' => ['GET' => ['organization:read']],
+        '/v1/organizations/attributes' => ['GET' => ['organization:read']],
+        '/v1/organizations/ip-restrictions' => ['GET' => ['organization:read']],
+        '/v1/organizations/ip-restrictions/{ip_restriction_id}' => ['GET' => ['organization:read']],
+        '/v1/organizations/role-permissions' => ['GET' => ['organization:read']],
+        '/v1/organizations/roles' => ['GET' => ['organization:read']],
+        '/v1/organizations/roles/{label}' => ['GET' => ['organization:read']],
+        '/v1/organizations/users' => ['GET' => ['organization:read']],
+        '/v1/organizations/{organization_id}' => ['GET' => ['organization:read']],
+        '/v1/organizations/{organization_id}/attributes' => ['GET' => ['organization:read']],
+        '/v1/organizations/{organization_id}/billing/invoices' => ['GET' => ['billing:manage']],
+        '/v1/organizations/{organization_id}/billing/receipts' => ['GET' => ['billing:manage']],
+        '/v1/organizations/{organization_id}/pricing/product-type/{product_type}' => ['GET' => ['organization:read']],
+        '/v1/organizations/{organization_id}/transactions' => ['GET' => ['organization:read']],
+        '/v1/organizations/{organization_id}/transactions/{transaction_id}' => ['GET' => ['organization:read']],
+        '/v1/organizations/{organization_id}/usage/{product}' => ['GET' => ['organization:read']],
+        '/v1/organizations/{organization_id}/usage/{product}/summary' => ['GET' => ['organization:read']],
+        '/v1/parking' => ['GET' => ['parking:read']],
+        '/v1/parking/metrics' => ['GET' => ['parking:read']],
+        '/v1/parking/signup' => ['POST' => ['parking:manage']],
+        '/v1/parking/signup/status' => ['GET' => ['parking:read']],
+        '/v1/parking/{parking_reference}/metrics' => ['GET' => ['parking:read']],
+        '/v1/reports' => ['GET' => ['organization:read'], 'POST' => ['organization:read']],
+        '/v1/reports/{report_id}' => ['GET' => ['organization:read']],
+        '/v1/reports/{report_id}/download' => ['GET' => ['organization:read']],
+        '/v1/tags' => ['GET' => ['tags:read'], 'POST' => ['tags:manage']],
+        '/v1/tags/objects' => ['POST' => ['tags:manage']],
+        '/v1/tags/{tag_id}' => ['GET' => ['tags:read'], 'PATCH' => ['tags:manage'], 'DELETE' => ['tags:delete']],
+        '/v1/tags/{tag_id}/objects' => ['POST' => ['tags:manage']],
+        '/v1/tlds/' => ['GET' => ['organization:read']],
+        '/v1/tlds/portfolio' => ['GET' => ['organization:read']],
+        '/v1/tlds/{tld}' => ['GET' => ['organization:read']],
+        '/v1/users' => ['POST' => ['users:manage']],
+        '/v1/users/me' => ['GET' => ['users:read']],
+        '/v1/users/{user_id}' => ['GET' => ['users:read'], 'PATCH' => ['users:manage'], 'DELETE' => ['users:delete']],
+        '/v1/users/{user_id}/permissions' => ['GET' => ['users:read']],
+        '/v1/users/{user_id}/role' => ['GET' => ['users:read']],
+        '/v1/vanity-nameserver-sets' => ['GET' => ['vanity_ns:read'], 'POST' => ['vanity_ns:manage']],
+        '/v1/vanity-nameserver-sets/check' => ['POST' => ['vanity_ns:read']],
+        '/v1/vanity-nameserver-sets/default' => ['DELETE' => ['vanity_ns:manage']],
+        '/v1/vanity-nameserver-sets/{set_id}' => [
+            'GET' => ['vanity_ns:read'],
+            'PATCH' => ['vanity_ns:manage'],
+            'DELETE' => ['vanity_ns:manage'],
+        ],
+        '/v1/vanity-nameserver-sets/{set_id}/default' => ['PATCH' => ['vanity_ns:manage']],
+        '/v1/vanity-nameserver-sets/{set_id}/restore' => ['POST' => ['vanity_ns:manage']],
+        '/v1/vanity-nameserver-sets/{set_id}/retry' => ['POST' => ['vanity_ns:manage']],
+        '/v1/vanity-nameserver-sets/{set_id}/zones' => ['GET' => ['vanity_ns:read']],
+        '/v1/whitelabel-branding' => [
+            'GET' => ['whitelabel_branding:read'],
+            'POST' => ['whitelabel_branding:manage'],
+            'PATCH' => ['whitelabel_branding:manage'],
+        ],
+        '/v1/whitelabel-branding/assets' => [
+            'GET' => ['whitelabel_branding:read'],
+            'POST' => ['whitelabel_branding:manage'],
+        ],
+        '/v1/whitelabel-branding/assets/{asset_id}' => ['DELETE' => ['whitelabel_branding:manage']],
+        '/v1/whitelabel-branding/document' => [
+            'GET' => ['whitelabel_branding:read'],
+            'POST' => ['whitelabel_branding:manage'],
+            'PUT' => ['whitelabel_branding:manage'],
+        ],
+        '/v1/whitelabel-branding/email/preview' => ['POST' => ['whitelabel_branding:manage']],
+        '/v1/whitelabel-branding/email/templates' => ['GET' => ['whitelabel_branding:read']],
+        '/v1/whitelabel-branding/recheck' => ['POST' => ['whitelabel_branding:manage']],
+        '/v1/whitelabel-branding/restore' => ['POST' => ['whitelabel_branding:manage']],
+        '/v1/whitelabel-branding/tier' => ['POST' => ['whitelabel_branding:manage']],
+    ];
+
+    /**
+     * Permissions needed for an HTTP method on a path template, or an empty list when none are declared.
+     *
+     * @return list<string>
+     */
+    public static function required(string $method, string $path): array
+    {
+        return self::REQUIRED[$path][strtoupper($method)] ?? [];
+    }
+}

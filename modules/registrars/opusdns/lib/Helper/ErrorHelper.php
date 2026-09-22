@@ -4,30 +4,36 @@ declare(strict_types=1);
 
 namespace WHMCS\Module\Registrar\OpusDNS\Helper;
 
+use OpusDNS\Client\Exception\HttpException;
+use OpusDNS\Client\Exception\ValidationException;
+use Throwable;
+
 class ErrorHelper
 {
-    public static function extractRrsetErrors(array $errors): string
+    /**
+     * The message shown in WHMCS for a failed API call: the validation messages of a 422, the problem
+     * details of any other HTTP error, or the exception message.
+     */
+    public static function message(Throwable $exception): string
     {
-        $messages = [];
-
-        if (isset($errors['rrsets']) && is_array($errors['rrsets'])) {
-            foreach ($errors['rrsets'] as $rrsetErrors) {
-                if (is_array($rrsetErrors)) {
-                    foreach ($rrsetErrors as $fieldErrors) {
-                        if (is_array($fieldErrors)) {
-                            foreach ($fieldErrors as $error) {
-                                if (is_string($error)) {
-                                    $messages[] = $error;
-                                }
-                            }
-                        } elseif (is_string($fieldErrors)) {
-                            $messages[] = $fieldErrors;
-                        }
-                    }
-                }
+        if ($exception instanceof ValidationException) {
+            $messages = $exception->messages();
+            if ($messages !== []) {
+                return implode('; ', $messages);
             }
         }
 
-        return !empty($messages) ? implode('; ', $messages) : '';
+        if ($exception instanceof HttpException) {
+            $title = $exception->problemTitle;
+            $detail = $exception->problemDetail;
+
+            if ($title !== null && $detail !== null && $detail !== $title) {
+                return "{$title}: {$detail}";
+            }
+
+            return $detail ?? $title ?? $exception->getMessage();
+        }
+
+        return $exception->getMessage();
     }
 }
