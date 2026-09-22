@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace WHMCS\Module\Registrar\OpusDNS\Models;
 
-use WHMCS\Module\Registrar\OpusDNS\Enum\PeriodUnit;
-use WHMCS\Module\Registrar\OpusDNS\Util\ModelTrait;
+use OpusDNS\Client\Enum\PeriodUnit;
+use OpusDNS\Client\Model\ContactHandle;
 
+/**
+ * The part of a TLD specification the module reads, as the TLD listing returns it with a field filter.
+ */
 class Tld
 {
-    use ModelTrait;
-
-
     private bool $enabled = false;
     private array $tlds = [];
     private array $partner_management = [];
@@ -60,6 +60,7 @@ class Tld
         if (preg_match('/P(\d+)D/', $duration, $matches)) {
             return (int)$matches[1];
         }
+
         return 0;
     }
 
@@ -161,52 +162,34 @@ class Tld
     public function getGracePeriodDays(): int
     {
         $gracePeriod = $this->domain_lifecycle['grace_period'] ?? 'P0D';
+
         return self::extractDaysFromIsoDuration($gracePeriod);
     }
 
     public function getRedemptionPeriodDays(): int
     {
         $redemptionPeriod = $this->domain_lifecycle['redemption_period'] ?? 'P0D';
+
         return self::extractDaysFromIsoDuration($redemptionPeriod);
     }
 
     public function getMinRegistrationYears(): int
     {
-        $registrationPeriods = $this->domain_lifecycle['registration_periods'] ?? [];
+        $years = $this->getRegistrationYears();
 
-        if (empty($registrationPeriods)) {
-            return 1;
-        }
-
-        $years = array_map(function ($period) {
-            return ($period['unit'] === PeriodUnit::YEAR->value) ? (int)$period['value'] : 0;
-        }, $registrationPeriods);
-
-        $years = array_filter($years);
-
-        return !empty($years) ? min($years) : 1;
+        return $years === [] ? 1 : min($years);
     }
 
     public function getMaxRegistrationYears(): int
     {
-        $registrationPeriods = $this->domain_lifecycle['registration_periods'] ?? [];
+        $years = $this->getRegistrationYears();
 
-        if (empty($registrationPeriods)) {
-            return 1;
-        }
-
-        $years = array_map(function ($period) {
-            return ($period['unit'] === PeriodUnit::YEAR->value) ? (int)$period['value'] : 0;
-        }, $registrationPeriods);
-
-        $years = array_filter($years);
-
-        return !empty($years) ? max($years) : 1;
+        return $years === [] ? 1 : max($years);
     }
 
     public function isAuthInfoRequired(): bool
     {
-        return $this->transfer_policies['authinfo_required'] ?? false;
+        return (bool)($this->transfer_policies['authinfo_required'] ?? false);
     }
 
     public function supportsHostObjects(): bool
@@ -214,35 +197,41 @@ class Tld
         return (bool)($this->dns_configuration['host_objects'] ?? false);
     }
 
+    /**
+     * The registration periods given in years, ascending.
+     *
+     * @return list<int>
+     */
     public function getRegistrationYears(): array
     {
-        $registrationPeriods = $this->domain_lifecycle['registration_periods'] ?? [];
+        $years = [];
 
-        if (empty($registrationPeriods)) {
-            return [];
+        foreach ($this->domain_lifecycle['registration_periods'] ?? [] as $period) {
+            $value = (int)($period['value'] ?? 0);
+            if (($period['unit'] ?? null) === PeriodUnit::Y->value && $value > 0) {
+                $years[] = $value;
+            }
         }
 
-        $years = array_map(function ($period) {
-            return ($period['unit'] === PeriodUnit::YEAR->value) ? (int)$period['value'] : 0;
-        }, $registrationPeriods);
-
-        $years = array_filter($years);
         sort($years);
 
         return $years;
     }
 
-    public function buildContactsArray(string $contactId): array
+    /**
+     * One handle to the given contact under every role the TLD requires.
+     *
+     * @return array<string, list<ContactHandle>>
+     */
+    public function buildContacts(string $contactId): array
     {
         $contacts = [];
-        $supportedRoles = $this->contacts['supported_roles'] ?? [];
 
-        foreach ($supportedRoles as $role) {
+        foreach ($this->contacts['supported_roles'] ?? [] as $role) {
             $type = $role['type'] ?? null;
-            $min = $role['min'] ?? 0;
-
-            if ($type && $min > 0) {
-                $contacts[$type] = [['contact_id' => $contactId]];
+            $minimum = (int)($role['min'] ?? 0);
+            if ($type && $minimum > 0) {
+                $contacts[$type] = [new ContactHandle($contactId)];
             }
         }
 

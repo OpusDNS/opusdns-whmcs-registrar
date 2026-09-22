@@ -4,179 +4,196 @@ declare(strict_types=1);
 
 namespace WHMCS\Module\Registrar\OpusDNS\Service;
 
-use WHMCS\Module\Registrar\OpusDNS\ApiResponse;
-use WHMCS\Module\Registrar\OpusDNS\Enum\DnsOperation;
-use WHMCS\Module\Registrar\OpusDNS\Enum\DnsRrsetType;
-use WHMCS\Module\Registrar\OpusDNS\Models\DnsZone;
+use InvalidArgumentException;
+use OpusDNS\Client\Client;
+use OpusDNS\Client\Enum\DnsRrsetType;
+use OpusDNS\Client\Enum\PatchOp;
+use OpusDNS\Client\Model\DnsRecordCreate;
+use OpusDNS\Client\Model\DnsRecordPatchOp;
+use OpusDNS\Client\Model\DnsRrsetPatch;
+use OpusDNS\Client\Model\DnsRrsetPatchOp;
+use OpusDNS\Client\Model\DnsRrsetWithOneRecordPatch;
+use OpusDNS\Client\Model\DnsZoneRecordsPatchOps;
+use OpusDNS\Client\Model\DnsZoneRrsetsPatchOps;
 use WHMCS\Module\Registrar\OpusDNS\Helper\TxtRecordHelper;
 
-class Dns extends BaseService
+/**
+ * Turns the record forms of the DNS zone page into patch operations and sends them.
+ */
+class Dns
 {
-    protected const MODEL_CLASS = DnsZone::class;
+    public const DEFAULT_TTL = 3600;
 
-    public function getZone(string $zoneName): ApiResponse
+    public function __construct(private readonly Client $client)
     {
-        return $this->getResource("/dns/{$zoneName}");
     }
 
-    public function addRrset(string $zoneName, string $name, string $type, int $ttl, array $records): ApiResponse
+    /**
+     * Adds the posted records to their record set, keeping the records already in it.
+     *
+     * @param array<string, mixed> $formData
+     */
+    public function addRecordsFromFormData(string $zoneName, array $formData): void
     {
-        return $this->patchResource("/dns/{$zoneName}/rrsets", [
-            'ops' => [
-                [
-                    'op' => DnsOperation::UPSERT->value,
-                    'rrset' => [
-                        'name' => $name,
-                        'type' => $type,
-                        'ttl' => $ttl,
-                        'records' => $records,
-                    ],
-                ],
-            ],
+        [$name, $type, $ttl, $rdataValues] = $this->parseFormData($zoneName, $formData);
+
+        $ops = array_map(
+            static fn (string $rdata): DnsRecordPatchOp => new DnsRecordPatchOp(
+                PatchOp::UPSERT,
+                new DnsRrsetWithOneRecordPatch($name, $rdata, $ttl, $type),
+            ),
+            $rdataValues,
+        );
+
+        $this->client->dns()->patchZoneRecords($zoneName, new DnsZoneRecordsPatchOps($ops));
+    }
+
+    /**
+     * Replaces a record set with the posted records.
+     *
+     * @param array<string, mixed> $formData
+     */
+    public function updateRrsetFromFormData(string $zoneName, array $formData): void
+    {
+        [$name, $type, $ttl, $rdataValues] = $this->parseFormData($zoneName, $formData);
+
+        $this->patchRrsets($zoneName, [
+            new DnsRrsetPatchOp(PatchOp::UPSERT, new DnsRrsetPatch($name, self::records($rdataValues), $ttl, $type)),
         ]);
     }
 
-    public function addRecords(string $zoneName, string $name, string $type, int $ttl, array $records): ApiResponse
+    /**
+     * @param array<string, mixed> $formData
+     */
+    public function deleteRrsetFromFormData(string $zoneName, array $formData): void
     {
-        $ops = array_map(fn($record) => [
-            'op' => DnsOperation::UPSERT->value,
-            'record' => [
-                'name' => $name,
-                'type' => $type,
-                'ttl' => $ttl,
-                'rdata' => $record['rdata'],
-            ],
-        ], $records);
+        $name = $this->buildRrsetName($zoneName, (string) ($formData['name'] ?? ''));
+        $type = trim((string) ($formData['type'] ?? ''));
+        $ttl = (int) ($formData['ttl'] ?? self::DEFAULT_TTL);
 
-        return $this->patchResource("/dns/{$zoneName}/records", ['ops' => $ops]);
-    }
-
-    public function updateRrset(string $zoneName, string $name, string $type, int $ttl, array $records): ApiResponse
-    {
-        return $this->addRrset($zoneName, $name, $type, $ttl, $records);
-    }
-
-    public function deleteRrset(string $zoneName, string $name, string $type, int $ttl): ApiResponse
-    {
-        return $this->patchResource("/dns/{$zoneName}/rrsets", [
-            'ops' => [
-                [
-                    'op' => DnsOperation::REMOVE->value,
-                    'rrset' => [
-                        'name' => $name,
-                        'type' => $type,
-                        'ttl' => $ttl,
-                        'records' => [],
-                    ],
-                ],
-            ],
+        $this->patchRrsets($zoneName, [
+            new DnsRrsetPatchOp(PatchOp::REMOVE, new DnsRrsetPatch($name, [], $ttl, $type)),
         ]);
     }
 
-    public function deleteRrsets(string $zoneName, array $rrsets): ApiResponse
+    /**
+     * Replaces every given record set. TXT values are quoted as the API expects.
+     *
+     * @param list<array<string, mixed>> $rrsets Each with name, type, ttl and records, the records each with rdata
+     */
+    public function upsertRrsets(string $zoneName, array $rrsets): void
     {
-        $ops = array_map(fn($rrset) => [
-            'op' => DnsOperation::REMOVE->value,
-            'rrset' => [
-                'name' => $rrset['name'],
-                'type' => $rrset['type'],
-                'ttl' => $rrset['ttl'],
-                'records' => [],
-            ],
-        ], $rrsets);
+        $ops = [];
 
-        return $this->patchResource("/dns/{$zoneName}/rrsets", ['ops' => $ops]);
-    }
-
-    public function upsertRrsets(string $zoneName, array $rrsets): ApiResponse
-    {
-        $ops = array_map(function ($rrset) {
-            $normalizedRrset = $rrset;
-            
-            if (isset($rrset['type']) && $rrset['type'] === DnsRrsetType::TXT->value && isset($rrset['records'])) {
-                $normalizedRrset['records'] = array_map(function ($record) {
-                    if (isset($record['rdata'])) {
-                        $record['rdata'] = TxtRecordHelper::normalize($record['rdata']);
-                    }
-                    return $record;
-                }, $rrset['records']);
+        foreach ($rrsets as $rrset) {
+            $type = (string) ($rrset['type'] ?? '');
+            $rdataValues = [];
+            foreach ($rrset['records'] ?? [] as $record) {
+                $rdata = is_array($record) ? (string) ($record['rdata'] ?? '') : (string) $record;
+                $rdataValues[] = $type === DnsRrsetType::TXT->value ? TxtRecordHelper::normalize($rdata) : $rdata;
             }
-            
-            return [
-                'op' => DnsOperation::UPSERT->value,
-                'rrset' => $normalizedRrset,
-            ];
-        }, $rrsets);
 
-        return $this->patchResource("/dns/{$zoneName}/rrsets", ['ops' => $ops]);
-    }
-
-    public function enableDnssec(string $zoneName): ApiResponse
-    {
-        return $this->postResource("/dns/{$zoneName}/dnssec/enable", []);
-    }
-
-    public function disableDnssec(string $zoneName): ApiResponse
-    {
-        return $this->postResource("/dns/{$zoneName}/dnssec/disable", []);
-    }
-
-    public function createZone(string $zoneName): ApiResponse
-    {
-        return $this->postResource('/dns', ['name' => $zoneName]);
-    }
-
-    public function deleteZone(string $zoneName): void
-    {
-        $this->deleteResource("/dns/{$zoneName}");
-    }
-
-    public function addRrsetFromFormData(string $zoneName, array $formData): ApiResponse
-    {
-        $name = $this->buildRrsetName($zoneName, $formData['name'] ?? '');
-        $type = trim($formData['type'] ?? '');
-        $ttl = (int)($formData['ttl'] ?? 3600);
-        $records = $this->buildRecordsFromFormData($formData, $type);
-
-        if (empty($type) || empty($records)) {
-            throw new \InvalidArgumentException('Invalid record data');
+            $ops[] = new DnsRrsetPatchOp(PatchOp::UPSERT, new DnsRrsetPatch(
+                (string) ($rrset['name'] ?? ''),
+                self::records($rdataValues),
+                (int) ($rrset['ttl'] ?? self::DEFAULT_TTL),
+                $type,
+            ));
         }
 
-        return $this->addRrset($zoneName, $name, $type, $ttl, $records);
+        $this->patchRrsets($zoneName, $ops);
     }
 
-    public function addRecordsFromFormData(string $zoneName, array $formData): ApiResponse
+    /**
+     * Removes every given record set.
+     *
+     * @param list<array<string, mixed>> $rrsets Each with name, type and ttl
+     */
+    public function deleteRrsets(string $zoneName, array $rrsets): void
     {
-        $name = $this->buildRrsetName($zoneName, $formData['name'] ?? '');
-        $type = trim($formData['type'] ?? '');
-        $ttl = (int)($formData['ttl'] ?? 3600);
-        $records = $this->buildRecordsFromFormData($formData, $type);
+        $ops = array_map(
+            static fn (array $rrset): DnsRrsetPatchOp => new DnsRrsetPatchOp(PatchOp::REMOVE, new DnsRrsetPatch(
+                (string) ($rrset['name'] ?? ''),
+                [],
+                (int) ($rrset['ttl'] ?? self::DEFAULT_TTL),
+                (string) ($rrset['type'] ?? ''),
+            )),
+            $rrsets,
+        );
 
-        if (empty($type) || empty($records)) {
-            throw new \InvalidArgumentException('Invalid record data');
+        $this->patchRrsets($zoneName, $ops);
+    }
+
+    /**
+     * @param list<DnsRrsetPatchOp> $ops
+     */
+    private function patchRrsets(string $zoneName, array $ops): void
+    {
+        $this->client->dns()->patchZoneRrsets($zoneName, new DnsZoneRrsetsPatchOps($ops));
+    }
+
+    /**
+     * @param list<string> $rdataValues
+     * @return list<DnsRecordCreate>
+     */
+    private static function records(array $rdataValues): array
+    {
+        return array_map(static fn (string $rdata): DnsRecordCreate => new DnsRecordCreate($rdata), $rdataValues);
+    }
+
+    /**
+     * The record set name, type, TTL and rdata values of a posted form.
+     *
+     * @param array<string, mixed> $formData
+     * @return array{string, string, int, list<string>}
+     */
+    private function parseFormData(string $zoneName, array $formData): array
+    {
+        $name = $this->buildRrsetName($zoneName, (string) ($formData['name'] ?? ''));
+        $type = trim((string) ($formData['type'] ?? ''));
+        $ttl = (int) ($formData['ttl'] ?? self::DEFAULT_TTL);
+        $rdataValues = $this->rdataFromFormData($formData, $type);
+
+        if ($type === '' || $rdataValues === []) {
+            throw new InvalidArgumentException('Invalid record data');
         }
 
-        return $this->addRecords($zoneName, $name, $type, $ttl, $records);
+        return [$name, $type, $ttl, $rdataValues];
     }
 
-    public function updateRrsetFromFormData(string $zoneName, array $formData): ApiResponse
+    /**
+     * The rdata values of a posted form, taken from its records list or its rdata field.
+     *
+     * @param array<string, mixed> $formData
+     * @return list<string>
+     */
+    private function rdataFromFormData(array $formData, string $type): array
     {
-        return $this->addRrsetFromFormData($zoneName, $formData);
+        if (isset($formData['records']) && is_array($formData['records'])) {
+            $rawValues = $formData['records'];
+        } elseif (isset($formData['rdata'])) {
+            $rawValues = is_array($formData['rdata']) ? $formData['rdata'] : [$formData['rdata']];
+        } else {
+            $rawValues = [];
+        }
+
+        $values = [];
+        foreach ($rawValues as $rawValue) {
+            $value = is_array($rawValue) ? (string) ($rawValue['rdata'] ?? '') : (string) $rawValue;
+            $value = trim(html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+            $values[] = $type === DnsRrsetType::TXT->value ? TxtRecordHelper::normalize($value) : $value;
+        }
+
+        return $values;
     }
 
-    public function deleteRrsetFromFormData(string $zoneName, array $formData): ApiResponse
-    {
-        $name = $this->buildRrsetName($zoneName, $formData['name'] ?? '');
-        $type = trim($formData['type'] ?? '');
-        $ttl = (int)($formData['ttl'] ?? 3600);
-
-        return $this->deleteRrset($zoneName, $name, $type, $ttl);
-    }
-
+    /**
+     * The fully qualified record set name for a name typed relative to the zone.
+     */
     private function buildRrsetName(string $domainName, string $name): string
     {
         $name = trim($name);
-        
+
         if ($name === '' || $name === '@') {
             return $domainName . '.';
         }
@@ -186,31 +203,5 @@ class Dns extends BaseService
         }
 
         return $name . '.' . $domainName . '.';
-    }
-
-    private function buildRecordsFromFormData(array $formData, string $type): array
-    {
-        $records = [];
-
-        if (isset($formData['records']) && is_array($formData['records'])) {
-            $records = array_map(function ($record) {
-                $value = is_array($record) ? ($record['rdata'] ?? '') : $record;
-                return html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-            }, $formData['records']);
-        } elseif (isset($formData['rdata'])) {
-            $rdataArray = is_array($formData['rdata']) ? $formData['rdata'] : [$formData['rdata']];
-            $records = array_map(fn($value) => html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8'), $rdataArray);
-        }
-
-        return array_map(function ($rdata) use ($type) {
-            $value = is_array($rdata) ? ($rdata['rdata'] ?? '') : $rdata;
-            $trimmedValue = trim($value);
-            
-            if ($type === DnsRrsetType::TXT->value) {
-                $trimmedValue = TxtRecordHelper::normalize($trimmedValue);
-            }
-            
-            return ['rdata' => $trimmedValue];
-        }, $records);
     }
 }

@@ -2,12 +2,21 @@
 
 OpusDNS is a domain registrar providing domain registration and management services.
 
+## Requirements
+
+- WHMCS running on PHP 8.3 or newer
+- An OpusDNS API key
+
 ## Installation
 
 1. Download the latest release from the [Releases page](https://github.com/OpusDNS/opusdns-whmcs-registrar/releases)
 2. Extract the zip file
 3. Upload the `modules` folder to your WHMCS root directory
 4. The module files should be located at: `<whmcs_root>/modules/registrars/opusdns/`
+
+The module talks to the API through the [OpusDNS PHP client](https://github.com/OpusDNS/opusdns-php-client),
+which ships inside the module at `modules/registrars/opusdns/vendor/`. To update it, run `composer update`
+in `modules/registrars/opusdns/` and commit the `vendor/` directory together with `composer.lock`.
 
 ### Custom Domain Fields (required for TLDs like `.music`)
 
@@ -45,10 +54,9 @@ To activate the OpusDNS registrar module:
 
 To configure the module:
 
-1. Enter your **Client ID**
-2. Enter your **Client Secret**
-3. Check **Test Mode** to use the sandbox environment
-4. Click **Save Changes**
+1. Enter your **API Key**
+2. Check **Test Mode** to use the sandbox environment
+3. Click **Save Changes**
 
 ## Supported Features
 

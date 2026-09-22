@@ -7,7 +7,7 @@ declare(strict_types=1);
  *
  * This module provides domain registration, transfer, and management functionality
  * using the OpusDNS API.
- * 
+ *
  * @package    WHMCS\Module\Registrar\OpusDNS
  * @author     Zoltan Egresi <zoltan.egresi@opusdns.com>
  */
@@ -17,20 +17,40 @@ if (!defined("WHMCS")) {
     die("This file cannot be accessed directly");
 }
 
+require_once __DIR__ . '/vendor/autoload.php';
+
+use OpusDNS\Client\Client;
+use OpusDNS\Client\Enum\BillingTransactionAction;
+use OpusDNS\Client\Enum\BillingTransactionProductType;
+use OpusDNS\Client\Enum\DnssecStatus;
+use OpusDNS\Client\Enum\DomainClientStatus;
+use OpusDNS\Client\Enum\PeriodUnit;
+use OpusDNS\Client\Enum\RegistrantChangeType;
+use OpusDNS\Client\Enum\RenewalMode;
+use OpusDNS\Client\Exception\NotFoundException;
+use OpusDNS\Client\Exception\OpusDnsException;
+use OpusDNS\Client\Model\DomainCreate;
+use OpusDNS\Client\Model\DomainPeriod;
+use OpusDNS\Client\Model\DomainRenewRequest;
+use OpusDNS\Client\Model\DomainTransferIn;
+use OpusDNS\Client\Model\DomainUpdate;
+use OpusDNS\Client\Model\DnsZoneCreate;
+use OpusDNS\Client\Model\HostCreate;
+use OpusDNS\Client\Model\HostUpdate;
 use WHMCS\Domains\DomainLookup\ResultsList;
 use WHMCS\Domains\DomainLookup\SearchResult;
 use WHMCS\Carbon;
 use WHMCS\Domain\Registrar\Domain;
-use WHMCS\Module\Registrar\OpusDNS\ApiClient;
-use WHMCS\Module\Registrar\OpusDNS\Enum\PeriodUnit;
-use WHMCS\Module\Registrar\OpusDNS\Enum\RenewalMode;
-use WHMCS\Module\Registrar\OpusDNS\ApiException;
-use WHMCS\Module\Registrar\OpusDNS\Enum\ProductAction;
-use WHMCS\Module\Registrar\OpusDNS\Enum\ProductType;
-use WHMCS\Module\Registrar\OpusDNS\Models\Contact;
+use WHMCS\Module\Registrar\OpusDNS\ApiClientFactory;
 use WHMCS\Module\Registrar\OpusDNS\Helper\AttributeHelper;
-use WHMCS\Module\Registrar\OpusDNS\Helper\NameserverHelper;
+use WHMCS\Module\Registrar\OpusDNS\Helper\ContactHelper;
+use WHMCS\Module\Registrar\OpusDNS\Helper\DnsZoneHelper;
 use WHMCS\Module\Registrar\OpusDNS\Helper\ErrorHelper;
+use WHMCS\Module\Registrar\OpusDNS\Helper\NameserverHelper;
+use WHMCS\Module\Registrar\OpusDNS\Helper\PremiumPricingHelper;
+use WHMCS\Module\Registrar\OpusDNS\Service\Dns;
+use WHMCS\Module\Registrar\OpusDNS\Service\DnsTemplates;
+use WHMCS\Module\Registrar\OpusDNS\Service\Tlds;
 use WHMCS\Exception\Module\InvalidConfiguration;
 
 function opusdns_MetaData(): array
@@ -59,20 +79,6 @@ function opusdns_getConfigArray(): array
             'Default' => '',
             'Description' => 'Your OpusDNS API key.',
         ],
-        'ClientID' => [
-            'FriendlyName' => 'Client ID',
-            'Type' => 'text',
-            'Size' => '50',
-            'Default' => '',
-            'Description' => 'OAuth Client ID.',
-        ],
-        'ClientSecret' => [
-            'FriendlyName' => 'Client Secret',
-            'Type' => 'password',
-            'Size' => '50',
-            'Default' => '',
-            'Description' => 'OAuth Client Secret.',
-        ],
         'TestMode' => [
             'FriendlyName' => 'Test Mode',
             'Type' => 'yesno',
@@ -85,23 +91,18 @@ function opusdns_getConfigArray(): array
 /**
  * Initialize API client with credentials from params
  */
-function opusdns_initApiClient(array $params): ApiClient
+function opusdns_initApiClient(array $params): Client
 {
-    return ApiClient::create([
-        'ApiKey'       => $params['ApiKey'] ?? '',
-        'ClientID'     => $params['ClientID'] ?? '',
-        'ClientSecret' => $params['ClientSecret'] ?? '',
-        'TestMode'     => $params['TestMode'],
-    ]);
+    return ApiClientFactory::fromParams($params);
 }
 
 function opusdns_config_validate(array $params): void
 {
     try {
         $api = opusdns_initApiClient($params);
-        $api->tlds()->list(['enabled']);
-    } catch (\Throwable $e) {
-        throw new InvalidConfiguration($e->getMessage());
+        $api->tld()->getTldSpecifications(fields: 'enabled');
+    } catch (\Throwable $exception) {
+        throw new InvalidConfiguration(ErrorHelper::message($exception));
     }
 }
 
@@ -143,8 +144,6 @@ function opusdns_RegisterDomain(array $params): array
 {
     $domainName = $params['domain'];
     $tld = $params['tld'];
-    $premiumEnabled = (bool)($params['premiumEnabled'] ?? false);
-    $premiumCost = $params['premiumCost'] ?? null;
 
     $missingAttribute = AttributeHelper::validateRequired($tld, $params);
     if ($missingAttribute !== null) {
@@ -153,58 +152,43 @@ function opusdns_RegisterDomain(array $params): array
 
     try {
         $api = opusdns_initApiClient($params);
-        $tldInfo = $api->tlds()->getTld($tld);
+        $tldInfo = (new Tlds($api))->getTld($tld);
 
         if (!$tldInfo) {
             return ['error' => "TLD .{$tld} is not supported"];
         }
-    } catch (ApiException $e) {
-        return ['error' => $e->getMessage()];
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 
     try {
-        $api = opusdns_initApiClient($params);
-        $contactData = $api->contacts()->buildContactDataFromParams($params);
-        $createdContact = $api->contacts()->create($contactData)->getData();
-        $contactId = $createdContact->getContactId();
-    } catch (ApiException $e) {
-        $errors = $e->getErrors() ?? [];
-        if ($errors) {
-            $errorMessages = [];
-            foreach ($errors as $field => $messages) {
-                $errorMessages[] = "Contact Field: {$field} - " . implode(', ', (array)$messages);
-            }
-            return ['error' => implode(', ', $errorMessages)];
+        $createdContact = $api->contact()->createContact(ContactHelper::createFromParams($params));
+        $contactId = $createdContact->contactId;
+
+        if ($contactId === null) {
+            return ['error' => 'The registrant contact was created without an id'];
         }
-        return ['error' => $e->getMessage()];
-    }
-
-    $contacts = $tldInfo->buildContactsArray($contactId);
-    $nameservers = NameserverHelper::extractFromParams($params);
-
-    $domainData = [
-        'name' => $domainName,
-        'period' => ['value' => (int)$params['regperiod'], 'unit' => PeriodUnit::YEAR->value],
-        'contacts' => $contacts,
-        'nameservers' => $nameservers,
-        'renewal_mode' => RenewalMode::EXPIRE,
-    ];
-
-    if ($premiumEnabled && $premiumCost) {
-        $domainData['expected_price'] = number_format((float)$premiumCost, 2, '.', '');
+    } catch (OpusDnsException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 
     $attributes = AttributeHelper::extractFromParams($tld, $params);
-    if ($attributes) {
-        $domainData['attributes'] = $attributes;
-    }
+
+    $domainRequest = new DomainCreate(
+        contacts: $tldInfo->buildContacts($contactId),
+        name: $domainName,
+        period: new DomainPeriod(PeriodUnit::Y, (int)$params['regperiod']),
+        renewalMode: RenewalMode::EXPIRE,
+        attributes: $attributes ?: null,
+        expectedPrice: PremiumPricingHelper::expectedPrice($params),
+        nameservers: NameserverHelper::extractFromParams($params),
+    );
 
     try {
-        $api = opusdns_initApiClient($params);
-        $api->domains()->create($domainData);
+        $api->domain()->createDomain($domainRequest);
         return ['success' => true];
-    } catch (ApiException $e) {
-        return ['error' => $e->getMessage()];
+    } catch (OpusDnsException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 }
 
@@ -224,8 +208,6 @@ function opusdns_TransferDomain(array $params): array
     $domainName = $params['domain'];
     $tld = $params['tld'];
     $authCode = $params['eppcode'] ?? $params['transfersecret'] ?? '';
-    $premiumEnabled = (bool)($params['premiumEnabled'] ?? false);
-    $premiumCost = $params['premiumCost'] ?? null;
 
     $missingAttribute = AttributeHelper::validateRequired($tld, $params);
     if ($missingAttribute !== null) {
@@ -234,58 +216,43 @@ function opusdns_TransferDomain(array $params): array
 
     try {
         $api = opusdns_initApiClient($params);
-        $tldInfo = $api->tlds()->getTld($tld);
+        $tldInfo = (new Tlds($api))->getTld($tld);
 
         if (!$tldInfo) {
             return ['error' => "TLD .{$tld} is not supported"];
         }
-    } catch (ApiException $e) {
-        return ['error' => $e->getMessage()];
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 
     try {
-        $api = opusdns_initApiClient($params);
-        $contactData = $api->contacts()->buildContactDataFromParams($params);
-        $createdContact = $api->contacts()->create($contactData)->getData();
-        $contactId = $createdContact->getContactId();
-    } catch (ApiException $e) {
-        $errors = $e->getErrors() ?? [];
-        if ($errors) {
-            $errorMessages = [];
-            foreach ($errors as $field => $messages) {
-                $errorMessages[] = "Contact Field: {$field} - " . implode(', ', (array)$messages);
-            }
-            return ['error' => implode(', ', $errorMessages)];
+        $createdContact = $api->contact()->createContact(ContactHelper::createFromParams($params));
+        $contactId = $createdContact->contactId;
+
+        if ($contactId === null) {
+            return ['error' => 'The registrant contact was created without an id'];
         }
-        return ['error' => $e->getMessage()];
-    }
-
-    $contacts = $tldInfo->buildContactsArray($contactId);
-    $nameservers = NameserverHelper::extractFromParams($params);
-
-    $transferData = [
-        'name' => $domainName,
-        'auth_code' => $authCode,
-        'contacts' => $contacts,
-        'nameservers' => array_values($nameservers),
-        'renewal_mode' => RenewalMode::EXPIRE->value,
-    ];
-
-    if ($premiumEnabled && $premiumCost) {
-        $transferData['expected_price'] = number_format((float)$premiumCost, 2, '.', '');
+    } catch (OpusDnsException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 
     $attributes = AttributeHelper::extractFromParams($tld, $params);
-    if ($attributes) {
-        $transferData['attributes'] = $attributes;
-    }
+
+    $transferRequest = new DomainTransferIn(
+        name: $domainName,
+        renewalMode: RenewalMode::EXPIRE,
+        attributes: $attributes ?: null,
+        authCode: $authCode,
+        contacts: $tldInfo->buildContacts($contactId),
+        expectedPrice: PremiumPricingHelper::expectedPrice($params),
+        nameservers: NameserverHelper::extractFromParams($params),
+    );
 
     try {
-        $api = opusdns_initApiClient($params);
-        $api->domains()->transfer($transferData);
+        $api->domain()->transferDomain($transferRequest);
         return ['success' => true];
-    } catch (ApiException $e) {
-        return ['error' => $e->getMessage()];
+    } catch (OpusDnsException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 }
 
@@ -306,19 +273,17 @@ function opusdns_RenewDomain(array $params): array
     $tld = $params['tld'];
     $renewPeriod = (int)$params['regperiod'];
     $whmcsExpiryDate = $params['expiryDate'];
-    $premiumEnabled = (bool)($params['premiumEnabled'] ?? false);
-    $premiumCost = $params['premiumCost'] ?? null;
 
     try {
         $api = opusdns_initApiClient($params);
-        $tldInfo = $api->tlds()->getTld($tld);
+        $tldInfo = (new Tlds($api))->getTld($tld);
 
         if (!$tldInfo) {
             return ['error' => "TLD .{$tld} is not supported"];
         }
 
-        $domainInfo = $api->domains()->getByName($domainName)->getData();
-        $registryExpiryDate = $domainInfo->getExpiresOn();
+        $domainInfo = $api->domain()->getDomain($domainName);
+        $registryExpiryDate = $domainInfo->expiresOn;
 
         if (!$registryExpiryDate) {
             return ['error' => 'Domain has no registry expiry date (may be pending transfer)'];
@@ -331,28 +296,17 @@ function opusdns_RenewDomain(array $params): array
             return ['error' => "Date mismatch: WHMCS has {$whmcsDate}, Registry has {$registryDate}. Please sync the domain first."];
         }
 
-        $renewRequest = [
-            'period' => ['value' => $renewPeriod, 'unit' => PeriodUnit::YEAR->value],
-            'current_expiry_date' => $registryExpiryDate->format('Y-m-d\TH:i:s')
-        ];
+        $renewRequest = new DomainRenewRequest(
+            currentExpiryDate: $registryExpiryDate,
+            period: new DomainPeriod(PeriodUnit::Y, $renewPeriod),
+            expectedPrice: PremiumPricingHelper::expectedPrice($params),
+        );
 
-        if ($premiumEnabled && $premiumCost) {
-            $renewRequest['expected_price'] = number_format((float)$premiumCost, 2, '.', '');
-        }
-
-        $api->domains()->renew($domainName, $renewRequest);
+        $api->domain()->renewDomain($domainName, $renewRequest);
 
         return ['success' => true];
-    } catch (ApiException $e) {
-        if (is_array($e->getErrors())) {
-            $errorMessages = [];
-            foreach ($e->getErrors() as $field => $messages) {
-                $errorMessages[] = "Field: {$field} - " . implode(', ', (array)$messages);
-            }
-            return ['error' => implode(', ', $errorMessages)];
-        } else {
-            return ['error' => $e->getMessage()];
-        }
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 }
 
@@ -363,22 +317,22 @@ function opusdns_GetDomainInformation(array $params): Domain | array
 
     try {
         $api = opusdns_initApiClient($params);
-        $response = $api->domains()->getByName($domainName)->getData();
-    } catch (ApiException $e) {
+        $response = $api->domain()->getDomain($domainName);
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
         return [
-            'error' => $e->getMessage(),
+            'error' => ErrorHelper::message($exception),
         ];
     }
 
     $domain = new Domain();
     $domain->setIsIrtpEnabled(false);
-    $domain->setDomain($response->getName());
-    $domain->setNameservers($response->getNameserversForWhmcs());
-    $expiresOn = $response->getExpiresOn();
+    $domain->setDomain($response->name);
+    $domain->setNameservers(NameserverHelper::toWhmcsArray($response->nameservers));
+    $expiresOn = $response->expiresOn;
     if ($expiresOn) {
         $domain->setExpiryDate(Carbon::parse($expiresOn->format('Y-m-d H:i:s')));
     }
-    $domain->setTransferLock($response->isTransferLocked() ?? false);
+    $domain->setTransferLock($response->transferLock);
 
     return $domain;
 }
@@ -412,10 +366,10 @@ function opusdns_SaveNameservers(array $params): array
 
     try {
         $api = opusdns_initApiClient($params);
-        $api->domains()->update($domainName, ['nameservers' => $nameservers]);
+        $api->domain()->updateDomain($domainName, new DomainUpdate(nameservers: $nameservers));
         return ['success' => true];
-    } catch (ApiException $e) {
-        return ['error' => $e->getMessage()];
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 }
 
@@ -423,21 +377,18 @@ function opusdns_GetContactDetails(array $params): array
 {
     try {
         $api = opusdns_initApiClient($params);
-        $domain = $api->domains()->getByName($params['domain'])->getData();
-        $contacts = $domain->getContacts();
+        $domain = $api->domain()->getDomain($params['domain']);
+        $registrantContactId = ContactHelper::registrantContactId($domain);
 
-        foreach ($contacts as $contact) {
-            $contactId = $contact['contact_id'] ?? null;
-            $contactType = strtolower($contact['contact_type'] ?? '');
-
-            if ($contactId && $contactType === 'registrant') {
-                return ['Registrant' => $api->contacts()->getContactInfo($contactId)];
-            }
+        if (!$registrantContactId) {
+            return ['error' => 'Registrant contact not found'];
         }
 
-        return ['error' => 'Registrant contact not found'];
-    } catch (ApiException $e) {
-        return ['error' => $e->getMessage()];
+        $registrant = $api->contact()->getContact($registrantContactId);
+
+        return ['Registrant' => ContactHelper::toWhmcsArray($registrant)];
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 }
 
@@ -452,7 +403,7 @@ function opusdns_SaveContactDetails(array $params): array
     try {
         $api = opusdns_initApiClient($params);
         $tld = $params['tld'];
-        $tldInfo = $api->tlds()->getTld($tld);
+        $tldInfo = (new Tlds($api))->getTld($tld);
 
         if (!$tldInfo) {
             return ['error' => "TLD .{$tld} is not supported"];
@@ -461,30 +412,22 @@ function opusdns_SaveContactDetails(array $params): array
         $tldContacts = $tldInfo->getContacts();
         $registrantChange = $tldContacts['registrant_change'] ?? null;
 
-        if ($registrantChange !== 'update') {
+        if ($registrantChange !== RegistrantChangeType::UPDATE->value) {
             return ['error' => 'Contact updates are not supported for this TLD'];
         }
 
-        $domain = $api->domains()->getByName($params['domain'])->getData();
-        $contacts = $domain->getContacts();
-
-        $registrantContactId = null;
-        foreach ($contacts as $contact) {
-            if (strtolower($contact['contact_type'] ?? '') === 'registrant') {
-                $registrantContactId = $contact['contact_id'] ?? null;
-                break;
-            }
-        }
+        $domain = $api->domain()->getDomain($params['domain']);
+        $registrantContactId = ContactHelper::registrantContactId($domain);
 
         if (!$registrantContactId) {
             return ['error' => 'Registrant contact not found'];
         }
 
-        $currentData = $api->contacts()->getContactInfo($registrantContactId);
+        $currentData = ContactHelper::toWhmcsArray($api->contact()->getContact($registrantContactId));
         $filteredSubmittedData = array_intersect_key($submittedData, $currentData);
 
         if (isset($filteredSubmittedData['Phone Number'])) {
-            $filteredSubmittedData['Phone Number'] = Contact::normalizePhone($filteredSubmittedData['Phone Number']);
+            $filteredSubmittedData['Phone Number'] = ContactHelper::normalizePhone($filteredSubmittedData['Phone Number']);
         }
 
         $differences = array_diff_assoc($filteredSubmittedData, $currentData);
@@ -493,14 +436,18 @@ function opusdns_SaveContactDetails(array $params): array
             return ['success' => true];
         }
 
-        $newContactId = $api->contacts()->createContactFromWhmcsDetails($submittedData);
-        $newContacts = $tldInfo->buildContactsArray($newContactId);
+        $newContact = $api->contact()->createContact(ContactHelper::createFromWhmcsDetails($submittedData));
+        $newContactId = $newContact->contactId;
 
-        $api->domains()->update($params['domain'], ['contacts' => $newContacts]);
+        if ($newContactId === null) {
+            return ['error' => 'The registrant contact was created without an id'];
+        }
+
+        $api->domain()->updateDomain($params['domain'], new DomainUpdate(contacts: $tldInfo->buildContacts($newContactId)));
 
         return ['success' => true];
-    } catch (ApiException $e) {
-        return ['error' => $e->getMessage()];
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 }
 
@@ -520,30 +467,24 @@ function opusdns_CheckAvailability(array $params): ResultsList | array
     try {
         $api = opusdns_initApiClient($params);
         $results = new ResultsList();
-        $apiAvailabilityResults = $api->domains()->check($domainsToCheck)->getResults();
+        $apiAvailabilityResults = $api->domain()->eppCheckDomain($domainsToCheck)->results;
 
         foreach ($apiAvailabilityResults as $item) {
-            $domainObj = new \WHMCS\Domains\Domain($item->getDomain());
+            $domainObj = new \WHMCS\Domains\Domain($item->domain);
             $searchResult = SearchResult::factoryFromDomain($domainObj);
 
             $searchResult->setStatus(
-                $item->isAvailable()
+                $item->available
                     ? SearchResult::STATUS_NOT_REGISTERED
                     : SearchResult::STATUS_REGISTERED
             );
 
-            $registerPrice = $item->getPremiumRegisterPrice();
-            $renewPrice    = $item->getPremiumRenewPrice();
-            $currency      = $item->getPremiumCurrency();
+            $premiumPricing = PremiumPricingHelper::whmcsPricing($item);
 
-            if ($item->isAvailable() && $item->isPremium() && $isPremiumEnabled && $registerPrice !== null && $renewPrice !== null && $currency !== null) {
+            if ($item->available && $item->isPremium && $isPremiumEnabled && $premiumPricing !== null) {
                 $searchResult->setPremiumDomain(true);
-                $searchResult->setPremiumCostPricing([
-                    'register'     => $registerPrice,
-                    'renew'        => $renewPrice,
-                    'CurrencyCode' => $currency,
-                ]);
-            } elseif ($item->isPremium()) {
+                $searchResult->setPremiumCostPricing($premiumPricing);
+            } elseif ($item->isPremium) {
                 $searchResult->setStatus(SearchResult::STATUS_REGISTERED);
             }
 
@@ -551,8 +492,8 @@ function opusdns_CheckAvailability(array $params): ResultsList | array
         }
 
         return $results;
-    } catch (ApiException $e) {
-        return ['error' => $e->getMessage()];
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 }
 
@@ -594,61 +535,55 @@ function opusdns_GetDomainSuggestions(array $params): ResultsList | array
         $api = opusdns_initApiClient($params);
         $results = new ResultsList();
 
-        $apiSuggestionResults = $api->domainSearch()->suggest($searchTerm, [
-            'tlds' => $tldsToInclude,
-            'limit' => $limit,
-            'premium' => $includePremium,
-        ])->getResults();
+        $apiSuggestionResults = $api->domainSearch()->suggest(
+            $searchTerm,
+            tlds: $tldsToInclude,
+            limit: $limit,
+            premium: $includePremium,
+        )->results;
 
         $premiumDomains = [];
         foreach ($apiSuggestionResults as $item) {
-            if ($item->isPremium()) {
-                $premiumDomains[] = $item->getDomain();
+            if ($item->premium) {
+                $premiumDomains[] = $item->domain;
             }
         }
 
         $checkMap = [];
         if (!empty($premiumDomains)) {
-            $checkResults = $api->domains()->check($premiumDomains)->getResults();
+            $checkResults = $api->domain()->eppCheckDomain($premiumDomains)->results;
             foreach ($checkResults as $checkItem) {
-                $checkMap[$checkItem->getDomain()] = $checkItem;
+                $checkMap[$checkItem->domain] = $checkItem;
             }
         }
 
         foreach ($apiSuggestionResults as $item) {
-            $domainObj = new \WHMCS\Domains\Domain($item->getDomain());
+            $domainObj = new \WHMCS\Domains\Domain($item->domain);
             $searchResult = SearchResult::factoryFromDomain($domainObj);
-            $status = match ($item->isAvailable()) {
-                true => SearchResult::STATUS_NOT_REGISTERED,
-                false => SearchResult::STATUS_REGISTERED,
-            };
+            $status = $item->available
+                ? SearchResult::STATUS_NOT_REGISTERED
+                : SearchResult::STATUS_REGISTERED;
             $searchResult->setStatus($status);
 
-            if ($item->isAvailable() && $item->isPremium() && $includePremium) {
-                $checkItem = $checkMap[$item->getDomain()] ?? null;
-                $registerPrice = $checkItem?->getPremiumRegisterPrice();
-                $renewPrice = $checkItem?->getPremiumRenewPrice();
-                $currency = $checkItem?->getPremiumCurrency();
+            if ($item->available && $item->premium && $includePremium) {
+                $checkItem = $checkMap[$item->domain] ?? null;
+                $premiumPricing = $checkItem !== null ? PremiumPricingHelper::whmcsPricing($checkItem) : null;
 
-                if ($registerPrice !== null && $renewPrice !== null && $currency !== null) {
+                if ($premiumPricing !== null) {
                     $searchResult->setPremiumDomain(true);
-                    $searchResult->setPremiumCostPricing([
-                        'register'     => $registerPrice,
-                        'renew'        => $renewPrice,
-                        'CurrencyCode' => $currency,
-                    ]);
+                    $searchResult->setPremiumCostPricing($premiumPricing);
                 } else {
                     $searchResult->setStatus(SearchResult::STATUS_REGISTERED);
                 }
-            } elseif ($item->isPremium()) {
+            } elseif ($item->premium) {
                 $searchResult->setStatus(SearchResult::STATUS_REGISTERED);
             }
 
             $results->append($searchResult);
         }
         return $results;
-    } catch (ApiException $e) {
-        return ['error' => $e->getMessage()];
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 }
 
@@ -666,19 +601,16 @@ function opusdns_RegisterNameserver(array $params): array
 
     try {
         $api     = opusdns_initApiClient($params);
-        $tldInfo = $api->tlds()->getTld($tld);
+        $tldInfo = (new Tlds($api))->getTld($tld);
 
         if (!$tldInfo || !$tldInfo->supportsHostObjects()) {
             return ['error' => "The .{$tld} registry does not support host objects"];
         }
 
-        $api->hosts()->create([
-            'hostname'     => $nameserver,
-            'ip_addresses' => [$ipAddress],
-        ]);
+        $api->host()->createHost(new HostCreate($nameserver, [$ipAddress]));
         return ['success' => true];
-    } catch (ApiException $e) {
-        return ['error' => $e->getMessage()];
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 }
 
@@ -696,18 +628,16 @@ function opusdns_ModifyNameserver(array $params): array
 
     try {
         $api     = opusdns_initApiClient($params);
-        $tldInfo = $api->tlds()->getTld($tld);
+        $tldInfo = (new Tlds($api))->getTld($tld);
 
         if (!$tldInfo || !$tldInfo->supportsHostObjects()) {
             return ['error' => "The .{$tld} registry does not support host objects"];
         }
 
-        $api->hosts()->update($nameserver, [
-            'ip_addresses' => [$newIp],
-        ]);
+        $api->host()->updateHost($nameserver, new HostUpdate([$newIp]));
         return ['success' => true];
-    } catch (ApiException $e) {
-        return ['error' => $e->getMessage()];
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 }
 
@@ -724,16 +654,16 @@ function opusdns_DeleteNameserver(array $params): array
 
     try {
         $api     = opusdns_initApiClient($params);
-        $tldInfo = $api->tlds()->getTld($tld);
+        $tldInfo = (new Tlds($api))->getTld($tld);
 
         if (!$tldInfo || !$tldInfo->supportsHostObjects()) {
             return ['error' => "The .{$tld} registry does not support host objects"];
         }
 
-        $api->hosts()->delete($nameserver);
+        $api->host()->deleteHost($nameserver);
         return ['success' => true];
-    } catch (ApiException $e) {
-        return ['error' => $e->getMessage()];
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 }
 
@@ -754,11 +684,11 @@ function opusdns_SaveRegistrarLock(array $params): array
 
     try {
         $api = opusdns_initApiClient($params);
-        $statuses = $isLocked ? ['clientTransferProhibited'] : [];
-        $api->domains()->update($domainName, ['statuses' => $statuses]);
+        $statuses = $isLocked ? [DomainClientStatus::CLIENT_TRANSFER_PROHIBITED] : [];
+        $api->domain()->updateDomain($domainName, new DomainUpdate(statuses: $statuses));
         return ['success' => true];
-    } catch (ApiException $e) {
-        return ['error' => $e->getMessage()];
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 }
 
@@ -776,10 +706,10 @@ function opusdns_GetEPPCode(array $params): array
     $domainName = $params['domain'];
     try {
         $api = opusdns_initApiClient($params);
-        $response = $api->domains()->getByName($domainName)->getData();
-        return ['eppcode' => $response->getAuthCode()];
-    } catch (ApiException $e) {
-        return ['error' => $e->getMessage()];
+        $response = $api->domain()->getDomain($domainName);
+        return ['eppcode' => $response->authCode];
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 }
 
@@ -793,10 +723,10 @@ function opusdns_RequestDelete(array $params): array
     $domainName = $params['domain'];
     try {
         $api = opusdns_initApiClient($params);
-        $api->domains()->delete($domainName);
+        $api->domain()->deleteDomain($domainName);
         return ['success' => true];
-    } catch (ApiException $e) {
-        return ['error' => $e->getMessage()];
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 }
 
@@ -814,8 +744,8 @@ function opusdns_Sync(array $params): array
     $domainName = $params['domain'];
     try {
         $api = opusdns_initApiClient($params);
-        $response = $api->domains()->getByName($domainName)->getData();
-        $expiresOn = $response->getExpiresOn();
+        $response = $api->domain()->getDomain($domainName);
+        $expiresOn = $response->expiresOn;
 
         if (!$expiresOn) {
             return ['error' => 'Domain has no expiry date (may be pending transfer)'];
@@ -824,8 +754,8 @@ function opusdns_Sync(array $params): array
         return [
             'expirydate' => $expiresOn->format('Y-m-d'),
         ];
-    } catch (ApiException $e) {
-        return ['error' => $e->getMessage()];
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 }
 
@@ -841,14 +771,14 @@ function opusdns_TransferSync(array $params): array
     $domainName = $params['domain'];
     try {
         $api = opusdns_initApiClient($params);
-        $response = $api->domains()->getByName($domainName)->getData();
-        $registryStatuses = $response->getRegistryStatuses() ?? [];
+        $response = $api->domain()->getDomain($domainName);
+        $registryStatuses = $response->registryStatuses ?? [];
 
         if (in_array('pendingTransfer', $registryStatuses)) {
             return [];
         }
 
-        $expiresOn = $response->getExpiresOn();
+        $expiresOn = $response->expiresOn;
         if ($expiresOn) {
             return [
                 'completed' => true,
@@ -859,14 +789,14 @@ function opusdns_TransferSync(array $params): array
         return [
             'completed' => true,
         ];
-    } catch (ApiException $e) {
-        if ($e->getStatusCode() === 404) {
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        if ($exception instanceof NotFoundException) {
             return [
                 'failed' => true,
                 'reason' => 'Domain not found or transfer failed or was rejected',
             ];
         }
-        return ['error' => $e->getMessage()];
+        return ['error' => ErrorHelper::message($exception)];
     }
 }
 
@@ -874,36 +804,38 @@ function opusdns_GetTldPricing(array $params): ResultsList | array
 {
     try {
         $api = opusdns_initApiClient($params);
-        $tldGroups = $api->tlds()->getTlds();
-        $organizationId = $api->auth()->getOrganizationId();
-        $prices = $api->pricing()->getPrices($organizationId, ProductType::DOMAIN);
+        $tldGroups = (new Tlds($api))->getTlds();
+        $organizationId = $api->authentication()->introspectClientCredential()->organizationId;
+
+        if ($organizationId === null) {
+            return ['error' => 'The API key is not linked to an organization'];
+        }
+
+        $prices = $api->organization()->getPricingPlans($organizationId, BillingTransactionProductType::DOMAIN)->prices;
 
         $results = new ResultsList();
 
         $pricesByTld = [];
         foreach ($prices as $price) {
-            $productClass = $price->getProductClass();
-            $productAction = $price->getProductAction();
-            $period = $price->getPeriod();
+            $productClass = $price->productClass;
+            $productAction = $price->productAction;
+            $period = $price->period;
 
             if (!$productClass || !$productAction) {
                 continue;
             }
 
-            $periodValue = $period['value'] ?? null;
-            $periodUnit = $period['unit'] ?? null;
-
-            if ($periodValue !== 1 || $periodUnit !== PeriodUnit::YEAR->value) {
+            if ($period === null || $period->value !== 1 || $period->unit !== PeriodUnit::Y) {
                 continue;
             }
 
             if (!isset($pricesByTld[$productClass])) {
                 $pricesByTld[$productClass] = [
-                    'currency' => $price->getCurrency(),
+                    'currency' => $price->currency,
                 ];
             }
 
-            $pricesByTld[$productClass][$productAction] = $price->getPrice();
+            $pricesByTld[$productClass][$productAction] = (float)$price->price;
         }
 
         foreach ($tldGroups as $tldGroup) {
@@ -924,9 +856,9 @@ function opusdns_GetTldPricing(array $params): ResultsList | array
                 $tldPricing = $pricesByTld[$tldName];
                 $registrationYears = $tldGroup->getRegistrationYears();
                 $minYears = $tldGroup->getMinRegistrationYears();
-                $registerPrice = ($tldPricing[ProductAction::CREATE->value] ?? 0) * $minYears;
-                $renewPrice = isset($tldPricing[ProductAction::RENEW->value]) ? $tldPricing[ProductAction::RENEW->value] * $minYears : null;
-                $transferPrice = isset($tldPricing[ProductAction::TRANSFER->value]) ? $tldPricing[ProductAction::TRANSFER->value] * $minYears : null;
+                $registerPrice = ($tldPricing[BillingTransactionAction::CREATE->value] ?? 0) * $minYears;
+                $renewPrice = isset($tldPricing[BillingTransactionAction::RENEW->value]) ? $tldPricing[BillingTransactionAction::RENEW->value] * $minYears : null;
+                $transferPrice = isset($tldPricing[BillingTransactionAction::TRANSFER->value]) ? $tldPricing[BillingTransactionAction::TRANSFER->value] * $minYears : null;
                 $graceDays = $tldGroup->getGracePeriodDays();
                 $redemptionDays = $tldGroup->getRedemptionPeriodDays();
                 $eppRequired = $tldGroup->isAuthInfoRequired();
@@ -940,7 +872,7 @@ function opusdns_GetTldPricing(array $params): ResultsList | array
                     ->setGraceFeeDays($graceDays)
                     ->setGraceFeePrice($graceDays > 0 ? 0 : null)
                     ->setRedemptionFeeDays($redemptionDays)
-                    ->setRedemptionFeePrice($tldPricing[ProductAction::RESTORE->value] ?? null)
+                    ->setRedemptionFeePrice($tldPricing[BillingTransactionAction::RESTORE->value] ?? null)
                     ->setCurrency($tldPricing['currency'])
                     ->setEppRequired($eppRequired);
 
@@ -948,8 +880,8 @@ function opusdns_GetTldPricing(array $params): ResultsList | array
             }
         }
         return $results;
-    } catch (ApiException $e) {
-        return ['error' => $e->getMessage()];
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
     }
 }
 
@@ -1011,8 +943,8 @@ function opusdns_dns_zone_get(array $params): array
 
     try {
         $api = opusdns_initApiClient($params);
-        $zone = $api->dns()->getZone($domainName)->getData();
-        $rrsets = $zone->getUserEditableRecords($domainName);
+        $zone = $api->dns()->getZone($domainName);
+        $rrsets = DnsZoneHelper::userEditableRecords($zone);
 
         $domainInfo = opusdns_GetDomainInformation($params);
         if (is_array($domainInfo) && isset($domainInfo['error'])) {
@@ -1021,7 +953,7 @@ function opusdns_dns_zone_get(array $params): array
         }
 
         $domainNameservers = array_map('strtolower', array_values($domainInfo->getNameservers()));
-        $zoneNameservers = array_map('strtolower', $zone->getZoneNsRecords());
+        $zoneNameservers = array_map('strtolower', DnsZoneHelper::nameservers($zone));
 
         $sortedDomainNs = $domainNameservers;
         $sortedZoneNs = $zoneNameservers;
@@ -1033,16 +965,16 @@ function opusdns_dns_zone_get(array $params): array
         $result = [
             'success' => true,
             'zone' => [
-                'name' => $zone->getName(),
-                'soa' => $zone->getZoneSoaRecord(),
+                'name' => $zone->name,
+                'soa' => DnsZoneHelper::soaRecord($zone),
                 'nameservers' => $zoneNameservers,
                 'dnssec' => [
-                    'enabled' => $zone->getDnssecStatus() === 'enabled',
-                    'ds_records' => $zone->getZoneDsRecords(),
-                    'dnskey_records' => $zone->getZoneDnskeyRecords(),
+                    'enabled' => $zone->dnssecStatus === DnssecStatus::ENABLED,
+                    'ds_records' => DnsZoneHelper::dsRecords($zone),
+                    'dnskey_records' => DnsZoneHelper::dnskeyRecords($zone),
                 ],
-                'created_on' => $zone->getCreatedOn() ? $zone->getCreatedOn()->format('Y-m-d H:i:s') : null,
-                'updated_on' => $zone->getUpdatedOn() ? $zone->getUpdatedOn()->format('Y-m-d H:i:s') : null,
+                'created_on' => $zone->createdOn ? $zone->createdOn->format('Y-m-d H:i:s') : null,
+                'updated_on' => $zone->updatedOn ? $zone->updatedOn->format('Y-m-d H:i:s') : null,
             ],
             'domain' => [
                 'name' => $domainInfo->getDomain(),
@@ -1054,8 +986,8 @@ function opusdns_dns_zone_get(array $params): array
 
         echo json_encode($result);
         exit;
-    } catch (ApiException $e) {
-        if ($e->getStatusCode() === 404) {
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        if ($exception instanceof NotFoundException) {
             echo json_encode(['error' => 'Zone not found', 'not_found' => true]);
             exit;
         }
@@ -1073,13 +1005,10 @@ function opusdns_api_json_wrapper(array $params, callable $handler): array
         $result = $handler($api, $params);
         echo json_encode($result);
         exit;
-    } catch (ApiException $e) {
-        $errors = $e->getErrors();
-        $errorMessage = is_array($errors) ? ErrorHelper::extractRrsetErrors($errors) : $e->getMessage();
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        $response = ['error' => ErrorHelper::message($exception) ?: 'Operation failed'];
 
-        $response = ['error' => $errorMessage ?: 'Operation failed'];
-
-        if ($e->getStatusCode() === 404) {
+        if ($exception instanceof NotFoundException) {
             $response['not_found'] = true;
         }
 
@@ -1090,31 +1019,31 @@ function opusdns_api_json_wrapper(array $params, callable $handler): array
 
 function opusdns_dns_zone_add_rrset(array $params): array
 {
-    return opusdns_api_json_wrapper($params, function ($api, $params) {
-        $api->dns()->addRecordsFromFormData($params['domain'], $_POST);
+    return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
+        (new Dns($api))->addRecordsFromFormData($params['domain'], $_POST);
         return ['success' => true];
     });
 }
 
 function opusdns_dns_zone_update_rrset(array $params): array
 {
-    return opusdns_api_json_wrapper($params, function ($api, $params) {
-        $api->dns()->updateRrsetFromFormData($params['domain'], $_POST);
+    return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
+        (new Dns($api))->updateRrsetFromFormData($params['domain'], $_POST);
         return ['success' => true];
     });
 }
 
 function opusdns_dns_zone_upsert_rrsets(array $params): array
 {
-    return opusdns_api_json_wrapper($params, function ($api, $params) {
+    return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
         $rrsetsRaw = html_entity_decode($_POST['rrsets'] ?? '[]');
         $rrsets = json_decode($rrsetsRaw, true);
 
         if (empty($rrsets) || !is_array($rrsets)) {
-            throw new ApiException('No records provided');
+            throw new \InvalidArgumentException('No records provided');
         }
 
-        $api->dns()->upsertRrsets($params['domain'], $rrsets);
+        (new Dns($api))->upsertRrsets($params['domain'], $rrsets);
 
         return ['success' => true];
     });
@@ -1122,23 +1051,23 @@ function opusdns_dns_zone_upsert_rrsets(array $params): array
 
 function opusdns_dns_zone_delete_rrset(array $params): array
 {
-    return opusdns_api_json_wrapper($params, function ($api, $params) {
-        $api->dns()->deleteRrsetFromFormData($params['domain'], $_POST);
+    return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
+        (new Dns($api))->deleteRrsetFromFormData($params['domain'], $_POST);
         return ['success' => true];
     });
 }
 
 function opusdns_dns_zone_delete_rrsets(array $params): array
 {
-    return opusdns_api_json_wrapper($params, function ($api, $params) {
+    return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
         $rrsetsRaw = html_entity_decode($_POST['rrsets'] ?? '[]');
         $rrsets = json_decode($rrsetsRaw, true);
 
         if (empty($rrsets) || !is_array($rrsets)) {
-            throw new ApiException('No records provided');
+            throw new \InvalidArgumentException('No records provided');
         }
 
-        $api->dns()->deleteRrsets($params['domain'], $rrsets);
+        (new Dns($api))->deleteRrsets($params['domain'], $rrsets);
 
         return ['success' => true];
     });
@@ -1146,16 +1075,16 @@ function opusdns_dns_zone_delete_rrsets(array $params): array
 
 function opusdns_dns_zone_set_nameservers(array $params): array
 {
-    return opusdns_api_json_wrapper($params, function ($api, $params) {
+    return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
         $rawNameservers = html_entity_decode($_POST['nameservers'] ?? '[]');
         $nameservers = json_decode($rawNameservers, true);
 
-        if (empty($nameservers)) {
-            throw new ApiException('No nameservers provided');
+        if (empty($nameservers) || !is_array($nameservers)) {
+            throw new \InvalidArgumentException('No nameservers provided');
         }
 
         $nameserverData = NameserverHelper::buildApiFormat($nameservers);
-        $api->domains()->update($params['domain'], ['nameservers' => $nameserverData]);
+        $api->domain()->updateDomain($params['domain'], new DomainUpdate(nameservers: $nameserverData));
 
         return ['success' => true];
     });
@@ -1163,15 +1092,15 @@ function opusdns_dns_zone_set_nameservers(array $params): array
 
 function opusdns_dns_zone_create(array $params): array
 {
-    return opusdns_api_json_wrapper($params, function ($api, $params) {
-        $api->dns()->createZone($params['domain']);
+    return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
+        $api->dns()->createZone(new DnsZoneCreate($params['domain']));
         return ['success' => true];
     });
 }
 
 function opusdns_dns_zone_delete(array $params): array
 {
-    return opusdns_api_json_wrapper($params, function ($api, $params) {
+    return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
         $api->dns()->deleteZone($params['domain']);
         return ['success' => true];
     });
@@ -1179,7 +1108,7 @@ function opusdns_dns_zone_delete(array $params): array
 
 function opusdns_dns_zone_dnssec_enable(array $params): array
 {
-    return opusdns_api_json_wrapper($params, function ($api, $params) {
+    return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
         $api->dns()->enableDnssec($params['domain']);
         return ['success' => true];
     });
@@ -1187,7 +1116,7 @@ function opusdns_dns_zone_dnssec_enable(array $params): array
 
 function opusdns_dns_zone_dnssec_disable(array $params): array
 {
-    return opusdns_api_json_wrapper($params, function ($api, $params) {
+    return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
         $api->dns()->disableDnssec($params['domain']);
         return ['success' => true];
     });
@@ -1198,17 +1127,17 @@ function opusdns_dns_zone_template_list(array $params): array
     header('Content-Type: application/json');
 
     try {
-        $templates = \WHMCS\Module\Registrar\OpusDNS\Service\DnsTemplates::listTemplates();
+        $templates = DnsTemplates::listTemplates();
 
         echo json_encode([
             'success' => true,
             'templates' => array_values($templates),
         ]);
         exit;
-    } catch (Exception $e) {
+    } catch (Exception $exception) {
         echo json_encode([
             'success' => false,
-            'error' => 'Failed to load templates: ' . $e->getMessage(),
+            'error' => 'Failed to load templates: ' . $exception->getMessage(),
         ]);
         exit;
     }

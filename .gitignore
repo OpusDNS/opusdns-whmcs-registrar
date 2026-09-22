@@ -3,6 +3,6 @@
 
 # Composer
 composer.phar
-composer.lock
-vendor
+/composer.lock
+/vendor
 scripts.local/

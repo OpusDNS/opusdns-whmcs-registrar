@@ -11,10 +11,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - name: Create release zip
+      - name: Copy the module
         run: |
           mkdir -p release
           cp -r modules release/
+
+      - name: Write the release version into the module
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: echo "${RELEASE_TAG#v}" > release/modules/registrars/opusdns/VERSION
+
+      - name: Create release zip
+        run: |
           cd release
           zip -r ../opusdns-whmcs.zip modules/
 
