@@ -65,6 +65,7 @@ To configure the module:
 - Domain Transfer
 - Nameserver Management
 - Registrar Lock
+- DNSSEC Management
 - EPP Code Retrieval
 - Domain Deletion
 - Domain Availability Checks

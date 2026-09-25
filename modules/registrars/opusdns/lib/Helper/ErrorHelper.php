@@ -11,15 +11,16 @@ use Throwable;
 class ErrorHelper
 {
     /**
-     * The message shown in WHMCS for a failed API call: the validation messages of a 422, the problem
-     * details of any other HTTP error, or the exception message.
+     * Returns the error message to show in WHMCS for a failed API call.
      */
     public static function message(Throwable $exception): string
     {
         if ($exception instanceof ValidationException) {
-            $messages = $exception->messages();
-            if ($messages !== []) {
-                return implode('; ', $messages);
+            $errors = $exception->errors();
+            $fieldErrors = array_filter($errors, static fn (array $error): bool => isset($error['msg']));
+
+            if ($errors !== [] && count($fieldErrors) === count($errors)) {
+                return implode('; ', $exception->messages());
             }
         }
 

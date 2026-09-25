@@ -22,6 +22,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use OpusDNS\Client\Client;
 use OpusDNS\Client\Enum\BillingTransactionAction;
 use OpusDNS\Client\Enum\BillingTransactionProductType;
+use OpusDNS\Client\Enum\DnssecRecordType;
 use OpusDNS\Client\Enum\DnssecStatus;
 use OpusDNS\Client\Enum\DomainClientStatus;
 use OpusDNS\Client\Enum\PeriodUnit;
@@ -49,6 +50,7 @@ use WHMCS\Module\Registrar\OpusDNS\Helper\ErrorHelper;
 use WHMCS\Module\Registrar\OpusDNS\Helper\NameserverHelper;
 use WHMCS\Module\Registrar\OpusDNS\Helper\PremiumPricingHelper;
 use WHMCS\Module\Registrar\OpusDNS\Service\Dns;
+use WHMCS\Module\Registrar\OpusDNS\Service\Dnssec;
 use WHMCS\Module\Registrar\OpusDNS\Service\DnsTemplates;
 use WHMCS\Module\Registrar\OpusDNS\Service\Tlds;
 use WHMCS\Exception\Module\InvalidConfiguration;
@@ -889,18 +891,32 @@ function opusdns_ClientAreaCustomButtonArray(array $params): array
 {
     $lang = opusdns_loadLanguage();
     $dns_zone_label = $lang['opusdns']['dns_zone']['menu_label'] ?? 'Manage DNS Zone';
-    return [
-        $dns_zone_label => 'dns_zone',
-    ];
+    $buttons = [];
+
+    try {
+        $tldInfo = (new Tlds(opusdns_initApiClient($params)))->getTld($params['tld']);
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        $tldInfo = null;
+    }
+
+    if ($tldInfo && $tldInfo->supportsDnssec()) {
+        $buttons[$lang['opusdns']['dnssec']['menu_label'] ?? 'DNSSEC Management'] = 'dnssec';
+    }
+
+    $buttons[$dns_zone_label] = 'dns_zone';
+
+    return $buttons;
 }
 
 function opusdns_ClientAreaAllowedFunctions(array $params): array
 {
     $lang = opusdns_loadLanguage();
     $dns_zone_label = $lang['opusdns']['dns_zone']['menu_label'] ?? 'Manage DNS Zone';
+    $dnssecLabel = $lang['opusdns']['dnssec']['menu_label'] ?? 'DNSSEC Management';
 
     return [
         $dns_zone_label => 'dns_zone',
+        $dnssecLabel => 'dnssec',
         'dns_zone_get' => 'dns_zone_get',
         'dns_zone_create' => 'dns_zone_create',
         'dns_zone_delete' => 'dns_zone_delete',
@@ -1141,4 +1157,89 @@ function opusdns_dns_zone_template_list(array $params): array
         ]);
         exit;
     }
+}
+
+/**
+ * Renders the client area DNSSEC page and handles its add and remove actions.
+ */
+function opusdns_dnssec(array $params): array
+{
+    $lang = opusdns_loadLanguage();
+    $messages = $lang['opusdns']['dnssec'];
+    $domainName = $params['domain'];
+    $token = trim($_REQUEST['token'] ?? '');
+    $pageUrl = 'clientarea.php?action=domaindetails&id=' . $params['domainid'] . '&modop=custom&a=dnssec&token=' . $token;
+    $noticeSessionKey = 'opusdns_dnssec_notice_' . $params['domainid'];
+    $action = $_POST['dnssec_action'] ?? null;
+    $formData = (array)($_POST['dnssec'] ?? []);
+
+    $notice = $_SESSION[$noticeSessionKey] ?? null;
+    unset($_SESSION[$noticeSessionKey]);
+
+    $supported = false;
+    $recordType = DnssecRecordType::DS_DATA;
+    $records = [];
+
+    try {
+        $api = opusdns_initApiClient($params);
+        $dnssec = new Dnssec($api);
+        $tldInfo = (new Tlds($api))->getTld($params['tld']);
+        $supported = $tldInfo && $tldInfo->supportsDnssec();
+
+        if ($supported) {
+            $recordType = $tldInfo->dnssecRecordType();
+            $successMessage = null;
+
+            if ($action === 'add') {
+                $invalidField = Dnssec::invalidField($formData, $recordType);
+
+                if ($invalidField !== null) {
+                    $notice = ['type' => 'danger', 'message' => sprintf($messages['errors']['invalid_field'], $messages['fields'][$invalidField])];
+                } elseif (!$dnssec->addRecordFromFormData($domainName, $formData, $recordType)) {
+                    $notice = ['type' => 'danger', 'message' => $messages['errors']['duplicate']];
+                } else {
+                    $successMessage = $messages['notices']['added'];
+                }
+            } elseif ($action === 'remove') {
+                if ($dnssec->removeRecord($domainName, (string)($_POST['record_id'] ?? ''))) {
+                    $successMessage = $messages['notices']['removed'];
+                } else {
+                    $notice = ['type' => 'danger', 'message' => $messages['errors']['record_not_found']];
+                }
+            } elseif ($action === 'remove_all') {
+                $api->domain()->deleteDnssec($domainName);
+                $successMessage = $messages['notices']['removed_all'];
+            }
+
+            if ($successMessage !== null) {
+                $_SESSION[$noticeSessionKey] = ['type' => 'success', 'message' => $successMessage];
+                header('Location: ' . $pageUrl);
+                exit;
+            }
+
+            $records = $dnssec->records($domainName);
+        }
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        $notice = ['type' => 'danger', 'message' => ErrorHelper::message($exception)];
+    }
+
+    return [
+        'templatefile' => 'dnssec',
+        'vars' => [
+            'pageUrl' => $pageUrl,
+            'supported' => $supported,
+            'recordType' => $recordType->value,
+            'records' => $records,
+            'algorithmOptions' => Dnssec::algorithmOptions(),
+            'digestTypeOptions' => Dnssec::digestTypeOptions(),
+            'formData' => array_merge([
+                'algorithm' => Dnssec::DEFAULT_ALGORITHM,
+                'digest_type' => Dnssec::DEFAULT_DIGEST_TYPE,
+                'flags' => Dnssec::DEFAULT_FLAGS,
+                'protocol' => Dnssec::DEFAULT_PROTOCOL,
+            ], $formData),
+            'notice' => $notice,
+            'LANG' => $lang,
+        ],
+    ];
 }

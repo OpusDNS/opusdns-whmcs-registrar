@@ -356,3 +356,54 @@ $_LANG['opusdns']['dns_zone'] = [
         'template_variables_not_filled' => 'Unele variabile de șablon nu sunt completate',
     ],
 ];
+
+$_LANG['opusdns']['dnssec'] = [
+    'menu_label' => 'Gestionare DNSSEC',
+    'title' => 'DNSSEC',
+    'not_supported' => 'Registrul acestui domeniu nu acceptă DNSSEC.',
+    'records' => [
+        'title' => 'Înregistrări DNSSEC',
+    ],
+    'empty' => [
+        'title' => 'Nicio înregistrare DNSSEC',
+        'desc' => 'DNSSEC nu este activ pentru acest domeniu. Adăugați mai jos înregistrarea de la furnizorul DNS pentru a-l activa.',
+    ],
+    'add' => [
+        'title' => 'Înregistrare DNSSEC nouă',
+    ],
+    'hints' => [
+        'key_tag' => 'Un număr între 0 și 65535',
+        'protocol' => 'Întotdeauna 3 pentru DNSSEC',
+        'digest' => 'Digestul hexazecimal de la furnizorul DNS',
+        'public_key' => 'Cheia publică Base64 de la furnizorul DNS',
+    ],
+    'fields' => [
+        'key_tag' => 'Key Tag',
+        'algorithm' => 'Algoritm',
+        'digest_type' => 'Tip digest',
+        'digest' => 'Digest',
+        'flags' => 'Flags',
+        'protocol' => 'Protocol',
+        'public_key' => 'Cheie publică',
+    ],
+    'actions' => [
+        'add' => 'Adaugă înregistrare',
+        'remove' => 'Elimină',
+        'remove_all' => 'Elimină tot',
+        'copy' => 'Copiază',
+    ],
+    'confirm' => [
+        'remove' => 'Eliminați această înregistrare DNSSEC de la registru?',
+        'remove_all' => 'Eliminați toate înregistrările DNSSEC de la registru? DNSSEC va fi dezactivat pentru acest domeniu.',
+    ],
+    'notices' => [
+        'added' => 'Înregistrare DNSSEC adăugată',
+        'removed' => 'Înregistrare DNSSEC eliminată',
+        'removed_all' => 'Toate înregistrările DNSSEC au fost eliminate',
+    ],
+    'errors' => [
+        'invalid_field' => 'Valoare invalidă pentru %s',
+        'duplicate' => 'Domeniul are deja această înregistrare DNSSEC',
+        'record_not_found' => 'Înregistrarea DNSSEC nu mai există',
+    ],
+];
