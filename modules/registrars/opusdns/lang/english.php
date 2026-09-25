@@ -357,3 +357,54 @@ $_LANG['opusdns']['dns_zone'] = [
     ],
 
 ];
+
+$_LANG['opusdns']['dnssec'] = [
+    'menu_label' => 'DNSSEC Management',
+    'title' => 'DNSSEC',
+    'not_supported' => 'The registry of this domain does not support DNSSEC.',
+    'records' => [
+        'title' => 'DNSSEC records',
+    ],
+    'empty' => [
+        'title' => 'No DNSSEC records',
+        'desc' => 'DNSSEC is not active for this domain. Add the record from your DNS provider below to activate it.',
+    ],
+    'add' => [
+        'title' => 'New DNSSEC record',
+    ],
+    'hints' => [
+        'key_tag' => 'A number from 0 to 65535',
+        'protocol' => 'Always 3 for DNSSEC',
+        'digest' => 'The hexadecimal digest from your DNS provider',
+        'public_key' => 'The Base64 public key from your DNS provider',
+    ],
+    'fields' => [
+        'key_tag' => 'Key Tag',
+        'algorithm' => 'Algorithm',
+        'digest_type' => 'Digest Type',
+        'digest' => 'Digest',
+        'flags' => 'Flags',
+        'protocol' => 'Protocol',
+        'public_key' => 'Public Key',
+    ],
+    'actions' => [
+        'add' => 'Add record',
+        'remove' => 'Remove',
+        'remove_all' => 'Remove all',
+        'copy' => 'Copy',
+    ],
+    'confirm' => [
+        'remove' => 'Remove this DNSSEC record from the registry?',
+        'remove_all' => 'Remove all DNSSEC records from the registry? DNSSEC will be switched off for this domain.',
+    ],
+    'notices' => [
+        'added' => 'DNSSEC record added',
+        'removed' => 'DNSSEC record removed',
+        'removed_all' => 'All DNSSEC records removed',
+    ],
+    'errors' => [
+        'invalid_field' => 'Invalid value for %s',
+        'duplicate' => 'The domain already has this DNSSEC record',
+        'record_not_found' => 'The DNSSEC record no longer exists',
+    ],
+];

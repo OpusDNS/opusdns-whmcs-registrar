@@ -356,3 +356,54 @@ $_LANG['opusdns']['dns_zone'] = [
         'template_variables_not_filled' => 'Einige Vorlagenvariablen sind nicht ausgefüllt',
     ],
 ];
+
+$_LANG['opusdns']['dnssec'] = [
+    'menu_label' => 'DNSSEC-Verwaltung',
+    'title' => 'DNSSEC',
+    'not_supported' => 'Die Registry dieser Domain unterstützt kein DNSSEC.',
+    'records' => [
+        'title' => 'DNSSEC-Einträge',
+    ],
+    'empty' => [
+        'title' => 'Keine DNSSEC-Einträge',
+        'desc' => 'DNSSEC ist für diese Domain nicht aktiv. Fügen Sie unten den Eintrag Ihres DNS-Anbieters hinzu, um es zu aktivieren.',
+    ],
+    'add' => [
+        'title' => 'Neuer DNSSEC-Eintrag',
+    ],
+    'hints' => [
+        'key_tag' => 'Eine Zahl von 0 bis 65535',
+        'protocol' => 'Für DNSSEC immer 3',
+        'digest' => 'Der hexadezimale Digest Ihres DNS-Anbieters',
+        'public_key' => 'Der Base64-Schlüssel Ihres DNS-Anbieters',
+    ],
+    'fields' => [
+        'key_tag' => 'Key Tag',
+        'algorithm' => 'Algorithmus',
+        'digest_type' => 'Digest-Typ',
+        'digest' => 'Digest',
+        'flags' => 'Flags',
+        'protocol' => 'Protokoll',
+        'public_key' => 'Öffentlicher Schlüssel',
+    ],
+    'actions' => [
+        'add' => 'Eintrag hinzufügen',
+        'remove' => 'Entfernen',
+        'remove_all' => 'Alle entfernen',
+        'copy' => 'Kopieren',
+    ],
+    'confirm' => [
+        'remove' => 'Diesen DNSSEC-Eintrag bei der Registry entfernen?',
+        'remove_all' => 'Alle DNSSEC-Einträge bei der Registry entfernen? DNSSEC wird für diese Domain deaktiviert.',
+    ],
+    'notices' => [
+        'added' => 'DNSSEC-Eintrag hinzugefügt',
+        'removed' => 'DNSSEC-Eintrag entfernt',
+        'removed_all' => 'Alle DNSSEC-Einträge entfernt',
+    ],
+    'errors' => [
+        'invalid_field' => 'Ungültiger Wert für %s',
+        'duplicate' => 'Die Domain hat diesen DNSSEC-Eintrag bereits',
+        'record_not_found' => 'Der DNSSEC-Eintrag existiert nicht mehr',
+    ],
+];

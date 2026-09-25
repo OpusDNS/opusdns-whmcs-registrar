@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WHMCS\Module\Registrar\OpusDNS\Models;
 
+use OpusDNS\Client\Enum\DnssecModeType;
+use OpusDNS\Client\Enum\DnssecRecordType;
 use OpusDNS\Client\Enum\PeriodUnit;
 use OpusDNS\Client\Model\ContactHandle;
 
@@ -195,6 +197,21 @@ class Tld
     public function supportsHostObjects(): bool
     {
         return (bool)($this->dns_configuration['host_objects'] ?? false);
+    }
+
+    public function supportsDnssec(): bool
+    {
+        return (bool)($this->dns_configuration['dnssec_allowed'] ?? false);
+    }
+
+    /**
+     * Returns the DNSSEC record type the registry accepts.
+     */
+    public function dnssecRecordType(): DnssecRecordType
+    {
+        $dnssecMode = $this->dns_configuration['dnssec_mode'] ?? null;
+
+        return $dnssecMode === DnssecModeType::DNSKEY->value ? DnssecRecordType::KEY_DATA : DnssecRecordType::DS_DATA;
     }
 
     /**
