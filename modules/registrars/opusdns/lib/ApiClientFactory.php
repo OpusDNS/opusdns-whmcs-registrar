@@ -13,6 +13,7 @@ use OpusDNS\Client\Config;
  */
 final class ApiClientFactory
 {
+    public const REGISTRAR = 'opusdns';
     public const VERSION_FILE = __DIR__ . '/../VERSION';
     public const REQUEST_TIMEOUT = 300.0;
     public const CONNECT_TIMEOUT = 60.0;
@@ -30,6 +31,22 @@ final class ApiClientFactory
     public static function userAgent(): string
     {
         return 'opusdns-whmcs/' . self::moduleVersion();
+    }
+
+    /**
+     * Returns the API client for the saved registrar settings, or null when no API key is configured.
+     */
+    public static function fromRegistrarSettings(): ?Client
+    {
+        require_once ROOTDIR . '/includes/registrarfunctions.php';
+
+        $params = getRegistrarConfigOptions(self::REGISTRAR);
+
+        if (trim((string) ($params['ApiKey'] ?? '')) === '') {
+            return null;
+        }
+
+        return self::fromParams($params);
     }
 
     /**

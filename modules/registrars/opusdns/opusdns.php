@@ -320,6 +320,7 @@ function opusdns_GetDomainInformation(array $params): Domain | array
     try {
         $api = opusdns_initApiClient($params);
         $response = $api->domain()->getDomain($domainName);
+        $tldInfo = (new Tlds($api))->getTld($params['tld']);
     } catch (OpusDnsException | \InvalidArgumentException $exception) {
         return [
             'error' => ErrorHelper::message($exception),
@@ -334,7 +335,10 @@ function opusdns_GetDomainInformation(array $params): Domain | array
     if ($expiresOn) {
         $domain->setExpiryDate(Carbon::parse($expiresOn->format('Y-m-d H:i:s')));
     }
-    $domain->setTransferLock($response->transferLock);
+
+    if ($tldInfo && $tldInfo->supportsTransferLock()) {
+        $domain->setTransferLock($response->transferLock);
+    }
 
     return $domain;
 }
@@ -682,10 +686,17 @@ function opusdns_GetRegistrarLock(array $params): string
 function opusdns_SaveRegistrarLock(array $params): array
 {
     $domainName = $params['domain'];
+    $tld = $params['tld'];
     $isLocked = $params['lockenabled'] === 'locked';
 
     try {
         $api = opusdns_initApiClient($params);
+        $tldInfo = (new Tlds($api))->getTld($tld);
+
+        if (!$tldInfo || !$tldInfo->supportsTransferLock()) {
+            return ['error' => "The .{$tld} registry does not support registrar lock"];
+        }
+
         $statuses = $isLocked ? [DomainClientStatus::CLIENT_TRANSFER_PROHIBITED] : [];
         $api->domain()->updateDomain($domainName, new DomainUpdate(statuses: $statuses));
         return ['success' => true];
