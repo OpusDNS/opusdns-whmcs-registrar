@@ -199,6 +199,14 @@ class Tld
         return (bool)($this->dns_configuration['host_objects'] ?? false);
     }
 
+    public function supportsTransferLock(): bool
+    {
+        $transferLockPolicy = $this->transfer_policies['transfer_lock_policy'] ?? [];
+
+        return ($transferLockPolicy['supported_by_registry'] ?? false) === true
+            && ($transferLockPolicy['supported_by_registrar'] ?? false) === true;
+    }
+
     public function supportsDnssec(): bool
     {
         return (bool)($this->dns_configuration['dnssec_allowed'] ?? false);
