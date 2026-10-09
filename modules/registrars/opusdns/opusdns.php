@@ -86,6 +86,12 @@ function opusdns_getConfigArray(): array
             'Type' => 'yesno',
             'Description' => 'Tick to enable',
         ],
+        'ProcessDomainEvents' => [
+            'FriendlyName' => 'Process Domain Events',
+            'Type' => 'yesno',
+            'Default' => 'on',
+            'Description' => 'Tick to process OpusDNS domain deletion, outbound transfer, transit and withdraw events',
+        ],
 
     ];
 }

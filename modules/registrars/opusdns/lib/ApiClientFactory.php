@@ -18,6 +18,9 @@ final class ApiClientFactory
     public const REQUEST_TIMEOUT = 300.0;
     public const CONNECT_TIMEOUT = 60.0;
 
+    /** @var array<string, mixed>|null */
+    private static ?array $registrarSettings = null;
+
     /**
      * The module version from the VERSION file, which the release workflow writes; dev without it.
      */
@@ -38,15 +41,32 @@ final class ApiClientFactory
      */
     public static function fromRegistrarSettings(): ?Client
     {
-        require_once ROOTDIR . '/includes/registrarfunctions.php';
-
-        $params = getRegistrarConfigOptions(self::REGISTRAR);
+        $params = self::registrarSettings();
 
         if (trim((string) ($params['ApiKey'] ?? '')) === '') {
             return null;
         }
 
         return self::fromParams($params);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public static function registrarSettings(): array
+    {
+        if (self::$registrarSettings === null) {
+            require_once ROOTDIR . '/includes/registrarfunctions.php';
+
+            self::$registrarSettings = getRegistrarConfigOptions(self::REGISTRAR);
+        }
+
+        return self::$registrarSettings;
+    }
+
+    public static function isSettingEnabled(string $setting): bool
+    {
+        return (self::registrarSettings()[$setting] ?? '') === 'on';
     }
 
     /**

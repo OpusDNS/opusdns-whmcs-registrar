@@ -71,6 +71,7 @@ To configure the module:
 - Domain Availability Checks
 - Domain Suggestions
 - Domain Expiration Date Sync
+- Domain Event Processing
 - TLD & Pricing Sync
 - Premium Domains
 
