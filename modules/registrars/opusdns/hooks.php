@@ -8,7 +8,9 @@ if (!defined('WHMCS')) {
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+use WHMCS\Module\Registrar\OpusDNS\Hooks\DomainEventHooks;
 use WHMCS\Module\Registrar\OpusDNS\Hooks\RegistrarLockHooks;
 
 add_hook('ClientAreaPrimarySidebar', 1, [RegistrarLockHooks::class, 'hideSidebarItem']);
 add_hook('ClientAreaPageDomainDetails', 1, [RegistrarLockHooks::class, 'hideOnDomainDetails']);
+add_hook('AfterCronJob', 1, [DomainEventHooks::class, 'processEvents']);
