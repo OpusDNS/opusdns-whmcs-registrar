@@ -13,4 +13,5 @@ enum RegistrantChangeType: string
 {
     case UPDATE = 'update';
     case TRADE = 'trade';
+    case MANUAL = 'manual';
 }

@@ -40,11 +40,13 @@ final class EmailForwardService
      *
      * @param int|null $page Server default: 1.
      * @param int|null $pageSize Server default: 10.
-     * @param EmailForwardSortField|string|null $sortBy Server default: created_on.
-     * @param SortOrder|string|null $sortOrder Server default: desc.
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $search Search by hostname
+     * @param bool|null $enabled Filter by enabled status
+     * @param EmailForwardSortField|string|null $sortBy Field to sort by Server default: created_on.
+     * @param SortOrder|string|null $sortOrder Sort order direction Server default: desc.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function listEmailForwards(
         ?int $page = null,
@@ -74,9 +76,9 @@ final class EmailForwardService
      * Required permissions: dns:manage, email_forwards:manage
      *
      * @param EmailForwardCreate|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function createEmailForward(
         EmailForwardCreate|array $body,
@@ -99,9 +101,9 @@ final class EmailForwardService
      *
      * Required permissions: email_forwards:read
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function getEmailForward(string $emailForwardId, ?string $xDatetimeFormat = null): EmailForwardResponse
     {
@@ -123,9 +125,9 @@ final class EmailForwardService
      *
      * Required permissions: email_forwards:delete
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function deleteEmailForward(string $emailForwardId, ?string $xDatetimeFormat = null): void
     {
@@ -146,9 +148,9 @@ final class EmailForwardService
      * Required permissions: email_forwards:manage
      *
      * @param EmailForwardAliasCreate|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function createEmailForwardAlias(
         string $emailForwardId,
@@ -175,9 +177,9 @@ final class EmailForwardService
      * Required permissions: email_forwards:manage
      *
      * @param EmailForwardAliasUpdate|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function updateEmailForwardAlias(
         string $emailForwardId,
@@ -204,9 +206,9 @@ final class EmailForwardService
      *
      * Required permissions: email_forwards:manage
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function deleteEmailForwardAlias(
         string $emailForwardId,
@@ -229,9 +231,9 @@ final class EmailForwardService
      *
      * Required permissions: email_forwards:manage
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function disableEmailForward(string $emailForwardId, ?string $xDatetimeFormat = null): void
     {
@@ -251,9 +253,9 @@ final class EmailForwardService
      *
      * Required permissions: email_forwards:manage
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function enableEmailForward(string $emailForwardId, ?string $xDatetimeFormat = null): void
     {
@@ -273,9 +275,11 @@ final class EmailForwardService
      *
      * Required permissions: email_forwards:read
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param \DateTimeImmutable|null $startTime Filter metrics after (RFC3339)
+     * @param \DateTimeImmutable|null $endTime Filter metrics before (RFC3339)
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function getEmailForwardMetrics(
         string $emailForwardId,

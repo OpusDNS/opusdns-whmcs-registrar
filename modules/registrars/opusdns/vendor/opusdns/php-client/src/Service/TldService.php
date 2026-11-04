@@ -32,9 +32,9 @@ final class TldService
      *
      * Required permissions: organization:read
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      * @return array<string, list<array<string, mixed>>>
      */
     public function getTldSpecifications(
@@ -59,9 +59,9 @@ final class TldService
      *
      * Required permissions: organization:read
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      * @return list<TldResponseShort>
      */
     public function getTldPortfolio(?string $xDatetimeFormat = null): array
@@ -85,9 +85,9 @@ final class TldService
      * @param RegistryServiceBackend|string|null $backend Override the resolved account backend.
      * @param string|null $customerSpecRef Override the customer spec ref.
      * @param string|null $version Override the spec version pin (or LATEST).
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function getTldSpec(
         string $tld,

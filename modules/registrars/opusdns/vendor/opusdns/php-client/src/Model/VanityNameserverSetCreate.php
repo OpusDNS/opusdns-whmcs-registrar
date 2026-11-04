@@ -19,7 +19,9 @@ use OpusDNS\Client\Serializer;
 final readonly class VanityNameserverSetCreate implements ApiModel
 {
     /**
-     * @param list<string> $hostnames Fully-qualified vanity NS hostnames, ordered by intended position.
+     * @param list<string> $hostnames Fully-qualified vanity NS hostnames, ordered by intended position. A set may
+     *     not have more hostnames than there are anycast address pairs (each hostname gets its own IPs); a larger
+     *     set is rejected with 400.
      * @param string $name Human-readable name for the set
      * @param string $parentDomainName Apex domain of the vanity NS zone; all hostnames must be subdomains.
      * @param string $soaRname SOA RNAME stamped verbatim into the vanity NS zone

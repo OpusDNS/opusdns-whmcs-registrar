@@ -21,5 +21,5 @@ namespace OpusDNS\Client\Enum;
 enum DomainListIncludeField: string
 {
     case TAGS = 'tags';
-    case REGISTRAR_CREDENTIAL = 'registrar_credential';
+    case CONNECTED_ACCOUNT = 'connected_account';
 }

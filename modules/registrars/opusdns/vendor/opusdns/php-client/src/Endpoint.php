@@ -93,6 +93,9 @@ final class Endpoint
     public const CONTACTS_BY_CONTACT_ID_VERIFICATION = '/v1/contacts/{contact_id}/verification';
 
     /** GET */
+    public const CONTACTS_BY_CONTACT_ID_VERIFICATION_CASES = '/v1/contacts/{contact_id}/verification-cases';
+
+    /** GET */
     public const CONTACTS_BY_CONTACT_ID_VERIFICATIONS = '/v1/contacts/{contact_id}/verifications';
 
     /** POST */
@@ -106,6 +109,18 @@ final class Endpoint
 
     /** GET */
     public const DNS_EMAIL_FORWARDS = '/v1/dns/email-forwards';
+
+    /** GET */
+    public const DNS_STATISTICS = '/v1/dns/statistics';
+
+    /** GET */
+    public const DNS_STATISTICS_INACTIVE_ZONES = '/v1/dns/statistics/inactive-zones';
+
+    /** GET */
+    public const DNS_STATISTICS_MOVERS = '/v1/dns/statistics/movers';
+
+    /** GET */
+    public const DNS_STATISTICS_TOP_ZONES = '/v1/dns/statistics/top-zones';
 
     /** GET */
     public const DNS_SUMMARY = '/v1/dns/summary';
@@ -130,6 +145,12 @@ final class Endpoint
 
     /** PUT, PATCH */
     public const DNS_BY_ZONE_NAME_RRSETS = '/v1/dns/{zone_name}/rrsets';
+
+    /** GET */
+    public const DNS_BY_ZONE_NAME_STATISTICS = '/v1/dns/{zone_name}/statistics';
+
+    /** GET */
+    public const DNS_BY_ZONE_NAME_STATISTICS_NXDOMAINS = '/v1/dns/{zone_name}/statistics/nxdomains';
 
     /** PATCH */
     public const DNS_BY_ZONE_NAME_VANITY_SET = '/v1/dns/{zone_name}/vanity-set';
@@ -242,6 +263,9 @@ final class Endpoint
     /** GET, PATCH, DELETE */
     public const DOMAINS_BY_DOMAIN_REFERENCE = '/v1/domains/{domain_reference}';
 
+    /** POST */
+    public const DOMAINS_BY_DOMAIN_REFERENCE_AUTH_CODE = '/v1/domains/{domain_reference}/auth-code';
+
     /** GET, PUT, DELETE */
     public const DOMAINS_BY_DOMAIN_REFERENCE_DNSSEC = '/v1/domains/{domain_reference}/dnssec';
 
@@ -262,6 +286,12 @@ final class Endpoint
 
     /** POST */
     public const DOMAINS_BY_DOMAIN_REFERENCE_TRANSFER_OUTBOUND = '/v1/domains/{domain_reference}/transfer/outbound';
+
+    /** GET */
+    public const DOMAINS_BY_DOMAIN_REFERENCE_VERIFICATIONS = '/v1/domains/{domain_reference}/verifications';
+
+    /** POST */
+    public const DOMAINS_BY_DOMAIN_REFERENCE_VERIFICATIONS_BY_VERIFICATION_ID_RESEND = '/v1/domains/{domain_reference}/verifications/{verification_id}/resend';
 
     /** GET, POST */
     public const EMAIL_FORWARDS = '/v1/email-forwards';
@@ -337,6 +367,12 @@ final class Endpoint
 
     /** GET, PATCH, DELETE */
     public const ORGANIZATIONS_IP_RESTRICTIONS_BY_IP_RESTRICTION_ID = '/v1/organizations/ip-restrictions/{ip_restriction_id}';
+
+    /** GET */
+    public const ORGANIZATIONS_PRODUCT_WAITLIST = '/v1/organizations/product-waitlist';
+
+    /** POST */
+    public const ORGANIZATIONS_PRODUCT_WAITLIST_BY_PRODUCT_APPLY = '/v1/organizations/product-waitlist/{product}/apply';
 
     /** GET */
     public const ORGANIZATIONS_ROLE_PERMISSIONS = '/v1/organizations/role-permissions';

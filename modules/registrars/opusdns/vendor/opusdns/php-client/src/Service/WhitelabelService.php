@@ -42,9 +42,9 @@ final class WhitelabelService
      *
      * Required permissions: whitelabel_branding:read
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function getWhitelabelBranding(?string $xDatetimeFormat = null): WhitelabelBrandingResponse
     {
@@ -63,9 +63,9 @@ final class WhitelabelService
      * Required permissions: whitelabel_branding:manage
      *
      * @param WhitelabelBaseCreate|WhitelabelPlusCreate|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function createWhitelabelBranding(
         WhitelabelBaseCreate|WhitelabelPlusCreate|array $body,
@@ -87,9 +87,9 @@ final class WhitelabelService
      * Required permissions: whitelabel_branding:manage
      *
      * @param WhitelabelBrandingPatch|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function patchWhitelabelBranding(
         WhitelabelBrandingPatch|array $body,
@@ -110,9 +110,9 @@ final class WhitelabelService
      *
      * Required permissions: whitelabel_branding:read
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function listWhitelabelAssets(?string $xDatetimeFormat = null): ListBrandingAssetsResponse
     {
@@ -131,9 +131,9 @@ final class WhitelabelService
      * Required permissions: whitelabel_branding:manage
      *
      * @param BodyUploadWhitelabelAssetV1WhitelabelBrandingAssetsPost|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function uploadWhitelabelAsset(
         BodyUploadWhitelabelAssetV1WhitelabelBrandingAssetsPost|array $body,
@@ -155,9 +155,9 @@ final class WhitelabelService
      *
      * Required permissions: whitelabel_branding:manage
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function deleteWhitelabelAsset(string $assetId, ?string $xDatetimeFormat = null): void
     {
@@ -174,9 +174,9 @@ final class WhitelabelService
      *
      * Required permissions: whitelabel_branding:read
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function getWhitelabelDocument(?string $xDatetimeFormat = null): BrandingDocument
     {
@@ -195,9 +195,9 @@ final class WhitelabelService
      * Required permissions: whitelabel_branding:manage
      *
      * @param BrandingDocument|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function putWhitelabelDocumentPost(
         BrandingDocument|array $body,
@@ -219,9 +219,9 @@ final class WhitelabelService
      * Required permissions: whitelabel_branding:manage
      *
      * @param BrandingDocument|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function putWhitelabelDocumentPut(
         BrandingDocument|array $body,
@@ -243,9 +243,9 @@ final class WhitelabelService
      * Required permissions: whitelabel_branding:manage
      *
      * @param PreviewMailReq|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function previewWhitelabelEmail(
         PreviewMailReq|array $body,
@@ -266,9 +266,9 @@ final class WhitelabelService
      *
      * Required permissions: whitelabel_branding:read
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      * @return array<string, MailTemplate>
      */
     public function listWhitelabelEmailTemplates(?string $xDatetimeFormat = null): array
@@ -288,9 +288,9 @@ final class WhitelabelService
      * Required permissions: whitelabel_branding:manage
      *
      * @param WhitelabelBrandingRecheck|array<string, mixed>|null $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function recheckWhitelabelBranding(
         WhitelabelBrandingRecheck|array|null $body = null,
@@ -311,9 +311,9 @@ final class WhitelabelService
      *
      * Required permissions: whitelabel_branding:manage
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function restoreWhitelabelBranding(?string $xDatetimeFormat = null): WhitelabelBrandingResponse
     {
@@ -332,9 +332,9 @@ final class WhitelabelService
      * Required permissions: whitelabel_branding:manage
      *
      * @param WhitelabelUpgradeToPlus|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function upgradeWhitelabelToPlus(
         WhitelabelUpgradeToPlus|array $body,

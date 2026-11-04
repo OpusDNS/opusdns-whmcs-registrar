@@ -21,4 +21,5 @@ enum BillingTransactionProductType: string
     case WHITELABEL_BRANDING_PLUS = 'whitelabel_branding_plus';
     case RAS_DOMAIN_LIFECYCLE = 'ras_domain_lifecycle';
     case AMS_DOMAIN_LIFECYCLE = 'ams_domain_lifecycle';
+    case AMS_MAINTENANCE_FEE = 'ams_maintenance_fee';
 }

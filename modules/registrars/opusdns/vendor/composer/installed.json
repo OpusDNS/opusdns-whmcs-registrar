@@ -2,17 +2,17 @@
     "packages": [
         {
             "name": "opusdns/php-client",
-            "version": "v1.1.2",
-            "version_normalized": "1.1.2.0",
+            "version": "v1.2.10",
+            "version_normalized": "1.2.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OpusDNS/opusdns-php-client.git",
-                "reference": "a6e4e92d2b622d3fdcde5a60515f53290ac21b5a"
+                "reference": "7bc3f5ae2f0a49703b4315dafdb1c8fe38a9e190"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OpusDNS/opusdns-php-client/zipball/a6e4e92d2b622d3fdcde5a60515f53290ac21b5a",
-                "reference": "a6e4e92d2b622d3fdcde5a60515f53290ac21b5a",
+                "url": "https://api.github.com/repos/OpusDNS/opusdns-php-client/zipball/7bc3f5ae2f0a49703b4315dafdb1c8fe38a9e190",
+                "reference": "7bc3f5ae2f0a49703b4315dafdb1c8fe38a9e190",
                 "shasum": ""
             },
             "require": {
@@ -32,7 +32,7 @@
             "suggest": {
                 "guzzlehttp/guzzle": "Provides the PSR-18 client and PSR-17 factories that Client::create() uses by default"
             },
-            "time": "2026-09-22T05:59:38+00:00",
+            "time": "2026-11-03T07:23:31+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -50,7 +50,7 @@
                 "docs": "https://developers.opusdns.com/",
                 "email": "support@opusdns.com",
                 "issues": "https://github.com/OpusDNS/opusdns-php-client/issues",
-                "source": "https://github.com/OpusDNS/opusdns-php-client/tree/v1.1.2"
+                "source": "https://github.com/OpusDNS/opusdns-php-client/tree/v1.2.10"
             },
             "install-path": "../opusdns/php-client"
         },
@@ -224,6 +224,6 @@
             "install-path": "../psr/http-message"
         }
     ],
-    "dev": false,
+    "dev": true,
     "dev-package-names": []
 }

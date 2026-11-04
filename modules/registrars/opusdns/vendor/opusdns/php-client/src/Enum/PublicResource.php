@@ -27,8 +27,10 @@ enum PublicResource: string
     case API_KEYS = 'api_keys';
     case REGISTRAR_CREDENTIALS = 'registrar_credentials';
     case TAGS = 'tags';
+    case CUSTOM_FIELDS = 'custom_fields';
     case AUDIT_LOGS = 'audit_logs';
     case VANITY_NS = 'vanity_ns';
     case WHITELABEL_BRANDING = 'whitelabel_branding';
     case AI_CONCIERGE = 'ai_concierge';
+    case AI_CONCIERGE_WAITLIST = 'ai_concierge_waitlist';
 }

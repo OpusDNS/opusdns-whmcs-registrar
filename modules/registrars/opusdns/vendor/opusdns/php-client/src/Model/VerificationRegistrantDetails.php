@@ -16,8 +16,8 @@ final readonly class VerificationRegistrantDetails implements ApiModel
 {
     public function __construct(
         public string $contactId,
-        public string $email,
         public string $name,
+        public ?string $email = null,
     ) {
     }
 
@@ -28,8 +28,8 @@ final readonly class VerificationRegistrantDetails implements ApiModel
     {
         return new self(
             contactId: $data['contact_id'],
-            email: $data['email'],
             name: $data['name'],
+            email: $data['email'] ?? null,
         );
     }
 
@@ -40,8 +40,8 @@ final readonly class VerificationRegistrantDetails implements ApiModel
     {
         return Serializer::normalize([
             'contact_id' => $this->contactId,
-            'email' => $this->email,
             'name' => $this->name,
+            'email' => $this->email,
         ]);
     }
 

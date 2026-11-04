@@ -33,12 +33,12 @@ final class AuthenticationService
      * Introspect the current API key
      *
      * Returns the stored record for the API key (or organization token) used to authenticate the request,
-     * including its organization. Requires API-key or organization-token authentication; user tokens are
-     * rejected.
+     * including its organization and the role bound to the key. Requires API-key or organization-token
+     * authentication; user tokens are rejected.
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function introspectClientCredential(?string $xDatetimeFormat = null): OrganizationCredential
     {
@@ -55,9 +55,9 @@ final class AuthenticationService
      * Signup
      *
      * @param SignupCreate|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function signup(SignupCreate|array $body, ?string $xDatetimeFormat = null): SignupResponse
     {
@@ -75,9 +75,9 @@ final class AuthenticationService
      * Issue Organization Token
      *
      * @param PublicAuthRequestForm|array<string, mixed>|null $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      * @return OrganizationTokenResponse|UserTokenResponse
      */
     public function issueOrganizationToken(

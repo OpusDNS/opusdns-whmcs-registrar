@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "33aa8c05a69a7b2d0a1d07d64b1c929d",
+    "content-hash": "9cbb51016d6e449238f05f1836d3e5c1",
     "packages": [
         {
             "name": "opusdns/php-client",
-            "version": "v1.1.2",
+            "version": "v1.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OpusDNS/opusdns-php-client.git",
-                "reference": "a6e4e92d2b622d3fdcde5a60515f53290ac21b5a"
+                "reference": "7bc3f5ae2f0a49703b4315dafdb1c8fe38a9e190"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OpusDNS/opusdns-php-client/zipball/a6e4e92d2b622d3fdcde5a60515f53290ac21b5a",
-                "reference": "a6e4e92d2b622d3fdcde5a60515f53290ac21b5a",
+                "url": "https://api.github.com/repos/OpusDNS/opusdns-php-client/zipball/7bc3f5ae2f0a49703b4315dafdb1c8fe38a9e190",
+                "reference": "7bc3f5ae2f0a49703b4315dafdb1c8fe38a9e190",
                 "shasum": ""
             },
             "require": {
@@ -53,9 +53,9 @@
                 "docs": "https://developers.opusdns.com/",
                 "email": "support@opusdns.com",
                 "issues": "https://github.com/OpusDNS/opusdns-php-client/issues",
-                "source": "https://github.com/OpusDNS/opusdns-php-client/tree/v1.1.2"
+                "source": "https://github.com/OpusDNS/opusdns-php-client/tree/v1.2.10"
             },
-            "time": "2026-09-22T05:59:38+00:00"
+            "time": "2026-11-03T07:23:31+00:00"
         },
         {
             "name": "psr/http-client",

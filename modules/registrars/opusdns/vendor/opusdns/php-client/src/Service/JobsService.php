@@ -39,9 +39,9 @@ final class JobsService
      * Required permissions: jobs:read
      *
      * @param string $jobId Job ID
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function getJob(string $jobId, ?string $xDatetimeFormat = null): JobResponse
     {
@@ -61,9 +61,9 @@ final class JobsService
      * Required permissions: jobs:manage
      *
      * @param string $jobId Job ID
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function deleteJob(string $jobId, ?string $xDatetimeFormat = null): void
     {
@@ -81,9 +81,9 @@ final class JobsService
      * Required permissions: jobs:manage
      *
      * @param string $jobId Job ID
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function pauseJob(string $jobId, ?string $xDatetimeFormat = null): void
     {
@@ -101,9 +101,9 @@ final class JobsService
      * Required permissions: jobs:manage
      *
      * @param string $jobId Job ID
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function resumeJob(string $jobId, ?string $xDatetimeFormat = null): JobResponse
     {
@@ -123,9 +123,9 @@ final class JobsService
      * Required permissions: jobs:manage
      *
      * @param string $jobId Job ID
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function retryJob(string $jobId, ?string $xDatetimeFormat = null): JobResponse
     {
@@ -149,9 +149,9 @@ final class JobsService
      * @param SortOrder|string|null $sortOrder Sort order Server default: desc.
      * @param int|null $page Page number (1-indexed) Server default: 1.
      * @param int|null $pageSize Number of batches per page Server default: 50.
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function listBatches(
         BatchStatus|string|null $status = null,
@@ -177,9 +177,9 @@ final class JobsService
      * Required permissions: contacts:manage, dns:manage, domains:manage, jobs:manage, parking:manage, vanity_ns:manage
      *
      * @param JobBatchRequest|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function createBatch(JobBatchRequest|array $body, ?string $xDatetimeFormat = null): CreateJobBatchResponse
     {
@@ -199,9 +199,9 @@ final class JobsService
      * Required permissions: jobs:read
      *
      * @param string $batchId Batch ID
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function getBatch(string $batchId, ?string $xDatetimeFormat = null): JobBatchStatusResponse
     {
@@ -221,9 +221,9 @@ final class JobsService
      * Required permissions: jobs:manage
      *
      * @param string $batchId Batch ID
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function deleteBatch(string $batchId, ?string $xDatetimeFormat = null): void
     {
@@ -246,9 +246,9 @@ final class JobsService
      * @param SortOrder|string|null $sortOrder Sort order
      * @param int|null $page Page number (1-indexed) Server default: 1.
      * @param int|null $pageSize Number of jobs per page Server default: 100.
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function getBatchJobs(
         string $batchId,
@@ -276,9 +276,9 @@ final class JobsService
      * Required permissions: jobs:manage
      *
      * @param string $batchId Batch ID
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function pauseBatch(string $batchId, ?string $xDatetimeFormat = null): void
     {
@@ -296,9 +296,9 @@ final class JobsService
      * Required permissions: jobs:manage
      *
      * @param string $batchId Batch ID
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function resumeBatch(string $batchId, ?string $xDatetimeFormat = null): void
     {
@@ -319,9 +319,9 @@ final class JobsService
      * @param list<string>|null $errorClass Optional repeatable filter: only retry jobs whose error_class matches one
      *     of these values. Example: `?error_class=BillingInsufficientFundsError` to retry only insufficient-funds
      *     failures. Omit to retry all failed/dead-lettered jobs in the batch.
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function retryBatch(
         string $batchId,

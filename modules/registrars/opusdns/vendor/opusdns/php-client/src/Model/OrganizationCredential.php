@@ -27,7 +27,8 @@ final readonly class OrganizationCredential implements ApiModel
      * @param \DateTimeImmutable|null $expiresAt The date and time the credential expiration.
      * @param \DateTimeImmutable|null $lastUsedOn The date/time the entry was last used on
      * @param string|null $organizationId TypeID prefix: organization.
-     * @param PublicRole|string|null $role
+     * @param PublicRole|string|null $role Role bound to the API key: a built-in role name or the label of a custom
+     *     role. null when the key holds no role, which grants no permissions.
      */
     public function __construct(
         public string $apiKeyId,

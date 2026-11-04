@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OpusDNS\Client\Model;
 
 use OpusDNS\Client\ApiModel;
+use OpusDNS\Client\Enum\NorIdDeclarationPurpose;
 use OpusDNS\Client\Enum\NorIdDeclarationStatus;
 use OpusDNS\Client\Serializer;
 
@@ -21,13 +22,15 @@ final readonly class NorIdDeclarationResponse implements ApiModel
      * @param string $declarationIntroduction The fixed Norwegian declaration introduction
      * @param string $declarationVersion The applicant declaration text version
      * @param string $domainName The domain name the declaration applies to
-     * @param \DateTimeImmutable $expiresOn When the unconfirmed create request expires
+     * @param \DateTimeImmutable $expiresOn When the unsigned request expires
      * @param string $organizationId The organization that owns the domain; used to brand the page TypeID prefix:
      *     organization.
      * @param NorIdDeclarationStatus|string $status The declaration status
      * @param string $subscriberName The domain name subscriber (registrant)
      * @param string|null $identityType The subscriber identity type
      * @param string|null $identityValue The subscriber identity (organization number or Person-ID)
+     * @param NorIdDeclarationPurpose|string $purpose What the signature completes: the registration of the domain or
+     *     a change of its registrant
      */
     public function __construct(
         public string $declarationContractText,
@@ -41,6 +44,7 @@ final readonly class NorIdDeclarationResponse implements ApiModel
         public string $subscriberName,
         public ?string $identityType = null,
         public ?string $identityValue = null,
+        public NorIdDeclarationPurpose|string $purpose = NorIdDeclarationPurpose::REGISTRATION,
     ) {
     }
 
@@ -61,6 +65,7 @@ final readonly class NorIdDeclarationResponse implements ApiModel
             subscriberName: $data['subscriber_name'],
             identityType: $data['identity_type'] ?? null,
             identityValue: $data['identity_value'] ?? null,
+            purpose: isset($data['purpose']) ? NorIdDeclarationPurpose::tryFrom($data['purpose']) ?? $data['purpose'] : NorIdDeclarationPurpose::REGISTRATION,
         );
     }
 
@@ -81,6 +86,7 @@ final readonly class NorIdDeclarationResponse implements ApiModel
             'subscriber_name' => $this->subscriberName,
             'identity_type' => $this->identityType,
             'identity_value' => $this->identityValue,
+            'purpose' => $this->purpose,
         ]);
     }
 
