@@ -15,13 +15,13 @@ use OpusDNS\Client\Serializer;
 final readonly class SignupCreate implements ApiModel
 {
     /**
-     * @param OrganizationCreate $organization Organization signup.
+     * @param SignupOrganizationCreate $organization Organization signup.
      * @param UserCreate $user User signup to platform.
      * @param list<UserAgreementAcceptance>|null $agreements User agreement acceptances.
      * @param TermsOfServiceAccept|null $termsOfService Terms of service acceptance (legacy).
      */
     public function __construct(
-        public OrganizationCreate $organization,
+        public SignupOrganizationCreate $organization,
         public UserCreate $user,
         public ?array $agreements = null,
         public ?TermsOfServiceAccept $termsOfService = null,
@@ -34,7 +34,7 @@ final readonly class SignupCreate implements ApiModel
     public static function fromArray(array $data): static
     {
         return new self(
-            organization: OrganizationCreate::fromArray($data['organization']),
+            organization: SignupOrganizationCreate::fromArray($data['organization']),
             user: UserCreate::fromArray($data['user']),
             agreements: isset($data['agreements']) ? array_map(static fn (array $item): UserAgreementAcceptance => UserAgreementAcceptance::fromArray($item), $data['agreements']) : null,
             termsOfService: isset($data['terms_of_service']) ? TermsOfServiceAccept::fromArray($data['terms_of_service']) : null,

@@ -23,8 +23,10 @@ final readonly class ContactsBase implements ApiModel
      * @param list<ContactAttributeDefinition>|null $possibleAttributes List of possible attributes that can be set
      *     for this TLD
      * @param bool|null $privacyProxy Whether a privacy service is allowed
-     * @param RegistrantChangeType|string|null $registrantChange Whether the registrant can change through update or
-     *     trade
+     * @param RegistrantChangeType|string|null $registrantChange Whether the registrant changes through an update, a
+     *     trade, or manually through our support team
+     * @param RegistrantChangePolicyBase|null $registrantChangePolicy Change of registrant policy. When absent, the
+     *     defaults of the TLD type apply.
      * @param bool|null $supportCheck Whether the registry supports contact checks
      * @param bool|null $supportClientContactId Whether the registry supports client defined contact ID
      * @param bool|null $supportTransfer Whether the registry supports contact transfer
@@ -42,6 +44,7 @@ final readonly class ContactsBase implements ApiModel
         public ?array $possibleAttributes = null,
         public ?bool $privacyProxy = null,
         public RegistrantChangeType|string|null $registrantChange = null,
+        public ?RegistrantChangePolicyBase $registrantChangePolicy = null,
         public ?bool $supportCheck = null,
         public ?bool $supportClientContactId = null,
         public ?bool $supportTransfer = null,
@@ -64,6 +67,7 @@ final readonly class ContactsBase implements ApiModel
             possibleAttributes: isset($data['possible_attributes']) ? array_map(static fn (array $item): ContactAttributeDefinition => ContactAttributeDefinition::fromArray($item), $data['possible_attributes']) : null,
             privacyProxy: $data['privacy_proxy'] ?? null,
             registrantChange: isset($data['registrant_change']) ? RegistrantChangeType::tryFrom($data['registrant_change']) ?? $data['registrant_change'] : null,
+            registrantChangePolicy: isset($data['registrant_change_policy']) ? RegistrantChangePolicyBase::fromArray($data['registrant_change_policy']) : null,
             supportCheck: $data['support_check'] ?? null,
             supportClientContactId: $data['support_client_contact_id'] ?? null,
             supportTransfer: $data['support_transfer'] ?? null,
@@ -86,6 +90,7 @@ final readonly class ContactsBase implements ApiModel
             'possible_attributes' => $this->possibleAttributes,
             'privacy_proxy' => $this->privacyProxy,
             'registrant_change' => $this->registrantChange,
+            'registrant_change_policy' => $this->registrantChangePolicy,
             'support_check' => $this->supportCheck,
             'support_client_contact_id' => $this->supportClientContactId,
             'support_transfer' => $this->supportTransfer,

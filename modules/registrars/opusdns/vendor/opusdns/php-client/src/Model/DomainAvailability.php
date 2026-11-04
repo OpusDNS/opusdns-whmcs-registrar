@@ -17,11 +17,15 @@ final readonly class DomainAvailability implements ApiModel
 {
     /**
      * @param DomainAvailabilityError|null $error Error details when status is 'error', e.g. why a domain is invalid
+     * @param Marketplace|null $marketplace The marketplace a taken domain can be bought on; set on
+     *     `market_available` results of `POST /v1/availability/stream` with `marketplaces`; null otherwise, or when
+     *     the marketplace is not known yet.
      */
     public function __construct(
         public string $domain,
         public DomainAvailabilityStatus|string $status,
         public ?DomainAvailabilityError $error = null,
+        public ?Marketplace $marketplace = null,
     ) {
     }
 
@@ -34,6 +38,7 @@ final readonly class DomainAvailability implements ApiModel
             domain: $data['domain'],
             status: DomainAvailabilityStatus::tryFrom($data['status']) ?? $data['status'],
             error: isset($data['error']) ? DomainAvailabilityError::fromArray($data['error']) : null,
+            marketplace: isset($data['marketplace']) ? Marketplace::fromArray($data['marketplace']) : null,
         );
     }
 
@@ -46,6 +51,7 @@ final readonly class DomainAvailability implements ApiModel
             'domain' => $this->domain,
             'status' => $this->status,
             'error' => $this->error,
+            'marketplace' => $this->marketplace,
         ]);
     }
 

@@ -83,17 +83,17 @@ class ContactHelper
     public static function toWhmcsArray(ContactResponse $contact): array
     {
         return [
-            'First Name' => $contact->firstName,
-            'Last Name' => $contact->lastName,
+            'First Name' => $contact->firstName ?? '',
+            'Last Name' => $contact->lastName ?? '',
             'Company Name' => $contact->org ?? '',
-            'Email Address' => $contact->email,
-            'Address 1' => $contact->street,
+            'Email Address' => $contact->email ?? '',
+            'Address 1' => $contact->street ?? '',
             'Address 2' => '',
-            'City' => $contact->city,
+            'City' => $contact->city ?? '',
             'State' => $contact->state ?? '',
-            'Postcode' => $contact->postalCode,
-            'Country' => strtoupper($contact->country),
-            'Phone Number' => self::normalizePhone($contact->phone),
+            'Postcode' => $contact->postalCode ?? '',
+            'Country' => strtoupper($contact->country ?? ''),
+            'Phone Number' => self::normalizePhone($contact->phone ?? ''),
         ];
     }
 

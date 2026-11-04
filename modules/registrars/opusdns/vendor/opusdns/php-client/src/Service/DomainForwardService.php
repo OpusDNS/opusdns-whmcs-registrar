@@ -53,11 +53,12 @@ final class DomainForwardService
      *
      * @param int|null $page Server default: 1.
      * @param int|null $pageSize Server default: 10.
-     * @param DomainForwardSortField|string|null $sortBy Server default: created_on.
-     * @param SortOrder|string|null $sortOrder Server default: desc.
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $search Search by hostname
+     * @param DomainForwardSortField|string|null $sortBy Field to sort by Server default: created_on.
+     * @param SortOrder|string|null $sortOrder Sort order direction Server default: desc.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function listDomainForwards(
         ?int $page = null,
@@ -86,9 +87,9 @@ final class DomainForwardService
      * Required permissions: domain_forwards:manage
      *
      * @param DomainForwardCreateRequest|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function createDomainForwardV2(
         DomainForwardCreateRequest|array $body,
@@ -113,9 +114,9 @@ final class DomainForwardService
      * Required permissions: domain_forwards:manage
      *
      * @param DomainForwardPatchOps|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function patchRedirects(DomainForwardPatchOps|array $body, ?string $xDatetimeFormat = null): void
     {
@@ -137,9 +138,9 @@ final class DomainForwardService
      * @param Protocol|string|null $protocol Filter by protocol: http or https
      * @param TimeRange|string|null $timeRange Time range: 1h, 1d, 7d, 30d, or 1y Server default: 1d.
      * @param bool|null $excludeBots Exclude platform values: Unknown, Bot Server default: false.
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function metrics(
         ?string $hostname = null,
@@ -170,9 +171,9 @@ final class DomainForwardService
      * @param Protocol|string|null $protocol Filter by protocol: http or https
      * @param TimeRange|string|null $timeRange Time range: 1h, 1d, 7d, 30d, or 1y Server default: 1d.
      * @param bool|null $excludeBots Exclude platform values: Unknown, Bot Server default: false.
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function browserStats(
         ?string $hostname = null,
@@ -202,9 +203,9 @@ final class DomainForwardService
      * @param Protocol|string|null $protocol Filter by protocol: http or https
      * @param TimeRange|string|null $timeRange Time range: 1h, 1d, 7d, 30d, or 1y Server default: 1d.
      * @param bool|null $excludeBots Exclude platform values: Unknown, Bot Server default: false.
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function geoStats(
         ?string $hostname = null,
@@ -235,9 +236,9 @@ final class DomainForwardService
      * @param Protocol|string|null $protocol Filter by protocol: http or https
      * @param TimeRange|string|null $timeRange Time range: 1h, 1d, 7d, 30d, or 1y Server default: 1d.
      * @param bool|null $excludeBots Exclude platform values: Unknown, Bot Server default: false.
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function platformStats(
         ?string $hostname = null,
@@ -267,9 +268,9 @@ final class DomainForwardService
      * @param Protocol|string|null $protocol Filter by protocol: http or https
      * @param TimeRange|string|null $timeRange Time range: 1h, 1d, 7d, 30d, or 1y Server default: 1d.
      * @param bool|null $excludeBots Exclude platform values: Unknown, Bot Server default: false.
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function referrerStats(
         ?string $hostname = null,
@@ -299,9 +300,9 @@ final class DomainForwardService
      * @param Protocol|string|null $protocol Filter by protocol: http or https
      * @param TimeRange|string|null $timeRange Time range: 1h, 1d, 7d, 30d, or 1y Server default: 1d.
      * @param bool|null $excludeBots Exclude platform values: Unknown, Bot Server default: false.
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function statusCodeStats(
         ?string $hostname = null,
@@ -331,9 +332,9 @@ final class DomainForwardService
      * @param Protocol|string|null $protocol Filter by protocol: http or https
      * @param TimeRange|string|null $timeRange Time range: 1h, 1d, 7d, 30d, or 1y Server default: 1d.
      * @param bool|null $excludeBots Exclude platform values: Unknown, Bot Server default: false.
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function timeSeries(
         ?string $hostname = null,
@@ -363,9 +364,9 @@ final class DomainForwardService
      * @param Protocol|string|null $protocol Filter by protocol: http or https
      * @param TimeRange|string|null $timeRange Time range: 1h, 1d, 7d, 30d, or 1y Server default: 1d.
      * @param bool|null $excludeBots Exclude platform values: Unknown, Bot Server default: false.
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function userAgentStats(
         ?string $hostname = null,
@@ -398,9 +399,9 @@ final class DomainForwardService
      * @param Protocol|string|null $protocol Filter by protocol: http or https
      * @param TimeRange|string|null $timeRange Time range: 1h, 1d, 7d, 30d, or 1y Server default: 1d.
      * @param bool|null $excludeBots Exclude platform values: Unknown, Bot Server default: false.
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function visitsByKey(
         MetricsGrouping|string|null $grouping = null,
@@ -429,9 +430,9 @@ final class DomainForwardService
      * Required permissions: domain_forwards:read
      *
      * @param string $hostname Hostname
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function getDomainForward(string $hostname, ?string $xDatetimeFormat = null): DomainForward
     {
@@ -455,9 +456,9 @@ final class DomainForwardService
      *
      * @param string $hostname Hostname
      * @param DomainForwardSetCreateRequest|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function createDomainForwardSet(
         string $hostname,
@@ -483,9 +484,9 @@ final class DomainForwardService
      * Required permissions: domain_forwards:delete
      *
      * @param string $hostname Hostname
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function deleteDomainForward(string $hostname, ?string $xDatetimeFormat = null): void
     {
@@ -506,9 +507,9 @@ final class DomainForwardService
      * Required permissions: domain_forwards:manage
      *
      * @param string $hostname Hostname
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function disableDomainForward(string $hostname, ?string $xDatetimeFormat = null): void
     {
@@ -528,9 +529,9 @@ final class DomainForwardService
      * Required permissions: domain_forwards:manage
      *
      * @param string $hostname Hostname
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function enableDomainForward(string $hostname, ?string $xDatetimeFormat = null): void
     {
@@ -550,9 +551,9 @@ final class DomainForwardService
      * Required permissions: domain_forwards:read
      *
      * @param string $hostname Hostname
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function getDomainForwardSet(
         HttpProtocol|string $protocol,
@@ -580,9 +581,9 @@ final class DomainForwardService
      *
      * @param string $hostname Hostname
      * @param DomainForwardSetRequest|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function updateDomainForwardSet(
         HttpProtocol|string $protocol,
@@ -609,9 +610,9 @@ final class DomainForwardService
      * Required permissions: domain_forwards:delete
      *
      * @param string $hostname Hostname
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function deleteDomainForwardSet(
         HttpProtocol|string $protocol,

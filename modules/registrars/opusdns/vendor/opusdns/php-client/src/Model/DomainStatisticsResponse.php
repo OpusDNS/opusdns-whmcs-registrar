@@ -19,14 +19,15 @@ final readonly class DomainStatisticsResponse implements ApiModel
      * @param list<DomainStatisticsBreakdownRowResponse> $breakdown Top organizations or TLDs by acquisitions in the
      *     window; empty unless requested
      * @param list<DomainStatisticsBucketResponse> $buckets One entry per bucket the window touches, oldest first,
-     *     including empty buckets
+     *     including buckets without movement (0) and buckets without data (null)
      * @param \DateTimeImmutable $endDate Last day of the window, inclusive
      * @param UsageGranularity|string $granularity Time-bucket size of the series
      * @param string $organizationId The organization the counts are scoped to TypeID prefix: organization.
      * @param \DateTimeImmutable $startDate First day of the window, inclusive
-     * @param \DateTimeImmutable|null $dataAvailableFrom Oldest day these statistics can report on. They are read
-     *     from the domain event log, which starts later than the domains themselves, so a window reaching further
-     *     back is empty before this instant rather than zero.
+     * @param \DateTimeImmutable|null $dataAvailableFrom Oldest event the domain event log holds, which starts later
+     *     than the domains themselves. Buckets count no day before its day; one left without a day to count carries
+     *     null counts. Null when the log holds no event or its start could not be read; buckets are then counted
+     *     over the whole window.
      */
     public function __construct(
         public array $breakdown,

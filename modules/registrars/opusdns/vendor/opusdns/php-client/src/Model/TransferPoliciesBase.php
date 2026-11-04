@@ -32,6 +32,7 @@ final readonly class TransferPoliciesBase implements ApiModel
      * @param bool|null $infoDomainAuthinfo Whether querying a foreign domain with authinfo is possible
      * @param list<PostTransferRequirements|string>|null $postTransferRequirements Post-transfer requirements: lists the
      *     behaviors, as in ['update_contacts', 'set_transfer_lock'] or [ 'tld_specific' ] for specific behavior
+     * @param bool $supported Whether the registry supports domain transfers
      * @param TransferAckType|string|null $transferAck Whether a transfer can be approved
      * @param bool|null $transferEmailRequired Whether an email confirmation is required to perform the transfer
      * @param TransferAckType|string|null $transferNack Whether a transfer can be denied
@@ -54,6 +55,7 @@ final readonly class TransferPoliciesBase implements ApiModel
         public ?bool $infoContactAuthinfo = null,
         public ?bool $infoDomainAuthinfo = null,
         public ?array $postTransferRequirements = null,
+        public bool $supported = true,
         public TransferAckType|string|null $transferAck = null,
         public ?bool $transferEmailRequired = null,
         public TransferAckType|string|null $transferNack = null,
@@ -81,6 +83,7 @@ final readonly class TransferPoliciesBase implements ApiModel
             infoContactAuthinfo: $data['info_contact_authinfo'] ?? null,
             infoDomainAuthinfo: $data['info_domain_authinfo'] ?? null,
             postTransferRequirements: isset($data['post_transfer_requirements']) ? array_map(static fn (string $item): PostTransferRequirements|string => PostTransferRequirements::tryFrom($item) ?? $item, $data['post_transfer_requirements']) : null,
+            supported: $data['supported'] ?? true,
             transferAck: isset($data['transfer_ack']) ? TransferAckType::tryFrom($data['transfer_ack']) ?? $data['transfer_ack'] : null,
             transferEmailRequired: $data['transfer_email_required'] ?? null,
             transferNack: isset($data['transfer_nack']) ? TransferAckType::tryFrom($data['transfer_nack']) ?? $data['transfer_nack'] : null,
@@ -108,6 +111,7 @@ final readonly class TransferPoliciesBase implements ApiModel
             'info_contact_authinfo' => $this->infoContactAuthinfo,
             'info_domain_authinfo' => $this->infoDomainAuthinfo,
             'post_transfer_requirements' => $this->postTransferRequirements,
+            'supported' => $this->supported,
             'transfer_ack' => $this->transferAck,
             'transfer_email_required' => $this->transferEmailRequired,
             'transfer_nack' => $this->transferNack,

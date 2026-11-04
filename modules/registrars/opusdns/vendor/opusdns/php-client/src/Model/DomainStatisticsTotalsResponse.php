@@ -15,24 +15,31 @@ use OpusDNS\Client\Serializer;
 final readonly class DomainStatisticsTotalsResponse implements ApiModel
 {
     /**
-     * @param int $create Domains created (newly registered) in the window
-     * @param int $delete Domains deleted in the window
-     * @param int $net Created plus transferred in, minus deleted and transferred out
-     * @param int $renew Domains renewed in the window, counted once per day a domain was renewed
-     * @param int $restore Domains restored from redemption in the window
-     * @param int $total Created plus transferred
-     * @param int $transfer Domains transferred to OpusDNS in the window
-     * @param int $transferOut Domains transferred away from OpusDNS in the window
+     * @param int|null $create Domains created (newly registered), summed over the covered buckets. Null when no
+     *     bucket is covered
+     * @param int|null $delete Domains deleted, summed over the covered buckets. Null when no bucket is covered
+     * @param int|null $net Created plus transferred in, minus deleted and transferred out, summed over the covered
+     *     buckets. Null when no bucket is covered
+     * @param int|null $renew Domains renewed, counted once per day a domain was renewed, summed over the covered
+     *     buckets. Null when no bucket is covered
+     * @param int|null $restore Domains restored from redemption, summed over the covered buckets. Null when no
+     *     bucket is covered
+     * @param int|null $total Created plus transferred, summed over the covered buckets. Null when no bucket is
+     *     covered
+     * @param int|null $transfer Domains transferred to OpusDNS, summed over the covered buckets. Null when no bucket
+     *     is covered
+     * @param int|null $transferOut Domains transferred away from OpusDNS, summed over the covered buckets. Null when
+     *     no bucket is covered
      */
     public function __construct(
-        public int $create,
-        public int $delete,
-        public int $net,
-        public int $renew,
-        public int $restore,
-        public int $total,
-        public int $transfer,
-        public int $transferOut,
+        public ?int $create = null,
+        public ?int $delete = null,
+        public ?int $net = null,
+        public ?int $renew = null,
+        public ?int $restore = null,
+        public ?int $total = null,
+        public ?int $transfer = null,
+        public ?int $transferOut = null,
     ) {
     }
 
@@ -42,14 +49,14 @@ final readonly class DomainStatisticsTotalsResponse implements ApiModel
     public static function fromArray(array $data): static
     {
         return new self(
-            create: $data['create'],
-            delete: $data['delete'],
-            net: $data['net'],
-            renew: $data['renew'],
-            restore: $data['restore'],
-            total: $data['total'],
-            transfer: $data['transfer'],
-            transferOut: $data['transfer_out'],
+            create: $data['create'] ?? null,
+            delete: $data['delete'] ?? null,
+            net: $data['net'] ?? null,
+            renew: $data['renew'] ?? null,
+            restore: $data['restore'] ?? null,
+            total: $data['total'] ?? null,
+            transfer: $data['transfer'] ?? null,
+            transferOut: $data['transfer_out'] ?? null,
         );
     }
 

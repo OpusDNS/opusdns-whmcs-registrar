@@ -12,6 +12,7 @@ namespace OpusDNS\Client\Enum;
 enum VerificationClaimType: string
 {
     case NAME = 'name';
+    case LEGAL_ENTITY = 'legal_entity';
     case ADDRESS = 'address';
     case EMAIL = 'email';
     case PHONE = 'phone';

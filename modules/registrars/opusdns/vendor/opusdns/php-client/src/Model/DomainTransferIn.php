@@ -46,7 +46,9 @@ final readonly class DomainTransferIn implements ApiModel
      *     `travel_industry_acknowledgement`, `internet_ee_registrant_agreement` and the three `nor_id_applicant_*`
      *     keys. `punktum_dk_terms_acceptance` stays settable for a registrant change but cannot be removed with an
      *     empty value.
-     * @param string|null $authCode The auth code for the domain
+     * @param string|null $authCode The auth code for the domain. Omit it for a domain the organization holds through
+     *     a connected registrar account: when the transfer runs, OpusDNS removes the domain's transfer lock there
+     *     and fetches the code.
      * @param array<string, list<ContactHandle>>|null $contacts The contacts of the domain. Optional for transfers
      *     when all supported contact roles have a minimum of 0 in the TLD specification.
      * @param bool $createZone Create a zone for the domain on OpusDNS nameserver infrastructure

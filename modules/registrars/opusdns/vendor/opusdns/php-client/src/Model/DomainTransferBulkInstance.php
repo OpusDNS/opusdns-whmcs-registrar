@@ -45,7 +45,9 @@ final readonly class DomainTransferBulkInstance implements ApiModel
      *     `travel_industry_acknowledgement`, `internet_ee_registrant_agreement` and the three `nor_id_applicant_*`
      *     keys. `punktum_dk_terms_acceptance` stays settable for a registrant change but cannot be removed with an
      *     empty value.
-     * @param string|null $authCode The auth code for this domain (required by some TLDs)
+     * @param string|null $authCode The auth code for this domain (required by some TLDs). Omit it for a domain the
+     *     organization holds through a connected registrar account: when the transfer runs, OpusDNS removes the
+     *     domain's transfer lock there and fetches the code.
      * @param array<string, list<ContactHandle>>|null $contacts Override contacts for this domain
      * @param bool|null $createZone Override create_zone for this domain
      * @param string|null $expectedPrice Expected price for premium domain confirmation. Required only for premium

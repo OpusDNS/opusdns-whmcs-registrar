@@ -31,9 +31,9 @@ final class AvailabilityService
      * 'error' with error details) instead of failing the whole request.
      *
      * @param list<string> $domains Specify one or more domains to check for availability.
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function bulkAvailability(
         array $domains,
@@ -56,9 +56,9 @@ final class AvailabilityService
      * received.
      *
      * @param list<string> $domains Specify one or more domains to check for availability.
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      * @deprecated
      */
     public function streamAvailability(
@@ -81,10 +81,14 @@ final class AvailabilityService
      * Stream domain availability results using Server-Sent Events (SSE) until the `done` event is
      * received.
      *
+     * With `marketplaces` (e.g. `["fruits"]`, or `["all"]`), a taken domain that can be bought on one of
+     * them is reported as `market_available` with `marketplace: {"name": ...}` (best-effort); taken
+     * domains may then arrive slightly later.
+     *
      * @param DomainAvailabilityRequest|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function streamAvailabilityPost(
         DomainAvailabilityRequest|array $body,

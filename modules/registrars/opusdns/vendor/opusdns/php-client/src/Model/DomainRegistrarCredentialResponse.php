@@ -20,11 +20,14 @@ final readonly class DomainRegistrarCredentialResponse implements ApiModel
      * @param Registrar|string $registrar The registrar this credential is for
      * @param string $registrarCredentialId Unique identifier for this credential TypeID prefix:
      *     registrar_credential.
+     * @param string $type Kind of connected account. `ras`: a registrar credential managed under
+     *     `/v1/connect/registrars`.
      */
     public function __construct(
         public string $name,
         public Registrar|string $registrar,
         public string $registrarCredentialId,
+        public string $type = 'ras',
     ) {
     }
 
@@ -37,6 +40,7 @@ final readonly class DomainRegistrarCredentialResponse implements ApiModel
             name: $data['name'],
             registrar: Registrar::tryFrom($data['registrar']) ?? $data['registrar'],
             registrarCredentialId: $data['registrar_credential_id'],
+            type: $data['type'] ?? 'ras',
         );
     }
 
@@ -49,6 +53,7 @@ final readonly class DomainRegistrarCredentialResponse implements ApiModel
             'name' => $this->name,
             'registrar' => $this->registrar,
             'registrar_credential_id' => $this->registrarCredentialId,
+            'type' => $this->type,
         ]);
     }
 

@@ -16,9 +16,11 @@ use OpusDNS\Client\Serializer;
 final readonly class PublicRoleAssignment implements ApiModel
 {
     /**
+     * @param bool $managedBySso The role comes from the organization's identity provider and cannot be changed here
      * @param PublicRole|string|null $role
      */
     public function __construct(
+        public bool $managedBySso = false,
         public PublicRole|string|null $role = null,
     ) {
     }
@@ -29,6 +31,7 @@ final readonly class PublicRoleAssignment implements ApiModel
     public static function fromArray(array $data): static
     {
         return new self(
+            managedBySso: $data['managed_by_sso'] ?? false,
             role: isset($data['role']) ? PublicRole::tryFrom($data['role']) ?? $data['role'] : null,
         );
     }
@@ -39,6 +42,7 @@ final readonly class PublicRoleAssignment implements ApiModel
     public function toArray(): array
     {
         return Serializer::normalize([
+            'managed_by_sso' => $this->managedBySso,
             'role' => $this->role,
         ]);
     }

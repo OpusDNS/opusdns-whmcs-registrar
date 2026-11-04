@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OpusDNS\Client\Model;
 
 use OpusDNS\Client\ApiModel;
+use OpusDNS\Client\Enum\UserProvisionedBy;
 use OpusDNS\Client\Serializer;
 
 final readonly class User implements ApiModel
@@ -20,9 +21,11 @@ final readonly class User implements ApiModel
      * @param string $lastName The user's last name
      * @param string $username The user's unique username
      * @param \DateTimeImmutable|null $createdOn The date/time the entry was created on
+     * @param \DateTimeImmutable|null $deactivatedOn When the user was deactivated
      * @param string|null $keycloakUserId Keycloak user id
      * @param string|null $organizationId The user's organization id TypeID prefix: organization.
      * @param string|null $phone The user's phone number
+     * @param UserProvisionedBy|string $provisionedBy How the user was created
      * @param \DateTimeImmutable|null $updatedOn The date/time the entry was last updated on
      * @param string|null $userId TypeID prefix: user.
      */
@@ -33,9 +36,11 @@ final readonly class User implements ApiModel
         public string $locale,
         public string $username,
         public ?\DateTimeImmutable $createdOn = null,
+        public ?\DateTimeImmutable $deactivatedOn = null,
         public ?string $keycloakUserId = null,
         public ?string $organizationId = null,
         public ?string $phone = null,
+        public UserProvisionedBy|string $provisionedBy = UserProvisionedBy::LOCAL,
         public ?\DateTimeImmutable $updatedOn = null,
         public ?string $userId = null,
     ) {
@@ -53,9 +58,11 @@ final readonly class User implements ApiModel
             locale: $data['locale'],
             username: $data['username'],
             createdOn: isset($data['created_on']) ? new \DateTimeImmutable($data['created_on']) : null,
+            deactivatedOn: isset($data['deactivated_on']) ? new \DateTimeImmutable($data['deactivated_on']) : null,
             keycloakUserId: $data['keycloak_user_id'] ?? null,
             organizationId: $data['organization_id'] ?? null,
             phone: $data['phone'] ?? null,
+            provisionedBy: isset($data['provisioned_by']) ? UserProvisionedBy::tryFrom($data['provisioned_by']) ?? $data['provisioned_by'] : UserProvisionedBy::LOCAL,
             updatedOn: isset($data['updated_on']) ? new \DateTimeImmutable($data['updated_on']) : null,
             userId: $data['user_id'] ?? null,
         );
@@ -73,9 +80,11 @@ final readonly class User implements ApiModel
             'locale' => $this->locale,
             'username' => $this->username,
             'created_on' => $this->createdOn,
+            'deactivated_on' => $this->deactivatedOn,
             'keycloak_user_id' => $this->keycloakUserId,
             'organization_id' => $this->organizationId,
             'phone' => $this->phone,
+            'provisioned_by' => $this->provisionedBy,
             'updated_on' => $this->updatedOn,
             'user_id' => $this->userId,
         ]);

@@ -11,6 +11,7 @@ namespace OpusDNS\Client\Service;
 
 use OpusDNS\Client\Client;
 use OpusDNS\Client\Endpoint;
+use OpusDNS\Client\Enum\MarketplaceName;
 use OpusDNS\Client\Model\DomainSearchResponse;
 
 /**
@@ -39,29 +40,47 @@ final class DomainSearchService
      * Use a full domain name, or `GET /v1/availability`, whenever you need a definitive answer about a
      * specific domain.
      *
+     * With `marketplaces=fruits` (repeatable, or `marketplaces=all`), domains for sale on the marketplace
+     * are added to `results` after the suggestions, which are returned unchanged and in their order. These
+     * items have `available: false` and `marketplace` set (`name`, the marketplace the domain is for sale
+     * on). `price.amount` is the price to acquire the domain from the marketplace, in the listing's
+     * currency, for a period of 1 year. It does not include a transfer: the customer transfers the domain
+     * with the auth code, and that transfer is charged separately. When the domain cannot be priced,
+     * `price.amount` is null. `renewal_price` is the TLD's standard renewal price, and may be set on an
+     * unpriced item. `marketplace` is null on suggestions. A domain can appear twice: as a suggestion with
+     * its registry fields, and as a marketplace item. `limit` and `tlds` apply to the marketplace domains
+     * as well, with `limit` capping them separately from the suggestions; the organization's TLD
+     * restriction and `premium` do not apply to them. `meta.total` counts all items in `results`, both
+     * entries of a domain included. Marketplace domains are best-effort and left out when the marketplace
+     * does not answer in time.
+     *
      * @param string $query The primary keyword or phrase for the domain search. A full domain name is always
      *     returned as the first result, with registry-checked availability.
      * @param list<string>|null $tlds Restricts results to these TLDs. This is a filter, not a guarantee: suggestions
      *     are ranked by relevance across the whole requested set, so a listed TLD may be absent from the results
      *     even when available names exist in it, and raising `limit` does not change that. To guarantee a TLD is
      *     represented, query it on its own.
-     * @param int|null $limit The maximum number of domain suggestions to return
+     * @param int|null $limit The maximum number of domain suggestions to return; with `marketplaces`, also caps the
+     *     marketplace domains added after them
      * @param bool|null $premium Whether to include premium domains in the suggestions
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param list<string|MarketplaceName>|null $marketplaces Marketplaces to include domains for sale from, by name
+     *     (repeatable), or `all` for every marketplace. Best-effort: marketplace domains may be missing.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function suggest(
         string $query,
         ?array $tlds = null,
         ?int $limit = null,
         ?bool $premium = null,
+        ?array $marketplaces = null,
         ?string $xDatetimeFormat = null,
     ): DomainSearchResponse {
         $response = $this->client->request(
             'GET',
             Endpoint::DOMAIN_SEARCH_SUGGEST,
-            query: ['query' => $query, 'tlds' => $tlds, 'limit' => $limit, 'premium' => $premium],
+            query: ['query' => $query, 'tlds' => $tlds, 'limit' => $limit, 'premium' => $premium, 'marketplaces' => $marketplaces],
             headers: ['X-Datetime-Format' => $xDatetimeFormat],
         );
 

@@ -22,7 +22,13 @@ final readonly class ObjectLog implements ApiModel
      * @param string $objectId ID of the object
      * @param string $objectLogId Unique ID of the log
      * @param string $objectType Type of the object
-     * @param array<string, mixed>|null $details Changes made to the object
+     * @param list<ObjectLogChange>|null $changes Fields that differ from the object's previous log in the same
+     *     organization. Empty when nothing changed; `null` when there was no previous log to compare with: the
+     *     object's first log in the organization, or a log written before changes were recorded. `updated_on` is not
+     *     compared, arrays are compared regardless of order and reported whole, and sensitive values such as
+     *     `auth_code` read `***REDACTED***`.
+     * @param array<string, mixed>|null $details Snapshot of the whole object after the action; its shape depends on
+     *     `object_type`
      * @param string|null $performedById ID of the actor who performed the action
      * @param ExecutingEntity|string|null $performedByType Type of the actor who performed the action
      * @param string|null $serverRequestId Server request ID
@@ -33,6 +39,7 @@ final readonly class ObjectLog implements ApiModel
         public string $objectId,
         public string $objectLogId,
         public string $objectType,
+        public ?array $changes = null,
         public ?array $details = null,
         public ?string $performedById = null,
         public ExecutingEntity|string|null $performedByType = null,
@@ -51,6 +58,7 @@ final readonly class ObjectLog implements ApiModel
             objectId: $data['object_id'],
             objectLogId: $data['object_log_id'],
             objectType: $data['object_type'],
+            changes: isset($data['changes']) ? array_map(static fn (array $item): ObjectLogChange => ObjectLogChange::fromArray($item), $data['changes']) : null,
             details: isset($data['details']) ? (array) $data['details'] : null,
             performedById: $data['performed_by_id'] ?? null,
             performedByType: isset($data['performed_by_type']) ? ExecutingEntity::tryFrom($data['performed_by_type']) ?? $data['performed_by_type'] : null,
@@ -69,6 +77,7 @@ final readonly class ObjectLog implements ApiModel
             'object_id' => $this->objectId,
             'object_log_id' => $this->objectLogId,
             'object_type' => $this->objectType,
+            'changes' => $this->changes,
             'details' => $this->details === null ? null : ($this->details === [] ? new \stdClass() : $this->details),
             'performed_by_id' => $this->performedById,
             'performed_by_type' => $this->performedByType,

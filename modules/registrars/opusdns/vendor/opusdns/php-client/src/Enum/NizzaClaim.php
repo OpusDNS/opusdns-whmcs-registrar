@@ -16,4 +16,5 @@ enum NizzaClaim: string
     case ADDRESS = 'ADDRESS';
     case NAME = 'NAME';
     case LEGAL_ENTITY = 'LEGAL_ENTITY';
+    case ICANN_RAA = 'ICANN_RAA';
 }

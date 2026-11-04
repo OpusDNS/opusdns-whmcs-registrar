@@ -34,7 +34,6 @@ enum RegistryServiceBackend: string
     case DOT_UA = 'dot_ua';
     case NIC_IT = 'nic_it';
     case DNS_LU = 'dns_lu';
-    case RESTENA_LU = 'restena_lu';
     case CZ_NIC = 'cz_nic';
     case RAS_MANUAL = 'ras_manual';
     case RAS_EXTERNAL = 'ras_external';
@@ -56,7 +55,7 @@ enum RegistryServiceBackend: string
     case NOMINET_DRAGON = 'nominet_dragon';
     case RED_ES = 'red_es';
     case INTERNET_NZ = 'internet_nz';
-    case ZACR = 'zacr';
+    case ZARC = 'zarc';
     case TRAFICOM = 'traficom';
     case IE_REGISTRY = 'ie_registry';
     case NIC_IM = 'nic_im';
@@ -72,4 +71,5 @@ enum RegistryServiceBackend: string
     case COCCA = 'cocca';
     case AMAZON = 'amazon';
     case TANGO = 'tango';
+    case NIC_CL = 'nic_cl';
 }

@@ -40,11 +40,14 @@ final class ParkingService
      *
      * @param int|null $page Page number Server default: 1.
      * @param int|null $pageSize Page size Server default: 10.
-     * @param ParkingSortField|string|null $sortBy Server default: created_on.
-     * @param SortOrder|string|null $sortOrder Server default: desc.
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param ParkingSortField|string|null $sortBy Field to sort by Server default: created_on.
+     * @param SortOrder|string|null $sortOrder Sort order direction Server default: desc.
+     * @param string|null $search Search parking entries by domain name (contains)
+     * @param bool|null $enabled Filter by enabled status
+     * @param ComplianceStatus|string|null $complianceStatus Filter by compliance status
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function listParking(
         ?int $page = null,
@@ -73,9 +76,11 @@ final class ParkingService
      *
      * Required permissions: parking:read
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param \DateTimeImmutable|null $startTime Filter metrics after (RFC3339)
+     * @param \DateTimeImmutable|null $endTime Filter metrics before (RFC3339)
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function getTotalParkingMetrics(
         ?\DateTimeImmutable $startTime = null,
@@ -100,9 +105,9 @@ final class ParkingService
      * Required permissions: parking:manage
      *
      * @param ParkingSignupRequest|array<string, mixed> $body
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function signupForParking(
         ParkingSignupRequest|array $body,
@@ -125,9 +130,9 @@ final class ParkingService
      *
      * Required permissions: parking:read
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function getParkingSignupStatus(?string $xDatetimeFormat = null): ParkingSignupStatusResponse
     {
@@ -147,9 +152,11 @@ final class ParkingService
      *
      * Required permissions: parking:read
      *
-     * @param string|null $xDatetimeFormat Accepted for backwards compatibility; has no effect. Response datetimes
-     *     are always normalized to UTC and serialized as RFC 3339 with a `Z` suffix, whether or not this header is
-     *     sent.
+     * @param \DateTimeImmutable|null $startTime Filter metrics after (RFC3339)
+     * @param \DateTimeImmutable|null $endTime Filter metrics before (RFC3339)
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
      */
     public function getParkingMetrics(
         string $parkingReference,

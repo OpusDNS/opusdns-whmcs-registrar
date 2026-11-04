@@ -11,6 +11,7 @@ namespace OpusDNS\Client\Enum;
 
 enum VerificationDeadlineType: string
 {
+    case VERIFICATION = 'verification';
     case DEDELEGATION = 'dedelegation';
     case DELETION = 'deletion';
 }
