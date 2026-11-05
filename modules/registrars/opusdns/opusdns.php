@@ -52,6 +52,7 @@ use WHMCS\Module\Registrar\OpusDNS\Helper\PremiumPricingHelper;
 use WHMCS\Module\Registrar\OpusDNS\Service\Dns;
 use WHMCS\Module\Registrar\OpusDNS\Service\Dnssec;
 use WHMCS\Module\Registrar\OpusDNS\Service\DnsTemplates;
+use WHMCS\Module\Registrar\OpusDNS\Service\IcannVerification;
 use WHMCS\Module\Registrar\OpusDNS\Service\Tlds;
 use WHMCS\Exception\Module\InvalidConfiguration;
 
@@ -334,7 +335,6 @@ function opusdns_GetDomainInformation(array $params): Domain | array
     }
 
     $domain = new Domain();
-    $domain->setIsIrtpEnabled(false);
     $domain->setDomain($response->name);
     $domain->setNameservers(NameserverHelper::toWhmcsArray($response->nameservers));
     $expiresOn = $response->expiresOn;
@@ -346,7 +346,24 @@ function opusdns_GetDomainInformation(array $params): Domain | array
         $domain->setTransferLock($response->transferLock);
     }
 
+    IcannVerification::applyTo($domain, $response, $tldInfo);
+
     return $domain;
+}
+
+function opusdns_ResendIRTPVerificationEmail(array $params): array
+{
+    try {
+        $api = opusdns_initApiClient($params);
+
+        if (!(new IcannVerification($api))->resendEmail($params['domain'])) {
+            return ['error' => 'This domain has no pending ICANN verification'];
+        }
+
+        return ['success' => true];
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
+    }
 }
 
 /**

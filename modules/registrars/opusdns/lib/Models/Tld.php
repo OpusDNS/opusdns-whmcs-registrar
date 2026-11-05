@@ -7,6 +7,7 @@ namespace WHMCS\Module\Registrar\OpusDNS\Models;
 use OpusDNS\Client\Enum\DnssecModeType;
 use OpusDNS\Client\Enum\DnssecRecordType;
 use OpusDNS\Client\Enum\PeriodUnit;
+use OpusDNS\Client\Enum\VerificationPolicyType;
 use OpusDNS\Client\Model\ContactHandle;
 
 /**
@@ -33,6 +34,7 @@ class Tld
     private array $dispute_resolutions = [];
     private array $transfer_policies = [];
     private array $required_communications = [];
+    private array $verification_policies = [];
 
     public function __construct(array $data = [])
     {
@@ -55,6 +57,7 @@ class Tld
         $this->dispute_resolutions = isset($data['dispute_resolutions']) && is_array($data['dispute_resolutions']) ? $data['dispute_resolutions'] : [];
         $this->transfer_policies = isset($data['transfer_policies']) && is_array($data['transfer_policies']) ? $data['transfer_policies'] : [];
         $this->required_communications = isset($data['required_communications']) && is_array($data['required_communications']) ? $data['required_communications'] : [];
+        $this->verification_policies = isset($data['verification_policies']) && is_array($data['verification_policies']) ? $data['verification_policies'] : [];
     }
 
     public static function extractDaysFromIsoDuration(string $duration): int
@@ -210,6 +213,14 @@ class Tld
     public function supportsDnssec(): bool
     {
         return (bool)($this->dns_configuration['dnssec_allowed'] ?? false);
+    }
+
+    public function suspendsOnFailedEmailVerification(): bool
+    {
+        $emailVerificationPolicy = $this->verification_policies[VerificationPolicyType::EMAIL_VERIFICATION->value] ?? [];
+
+        return ($emailVerificationPolicy['enabled'] ?? false) === true
+            && ($emailVerificationPolicy['suspension_on_failure'] ?? false) === true;
     }
 
     /**

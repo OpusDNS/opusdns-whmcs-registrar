@@ -22,6 +22,7 @@ class Tlds
         'contacts',
         'transfer_policies',
         'dns_configuration',
+        'verification_policies',
     ];
 
     public function __construct(private readonly Client $client)
