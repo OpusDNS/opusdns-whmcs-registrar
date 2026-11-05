@@ -1,6 +1,9 @@
 # PHPStorm
 .idea
 
+# macOS
+.DS_Store
+
 # Composer
 composer.phar
 /composer.lock
