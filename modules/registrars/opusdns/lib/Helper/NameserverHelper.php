@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WHMCS\Module\Registrar\OpusDNS\Helper;
 
+use InvalidArgumentException;
 use OpusDNS\Client\Model\Nameserver;
 
 class NameserverHelper
@@ -46,6 +47,16 @@ class NameserverHelper
         }
 
         return $result;
+    }
+
+    /**
+     * @throws InvalidArgumentException When the nameserver is not below the domain
+     */
+    public static function assertChildOf(string $nameserver, string $domainName): void
+    {
+        if (!str_ends_with(strtolower($nameserver), '.' . strtolower($domainName))) {
+            throw new InvalidArgumentException('The nameserver must be a subdomain of this domain');
+        }
     }
 
     /**
