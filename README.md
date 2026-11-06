@@ -58,6 +58,10 @@ To configure the module:
 2. Check **Test Mode** to use the sandbox environment
 3. Click **Save Changes**
 
+## Module Log
+
+To log the module's API calls, turn on **Configuration > System Logs > Module Log**.
+
 ## Supported Features
 
 - Domain Registration
@@ -74,6 +78,7 @@ To configure the module:
 - Domain Event Processing
 - TLD & Pricing Sync
 - Premium Domains
+- Module Logging
 
 ## License
 
