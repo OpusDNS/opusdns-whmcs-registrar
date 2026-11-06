@@ -124,7 +124,7 @@ function opusdns_loadLanguage(): array
     global $CONFIG;
 
     $language = isset($_SESSION['Language']) ? $_SESSION['Language'] : $CONFIG['Language'];
-    $langFile = __DIR__ . '/lang/' . $language . '.php';
+    $langFile = __DIR__ . '/lang/' . basename($language) . '.php';
 
     if (!file_exists($langFile)) {
         $langFile = __DIR__ . '/lang/english.php';
