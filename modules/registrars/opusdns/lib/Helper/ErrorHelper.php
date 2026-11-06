@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace WHMCS\Module\Registrar\OpusDNS\Helper;
 
+use InvalidArgumentException;
+use OpusDNS\Client\Exception\BadRequestException;
+use OpusDNS\Client\Exception\ConflictException;
 use OpusDNS\Client\Exception\HttpException;
+use OpusDNS\Client\Exception\NotFoundException;
 use OpusDNS\Client\Exception\ValidationException;
 use Throwable;
 
@@ -36,5 +40,19 @@ class ErrorHelper
         }
 
         return $exception->getMessage();
+    }
+
+    /**
+     * Returns the error message to show a client: the message for rejected input, and the fallback for anything else.
+     */
+    public static function clientMessage(Throwable $exception, string $fallback): string
+    {
+        $isRejectedInput = $exception instanceof InvalidArgumentException
+            || $exception instanceof BadRequestException
+            || $exception instanceof ConflictException
+            || $exception instanceof NotFoundException
+            || $exception instanceof ValidationException;
+
+        return $isRejectedInput ? self::message($exception) : $fallback;
     }
 }

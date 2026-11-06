@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
-                <p>{$LANG.opusdns.dns_zone.modals.delete_zone.desc|sprintf:$domain}</p>
+                <p>{$LANG.opusdns.dns_zone.modals.delete_zone.desc|sprintf:$domainHtml}</p>
                 <p>{$LANG.opusdns.dns_zone.modals.delete_zone.warning}</p>
             </div>
             <div class="modal-footer">

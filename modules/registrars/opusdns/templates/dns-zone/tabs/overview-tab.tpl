@@ -3,7 +3,7 @@
         <div class="overview-card">
             <h6 class="title">{$LANG.opusdns.dns_zone.overview.labels.domain}</h6>
             <div class="content">
-                <span>{$domain}</span>
+                <span>{$domain|escape}</span>
             </div>
         </div>
     </div>
