@@ -14,7 +14,7 @@ class DomainEventHooks
     public static function processEvents(): void
     {
         try {
-            if (!ApiClientFactory::isSettingEnabled('ProcessDomainEvents')) {
+            if (!ApiClientFactory::isSettingEnabled('ProcessDomainEvents', 'on')) {
                 return;
             }
 

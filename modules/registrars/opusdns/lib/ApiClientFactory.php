@@ -65,9 +65,9 @@ final class ApiClientFactory
         return self::$registrarSettings;
     }
 
-    public static function isSettingEnabled(string $setting): bool
+    public static function isSettingEnabled(string $setting, string $default = ''): bool
     {
-        return (self::registrarSettings()[$setting] ?? '') === 'on';
+        return (self::registrarSettings()[$setting] ?? $default) === 'on';
     }
 
     /**
