@@ -1,5 +1,7 @@
 <link rel="stylesheet" href="modules/registrars/opusdns/templates/assets/css/opusdns.css">
 
+{assign var=domainHtml value=$domain|escape}
+
 {include file="modules/registrars/opusdns/templates/notifications.tpl"}
 
 <script>
@@ -10,7 +12,7 @@
     };
 </script>
 
-<div class="dns-zone-management" x-data="dnsZone({$domainid}, '{$domain}', dnsZoneOptions)">
+<div class="dns-zone-management" x-data="dnsZone({$domainid}, {$domain|json_encode|escape}, dnsZoneOptions)">
     <div class="card">
         <div class="card-header bg-white pb-0">
             {include file="modules/registrars/opusdns/templates/dns-zone/tabs/tablist.tpl"}
@@ -29,7 +31,7 @@
         <section x-show="!loading && zoneNotFound" role="tabpanel" class="tab-pane p-3 text-center" :class="{ 'active show': zoneNotFound }">
             <i class="far fa-exclamation-circle mb-3" style="font-size: 36px; opacity: 0.3;"></i>
             <h5>{$LANG.opusdns.dns_zone.errors.zone_not_created}</h5>
-            <p class="text-muted mb-4">{$LANG.opusdns.dns_zone.errors.zone_not_created_desc|replace:'%s':$domain}</p>
+            <p class="text-muted mb-4">{$LANG.opusdns.dns_zone.errors.zone_not_created_desc|replace:'%s':$domainHtml}</p>
             <button type="button" class="btn btn-primary" x-on:click="createZone()" :disabled="creatingZone">
                 <template x-if="!creatingZone">
                     <span>{$LANG.opusdns.dns_zone.modals.create_zone.confirm}</span>

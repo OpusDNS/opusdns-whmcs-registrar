@@ -15,6 +15,11 @@ class DnsZoneHelper
 {
     private const ZONE_MANAGED_TYPES = [DnsRrsetType::SOA, DnsRrsetType::NS, DnsRrsetType::DS, DnsRrsetType::DNSKEY];
 
+    public static function isUserEditableType(DnsRrsetType $type): bool
+    {
+        return !in_array($type, self::ZONE_MANAGED_TYPES, true);
+    }
+
     /**
      * Every record set a customer may edit, that is all but the SOA, NS, DS and DNSKEY sets.
      *

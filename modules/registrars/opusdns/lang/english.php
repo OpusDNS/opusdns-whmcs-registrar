@@ -406,5 +406,6 @@ $_LANG['opusdns']['dnssec'] = [
         'invalid_field' => 'Invalid value for %s',
         'duplicate' => 'The domain already has this DNSSEC record',
         'record_not_found' => 'The DNSSEC record no longer exists',
+        'request_failed' => 'The DNSSEC request failed. Please try again later.',
     ],
 ];

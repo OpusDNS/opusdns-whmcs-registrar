@@ -44,6 +44,7 @@ use WHMCS\Carbon;
 use WHMCS\Domain\Registrar\Domain;
 use WHMCS\Module\Registrar\OpusDNS\ApiClientFactory;
 use WHMCS\Module\Registrar\OpusDNS\Helper\AttributeHelper;
+use WHMCS\Module\Registrar\OpusDNS\Helper\ClientAreaRequest;
 use WHMCS\Module\Registrar\OpusDNS\Helper\ContactHelper;
 use WHMCS\Module\Registrar\OpusDNS\Helper\DnsZoneHelper;
 use WHMCS\Module\Registrar\OpusDNS\Helper\ErrorHelper;
@@ -929,6 +930,10 @@ function opusdns_GetTldPricing(array $params): ResultsList | array
 
 function opusdns_ClientAreaCustomButtonArray(array $params): array
 {
+    if (!ClientAreaRequest::canManageDomain($params)) {
+        return [];
+    }
+
     $lang = opusdns_loadLanguage();
     $dns_zone_label = $lang['opusdns']['dns_zone']['menu_label'] ?? 'Manage DNS Zone';
     $buttons = [];
@@ -948,6 +953,10 @@ function opusdns_ClientAreaCustomButtonArray(array $params): array
     return $buttons;
 }
 
+/**
+ * The custom functions a client may call: dns_zone and dnssec render pages, the others answer the DNS zone page with
+ * JSON.
+ */
 function opusdns_ClientAreaAllowedFunctions(array $params): array
 {
     $lang = opusdns_loadLanguage();
@@ -968,23 +977,33 @@ function opusdns_ClientAreaAllowedFunctions(array $params): array
         'dns_zone_dnssec_enable' => 'dns_zone_dnssec_enable',
         'dns_zone_dnssec_disable' => 'dns_zone_dnssec_disable',
         'dns_zone_template_list' => 'dns_zone_template_list',
-        'dns_zone_template_get' => 'dns_zone_template_get',
         'dns_zone_upsert_rrsets' => 'dns_zone_upsert_rrsets',
     ];
 }
 
+function opusdns_requirePageAccess(array $params): void
+{
+    if (!ClientAreaRequest::canManageDomain($params)) {
+        header('Location: clientarea.php?action=domaindetails&id=' . $params['domainid']);
+        exit;
+    }
+}
 
+/**
+ * Renders the DNS zone page. Its script loads and changes the zone through the dns_zone_* functions.
+ */
 function opusdns_dns_zone(array $params): array
 {
+    opusdns_requirePageAccess($params);
+
     $lang = opusdns_loadLanguage();
     $domainId = $params['domainid'];
-    $token = trim($_REQUEST['token'] ?? '');
-    $currentpagelinkback = 'clientarea.php?action=domaindetails&id=' . $domainId . '&modop=custom&a=dns_zone&token=' . $token . '&';
+    $currentpagelinkback = 'clientarea.php?action=domaindetails&id=' . $domainId . '&modop=custom&a=dns_zone&token=' . generate_token('plain') . '&';
 
     return [
         'templatefile' => 'dns_zone',
         'vars' => [
-            'domain' => $params['domain'],
+            'domain' => $params['domain_punycode'],
             'domainid' => $params['domainid'],
             'currentpagelinkback' => $currentpagelinkback,
             'LANG' => $lang,
@@ -992,20 +1011,19 @@ function opusdns_dns_zone(array $params): array
     ];
 }
 
+/**
+ * Returns the zone, and whether the domain is delegated to the zone's nameservers. Answers not_found when the domain
+ * has no zone yet.
+ */
 function opusdns_dns_zone_get(array $params): array
 {
-    header('Content-Type: application/json');
-    $domainName = $params['domain'];
-
-    try {
-        $api = opusdns_initApiClient($params);
-        $zone = $api->dns()->getZone($domainName);
+    return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
+        $zone = $api->dns()->getZone($params['domain_punycode']);
         $rrsets = DnsZoneHelper::userEditableRecords($zone);
 
         $domainInfo = opusdns_GetDomainInformation($params);
         if (is_array($domainInfo) && isset($domainInfo['error'])) {
-            echo json_encode($domainInfo);
-            exit;
+            return ['error' => 'Failed to load DNS records'];
         }
 
         $domainNameservers = array_map('strtolower', array_values($domainInfo->getNameservers()));
@@ -1018,7 +1036,7 @@ function opusdns_dns_zone_get(array $params): array
 
         $delegated = !empty($sortedZoneNs) && $sortedDomainNs === $sortedZoneNs;
 
-        $result = [
+        return [
             'success' => true,
             'zone' => [
                 'name' => $zone->name,
@@ -1039,22 +1057,18 @@ function opusdns_dns_zone_get(array $params): array
             ],
             'rrsets' => $rrsets,
         ];
-
-        echo json_encode($result);
-        exit;
-    } catch (OpusDnsException | \InvalidArgumentException $exception) {
-        if ($exception instanceof NotFoundException) {
-            echo json_encode(['error' => 'Zone not found', 'not_found' => true]);
-            exit;
-        }
-        echo json_encode(['error' => 'Failed to load DNS records']);
-        exit;
-    }
+    });
 }
 
 function opusdns_api_json_wrapper(array $params, callable $handler): array
 {
     header('Content-Type: application/json');
+
+    if (!ClientAreaRequest::hasValidToken() || !ClientAreaRequest::canManageDomain($params)) {
+        http_response_code(403);
+        echo json_encode(['error' => 'You are not allowed to manage this domain']);
+        exit;
+    }
 
     try {
         $api = opusdns_initApiClient($params);
@@ -1062,7 +1076,7 @@ function opusdns_api_json_wrapper(array $params, callable $handler): array
         echo json_encode($result);
         exit;
     } catch (OpusDnsException | \InvalidArgumentException $exception) {
-        $response = ['error' => ErrorHelper::message($exception) ?: 'Operation failed'];
+        $response = ['error' => ErrorHelper::clientMessage($exception, 'Operation failed')];
 
         if ($exception instanceof NotFoundException) {
             $response['not_found'] = true;
@@ -1073,34 +1087,35 @@ function opusdns_api_json_wrapper(array $params, callable $handler): array
     }
 }
 
+/**
+ * Adds records to a record set and keeps the ones already in it.
+ */
 function opusdns_dns_zone_add_rrset(array $params): array
 {
     return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
-        (new Dns($api))->addRecordsFromFormData($params['domain'], $_POST);
+        (new Dns($api))->addRecords($params['domain_punycode'], ClientAreaRequest::rrsetFields());
         return ['success' => true];
     });
 }
 
+/**
+ * Replaces all the records of a record set.
+ */
 function opusdns_dns_zone_update_rrset(array $params): array
 {
     return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
-        (new Dns($api))->updateRrsetFromFormData($params['domain'], $_POST);
+        (new Dns($api))->upsertRrsets($params['domain_punycode'], [ClientAreaRequest::rrsetFields()]);
         return ['success' => true];
     });
 }
 
+/**
+ * Applies a DNS template: replaces each of its record sets. The rrsets field holds JSON.
+ */
 function opusdns_dns_zone_upsert_rrsets(array $params): array
 {
     return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
-        $rrsetsRaw = html_entity_decode($_POST['rrsets'] ?? '[]');
-        $rrsets = json_decode($rrsetsRaw, true);
-
-        if (empty($rrsets) || !is_array($rrsets)) {
-            throw new \InvalidArgumentException('No records provided');
-        }
-
-        (new Dns($api))->upsertRrsets($params['domain'], $rrsets);
-
+        (new Dns($api))->upsertRrsets($params['domain_punycode'], ClientAreaRequest::decodedJsonArray('rrsets'));
         return ['success' => true];
     });
 }
@@ -1108,39 +1123,30 @@ function opusdns_dns_zone_upsert_rrsets(array $params): array
 function opusdns_dns_zone_delete_rrset(array $params): array
 {
     return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
-        (new Dns($api))->deleteRrsetFromFormData($params['domain'], $_POST);
+        (new Dns($api))->deleteRrsets($params['domain_punycode'], [ClientAreaRequest::rrsetFields()]);
         return ['success' => true];
     });
 }
 
+/**
+ * Deletes the record sets selected in the table. The rrsets field holds JSON.
+ */
 function opusdns_dns_zone_delete_rrsets(array $params): array
 {
     return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
-        $rrsetsRaw = html_entity_decode($_POST['rrsets'] ?? '[]');
-        $rrsets = json_decode($rrsetsRaw, true);
-
-        if (empty($rrsets) || !is_array($rrsets)) {
-            throw new \InvalidArgumentException('No records provided');
-        }
-
-        (new Dns($api))->deleteRrsets($params['domain'], $rrsets);
-
+        (new Dns($api))->deleteRrsets($params['domain_punycode'], ClientAreaRequest::decodedJsonArray('rrsets'));
         return ['success' => true];
     });
 }
 
+/**
+ * Delegates the domain to the zone's nameservers, which the page posts as JSON.
+ */
 function opusdns_dns_zone_set_nameservers(array $params): array
 {
     return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
-        $rawNameservers = html_entity_decode($_POST['nameservers'] ?? '[]');
-        $nameservers = json_decode($rawNameservers, true);
-
-        if (empty($nameservers) || !is_array($nameservers)) {
-            throw new \InvalidArgumentException('No nameservers provided');
-        }
-
-        $nameserverData = NameserverHelper::buildApiFormat($nameservers);
-        $api->domain()->updateDomain($params['domain'], new DomainUpdate(nameservers: $nameserverData));
+        $nameserverData = NameserverHelper::buildApiFormat(ClientAreaRequest::decodedJsonArray('nameservers'));
+        $api->domain()->updateDomain($params['domain_punycode'], new DomainUpdate(nameservers: $nameserverData));
 
         return ['success' => true];
     });
@@ -1149,7 +1155,7 @@ function opusdns_dns_zone_set_nameservers(array $params): array
 function opusdns_dns_zone_create(array $params): array
 {
     return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
-        $api->dns()->createZone(new DnsZoneCreate($params['domain']));
+        $api->dns()->createZone(new DnsZoneCreate($params['domain_punycode']));
         return ['success' => true];
     });
 }
@@ -1157,61 +1163,58 @@ function opusdns_dns_zone_create(array $params): array
 function opusdns_dns_zone_delete(array $params): array
 {
     return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
-        $api->dns()->deleteZone($params['domain']);
+        $api->dns()->deleteZone($params['domain_punycode']);
         return ['success' => true];
     });
 }
 
+/**
+ * Signs the zone hosted at OpusDNS. opusdns_dnssec() manages the records held at the registry instead.
+ */
 function opusdns_dns_zone_dnssec_enable(array $params): array
 {
     return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
-        $api->dns()->enableDnssec($params['domain']);
+        $api->dns()->enableDnssec($params['domain_punycode']);
         return ['success' => true];
     });
 }
 
+/**
+ * Stops signing the zone hosted at OpusDNS.
+ */
 function opusdns_dns_zone_dnssec_disable(array $params): array
 {
     return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
-        $api->dns()->disableDnssec($params['domain']);
+        $api->dns()->disableDnssec($params['domain_punycode']);
         return ['success' => true];
     });
 }
 
 function opusdns_dns_zone_template_list(array $params): array
 {
-    header('Content-Type: application/json');
-
-    try {
-        $templates = DnsTemplates::listTemplates();
-
-        echo json_encode([
+    return opusdns_api_json_wrapper($params, function (Client $api, array $params) {
+        return [
             'success' => true,
-            'templates' => array_values($templates),
-        ]);
-        exit;
-    } catch (Exception $exception) {
-        echo json_encode([
-            'success' => false,
-            'error' => 'Failed to load templates: ' . $exception->getMessage(),
-        ]);
-        exit;
-    }
+            'templates' => array_values(DnsTemplates::listTemplates()),
+        ];
+    });
 }
 
 /**
- * Renders the client area DNSSEC page and handles its add and remove actions.
+ * Renders the page for the DNSSEC records held at the registry, and handles its add and remove actions. An action
+ * needs a POST with a valid token; a success redirects back to the page and shows its notice from the session.
  */
 function opusdns_dnssec(array $params): array
 {
+    opusdns_requirePageAccess($params);
+
     $lang = opusdns_loadLanguage();
     $messages = $lang['opusdns']['dnssec'];
-    $domainName = $params['domain'];
-    $token = trim($_REQUEST['token'] ?? '');
-    $pageUrl = 'clientarea.php?action=domaindetails&id=' . $params['domainid'] . '&modop=custom&a=dnssec&token=' . $token;
+    $domainName = $params['domain_punycode'];
+    $pageUrl = 'clientarea.php?action=domaindetails&id=' . $params['domainid'] . '&modop=custom&a=dnssec&token=' . generate_token('plain');
     $noticeSessionKey = 'opusdns_dnssec_notice_' . $params['domainid'];
-    $action = $_POST['dnssec_action'] ?? null;
-    $formData = (array)($_POST['dnssec'] ?? []);
+    $action = ClientAreaRequest::hasValidToken() ? ClientAreaRequest::decodedString('dnssec_action') : '';
+    $formData = ClientAreaRequest::decodedStrings('dnssec');
 
     $notice = $_SESSION[$noticeSessionKey] ?? null;
     unset($_SESSION[$noticeSessionKey]);
@@ -1241,7 +1244,7 @@ function opusdns_dnssec(array $params): array
                     $successMessage = $messages['notices']['added'];
                 }
             } elseif ($action === 'remove') {
-                if ($dnssec->removeRecord($domainName, (string)($_POST['record_id'] ?? ''))) {
+                if ($dnssec->removeRecord($domainName, ClientAreaRequest::decodedString('record_id'))) {
                     $successMessage = $messages['notices']['removed'];
                 } else {
                     $notice = ['type' => 'danger', 'message' => $messages['errors']['record_not_found']];
@@ -1260,7 +1263,7 @@ function opusdns_dnssec(array $params): array
             $records = $dnssec->records($domainName);
         }
     } catch (OpusDnsException | \InvalidArgumentException $exception) {
-        $notice = ['type' => 'danger', 'message' => ErrorHelper::message($exception)];
+        $notice = ['type' => 'danger', 'message' => ErrorHelper::clientMessage($exception, $messages['errors']['request_failed'])];
     }
 
     return [
