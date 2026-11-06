@@ -629,6 +629,8 @@ function opusdns_RegisterNameserver(array $params): array
     $ipAddress  = $params['ipaddress'];
 
     try {
+        NameserverHelper::assertChildOf($nameserver, $params['domain_punycode']);
+
         $api     = opusdns_initApiClient($params);
         $tldInfo = (new Tlds($api))->getTld($tld);
 
@@ -656,6 +658,8 @@ function opusdns_ModifyNameserver(array $params): array
     $newIp      = $params['newipaddress'];
 
     try {
+        NameserverHelper::assertChildOf($nameserver, $params['domain_punycode']);
+
         $api     = opusdns_initApiClient($params);
         $tldInfo = (new Tlds($api))->getTld($tld);
 
@@ -682,6 +686,8 @@ function opusdns_DeleteNameserver(array $params): array
     $nameserver = $params['nameserver'];
 
     try {
+        NameserverHelper::assertChildOf($nameserver, $params['domain_punycode']);
+
         $api     = opusdns_initApiClient($params);
         $tldInfo = (new Tlds($api))->getTld($tld);
 
