@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WHMCS\Module\Registrar\OpusDNS;
 
+use GuzzleHttp\Client as GuzzleClient;
 use InvalidArgumentException;
 use OpusDNS\Client\Client;
 use OpusDNS\Client\Config;
@@ -82,13 +83,19 @@ final class ApiClientFactory
         $baseUrl = ($params['TestMode'] ?? '') === 'on' ? Config::SANDBOX_URL : Config::PRODUCTION_URL;
         $userAgent = self::userAgent();
 
-        return Client::create(new Config(
-            apiKey: $apiKey,
-            baseUrl: $baseUrl,
-            userAgent: $userAgent,
-            clientToken: $userAgent,
-            timeout: self::REQUEST_TIMEOUT,
-            connectTimeout: self::CONNECT_TIMEOUT,
-        ));
+        $httpClient = new GuzzleClient([
+            'timeout' => self::REQUEST_TIMEOUT,
+            'connect_timeout' => self::CONNECT_TIMEOUT,
+        ]);
+
+        return Client::create(
+            new Config(
+                apiKey: $apiKey,
+                baseUrl: $baseUrl,
+                userAgent: $userAgent,
+                clientToken: $userAgent,
+            ),
+            new ModuleLoggingHttpClient($httpClient, $apiKey),
+        );
     }
 }
