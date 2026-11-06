@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WHMCS\Module\Registrar\OpusDNS\Service;
 
+use DateTimeImmutable;
 use OpusDNS\Client\Client;
 use OpusDNS\Client\Enum\EventObjectType;
 use OpusDNS\Client\Enum\EventSortField;
@@ -21,13 +22,13 @@ use WHMCS\Module\Registrar\OpusDNS\Helper\ErrorHelper;
 /**
  * Applies the pending OpusDNS domain events to the WHMCS domains of the module and acknowledges them.
  *
- * Events are processed oldest first. An event is acknowledged once it is applied, or when its domain is not an
- * OpusDNS domain in WHMCS. An event that fails to apply stays pending and is retried on the next run.
+ * Events are processed oldest first and acknowledged once their domain has the status they set. Any other event stays
+ * pending.
  *
  * Only SUCCESS events are fetched. Status changes by event type:
  * - DELETION: Cancelled
  * - OUTBOUND_TRANSFER, TRANSIT, WITHDRAW: Transferred Away
- * Every event is written to the activity log of the domain's client.
+ * Every applied event is written to the activity log of the domain's client.
  */
 class DomainEvents
 {
@@ -39,6 +40,7 @@ class DomainEvents
     ];
     private const PAGE_SIZE = 250;
     private const MAX_PAGES_PER_TYPE = 100;
+    private const APPLICABLE_STATUSES = ['Active', 'Grace', 'Redemption', 'Expired'];
     private const STATUS_CANCELLED = 'Cancelled';
     private const STATUS_TRANSFERRED_AWAY = 'Transferred Away';
 
@@ -57,9 +59,10 @@ class DomainEvents
 
         foreach ($this->pendingEvents($api) as $event) {
             try {
-                $this->apply($event);
-                $api->event()->acknowledgeEvent((string) $event->eventId);
-                $processedCount++;
+                if ($this->apply($event)) {
+                    $api->event()->acknowledgeEvent((string) $event->eventId);
+                    $processedCount++;
+                }
             } catch (Throwable $exception) {
                 $failedCount++;
                 logActivity(sprintf(
@@ -89,7 +92,7 @@ class DomainEvents
                     page: $page,
                     pageSize: self::PAGE_SIZE,
                     sortBy: EventSortField::CREATED_ON,
-                    sortOrder: SortOrder::ASC,
+                    sortOrder: SortOrder::DESC,
                     objectType: EventObjectType::DOMAIN,
                     type: $eventType,
                     subtype: EventSubtype::SUCCESS,
@@ -113,20 +116,31 @@ class DomainEvents
         return $events;
     }
 
-    private function apply(EventResponse $event): void
+    private function apply(EventResponse $event): bool
     {
         $domainName = strtolower((string) $event->objectId);
         $domain = Capsule::table('tbldomains')
             ->where('registrar', ApiClientFactory::REGISTRAR)
             ->where('domain', $domainName)
             ->orderByDesc('id')
-            ->first(['id', 'userid']);
+            ->first(['id', 'userid', 'status', 'registrationdate']);
 
         if ($domain === null) {
-            return;
+            return false;
         }
 
         $changes = $this->domainChanges($event);
+
+        if (($changes['status'] ?? null) === $domain->status) {
+            return true;
+        }
+
+        if (
+            !in_array($domain->status, self::APPLICABLE_STATUSES, true)
+            || $this->isNotAfterRegistrationDate($event, $domain->registrationdate)
+        ) {
+            return false;
+        }
 
         if ($changes !== []) {
             $result = localAPI('UpdateClientDomain', ['domainid' => $domain->id] + $changes);
@@ -137,6 +151,13 @@ class DomainEvents
         }
 
         logActivity($this->activityMessage($domainName, (int) $domain->id, $event, $changes), (int) $domain->userid);
+
+        return true;
+    }
+
+    private function isNotAfterRegistrationDate(EventResponse $event, string $registrationDate): bool
+    {
+        return $event->createdOn < new DateTimeImmutable($registrationDate . ' +1 day');
     }
 
     /**

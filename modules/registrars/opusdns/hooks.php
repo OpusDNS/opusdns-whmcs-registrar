@@ -13,4 +13,4 @@ use WHMCS\Module\Registrar\OpusDNS\Hooks\RegistrarLockHooks;
 
 add_hook('ClientAreaPrimarySidebar', 1, [RegistrarLockHooks::class, 'hideSidebarItem']);
 add_hook('ClientAreaPageDomainDetails', 1, [RegistrarLockHooks::class, 'hideOnDomainDetails']);
-add_hook('AfterCronJob', 1, [DomainEventHooks::class, 'processEvents']);
+add_hook('DailyCronJob', 1, [DomainEventHooks::class, 'processEvents']);

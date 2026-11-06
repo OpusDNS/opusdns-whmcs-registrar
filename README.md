@@ -75,10 +75,16 @@ To log the module's API calls, turn on **Configuration > System Logs > Module Lo
 - Domain Availability Checks
 - Domain Suggestions
 - Domain Expiration Date Sync
-- Domain Event Processing
+- Domain Event Processing ([multiple WHMCS installs](#multiple-whmcs-installs))
 - TLD & Pricing Sync
 - Premium Domains
 - Module Logging
+
+## Multiple WHMCS Installs
+
+Domain events are shared across an OpusDNS organization and are not visible to its sub-organizations or parent. For
+WHMCS installs with different clients and domains, use a sub-organization for each install, with its own API key and
+the domains of that install.
 
 ## License
 
