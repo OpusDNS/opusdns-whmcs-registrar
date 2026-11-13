@@ -13,15 +13,15 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\VanityNsCheckSummaryState;
 use OpusDNS\Client\Serializer;
 
-final readonly class VanityNsCheckSummaryDTO implements ApiModel
+final class VanityNsCheckSummaryDTO implements ApiModel
 {
     /**
      * @param string $detail Customer-facing summary of the overall verdict
      * @param VanityNsCheckSummaryState|string $state Overall verdict synthesized from the checks
      */
     public function __construct(
-        public string $detail,
-        public VanityNsCheckSummaryState|string $state,
+        public readonly string $detail,
+        public readonly VanityNsCheckSummaryState|string $state,
     ) {
     }
 

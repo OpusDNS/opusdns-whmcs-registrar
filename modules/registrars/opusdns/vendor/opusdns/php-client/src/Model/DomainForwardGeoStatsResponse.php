@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainForwardGeoStatsResponse implements ApiModel
+final class DomainForwardGeoStatsResponse implements ApiModel
 {
     /**
      * @param list<GeoStatsBucket> $results
      */
     public function __construct(
-        public array $results,
+        public readonly array $results,
     ) {
     }
 

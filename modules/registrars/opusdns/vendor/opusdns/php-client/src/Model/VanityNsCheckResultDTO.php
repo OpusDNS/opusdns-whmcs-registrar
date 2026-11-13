@@ -16,7 +16,7 @@ use OpusDNS\Client\Enum\VanityNsCheckSource;
 use OpusDNS\Client\Enum\VanityNsCheckStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class VanityNsCheckResultDTO implements ApiModel
+final class VanityNsCheckResultDTO implements ApiModel
 {
     /**
      * @param VanityNsCheckConfidence|string $confidence How authoritative the observation is
@@ -31,15 +31,15 @@ final readonly class VanityNsCheckResultDTO implements ApiModel
      * @param string|null $remediation Suggested next step when the check did not pass
      */
     public function __construct(
-        public VanityNsCheckConfidence|string $confidence,
-        public string $detail,
-        public string $id,
-        public string $label,
-        public VanityNsCheckSeverity|string $severity,
-        public VanityNsCheckSource|string $source,
-        public VanityNsCheckStatus|string $status,
-        public ?array $observed = null,
-        public ?string $remediation = null,
+        public readonly VanityNsCheckConfidence|string $confidence,
+        public readonly string $detail,
+        public readonly string $id,
+        public readonly string $label,
+        public readonly VanityNsCheckSeverity|string $severity,
+        public readonly VanityNsCheckSource|string $source,
+        public readonly VanityNsCheckStatus|string $status,
+        public readonly ?array $observed = null,
+        public readonly ?string $remediation = null,
     ) {
     }
 

@@ -13,13 +13,13 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\HttpProtocol;
 use OpusDNS\Client\Serializer;
 
-final readonly class HttpRedirectRemove implements ApiModel
+final class HttpRedirectRemove implements ApiModel
 {
     public function __construct(
-        public string $requestHostname,
-        public string $requestPath,
-        public HttpProtocol|string $requestProtocol,
-        public ?string $requestSubdomain = null,
+        public readonly string $requestHostname,
+        public readonly string $requestPath,
+        public readonly HttpProtocol|string $requestProtocol,
+        public readonly ?string $requestSubdomain = null,
     ) {
     }
 

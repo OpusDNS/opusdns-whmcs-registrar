@@ -12,11 +12,11 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class GeoStatsBucket implements ApiModel
+final class GeoStatsBucket implements ApiModel
 {
     public function __construct(
-        public string $key,
-        public int $total,
+        public readonly string $key,
+        public readonly int $total,
     ) {
     }
 

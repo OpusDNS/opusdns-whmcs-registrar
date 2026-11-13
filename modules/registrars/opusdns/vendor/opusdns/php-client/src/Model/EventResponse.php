@@ -15,7 +15,7 @@ use OpusDNS\Client\Enum\EventSubtype;
 use OpusDNS\Client\Enum\EventType;
 use OpusDNS\Client\Serializer;
 
-final readonly class EventResponse implements ApiModel
+final class EventResponse implements ApiModel
 {
     /**
      * @param \DateTimeImmutable $createdOn When the event was created
@@ -29,14 +29,14 @@ final readonly class EventResponse implements ApiModel
      *     'ACCOUNT_CREATE', 'DOMAIN_MODIFICATION')
      */
     public function __construct(
-        public \DateTimeImmutable $createdOn,
-        public EventData $eventData,
-        public ?\DateTimeImmutable $acknowledgedOn = null,
-        public ?string $eventId = null,
-        public ?string $objectId = null,
-        public EventObjectType|string $objectType = EventObjectType::RAW,
-        public EventSubtype|string|null $subtype = null,
-        public EventType|string|null $type = null,
+        public readonly \DateTimeImmutable $createdOn,
+        public readonly EventData $eventData,
+        public readonly ?\DateTimeImmutable $acknowledgedOn = null,
+        public readonly ?string $eventId = null,
+        public readonly ?string $objectId = null,
+        public readonly EventObjectType|string $objectType = EventObjectType::RAW,
+        public readonly EventSubtype|string|null $subtype = null,
+        public readonly EventType|string|null $type = null,
     ) {
     }
 

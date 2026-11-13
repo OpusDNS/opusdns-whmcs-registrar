@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ZoneStatisticsTotalsResponse implements ApiModel
+final class ZoneStatisticsTotalsResponse implements ApiModel
 {
     /**
      * @param int|null $nxdomainCount Of those, queries answered with NXDOMAIN. Null when no bucket is covered
@@ -20,8 +20,8 @@ final readonly class ZoneStatisticsTotalsResponse implements ApiModel
      *     bucket is covered
      */
     public function __construct(
-        public ?int $nxdomainCount = null,
-        public ?int $queryCount = null,
+        public readonly ?int $nxdomainCount = null,
+        public readonly ?int $queryCount = null,
     ) {
     }
 

@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainForwardMetricsResponse implements ApiModel
+final class DomainForwardMetricsResponse implements ApiModel
 {
     public function __construct(
-        public int $configuredForwards,
-        public int $invokedForwards,
-        public int $totalVisits,
-        public int $uniqueVisits,
+        public readonly int $configuredForwards,
+        public readonly int $invokedForwards,
+        public readonly int $totalVisits,
+        public readonly int $uniqueVisits,
     ) {
     }
 

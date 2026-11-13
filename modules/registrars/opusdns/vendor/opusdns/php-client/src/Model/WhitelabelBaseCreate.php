@@ -15,7 +15,7 @@ use OpusDNS\Client\Serializer;
 /**
  * Create the base tier: served on a managed subdomain composed from `label`.
  */
-final readonly class WhitelabelBaseCreate implements ApiModel
+final class WhitelabelBaseCreate implements ApiModel
 {
     /**
      * @param string $label Managed-subdomain label; composed into app.<label>.<base-tier suffix> /
@@ -24,9 +24,9 @@ final readonly class WhitelabelBaseCreate implements ApiModel
      * @param string $tier Tier discriminator; base = served on a managed subdomain of an OpusDNS-owned zone
      */
     public function __construct(
-        public string $label,
-        public Period $period,
-        public string $tier = 'base',
+        public readonly string $label,
+        public readonly Period $period,
+        public readonly string $tier = 'base',
     ) {
     }
 

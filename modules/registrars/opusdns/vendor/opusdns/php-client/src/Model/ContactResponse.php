@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\ContactCompleteness;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactResponse implements ApiModel
+final class ContactResponse implements ApiModel
 {
     /**
      * @param ContactCompleteness|string $completeness Whether the contact passed the contact create validation when
@@ -45,27 +45,27 @@ final readonly class ContactResponse implements ApiModel
      * @param string|null $title The title of the contact
      */
     public function __construct(
-        public ContactCompleteness|string $completeness,
-        public bool $disclose,
-        public array $incompleteFields,
-        public ?array $attributeSets = null,
-        public ?string $city = null,
-        public ?string $contactId = null,
-        public ?string $country = null,
-        public ?\DateTimeImmutable $createdOn = null,
-        public ?string $email = null,
-        public ?string $fax = null,
-        public ?string $firstName = null,
-        public ?string $lastName = null,
-        public ?string $org = null,
-        public ?string $organizationId = null,
-        public ?string $phone = null,
-        public ?string $postalCode = null,
-        public ?string $state = null,
-        public ?array $statusTags = null,
-        public ?string $street = null,
-        public ?array $tags = null,
-        public ?string $title = null,
+        public readonly ContactCompleteness|string $completeness,
+        public readonly bool $disclose,
+        public readonly array $incompleteFields,
+        public readonly ?array $attributeSets = null,
+        public readonly ?string $city = null,
+        public readonly ?string $contactId = null,
+        public readonly ?string $country = null,
+        public readonly ?\DateTimeImmutable $createdOn = null,
+        public readonly ?string $email = null,
+        public readonly ?string $fax = null,
+        public readonly ?string $firstName = null,
+        public readonly ?string $lastName = null,
+        public readonly ?string $org = null,
+        public readonly ?string $organizationId = null,
+        public readonly ?string $phone = null,
+        public readonly ?string $postalCode = null,
+        public readonly ?string $state = null,
+        public readonly ?array $statusTags = null,
+        public readonly ?string $street = null,
+        public readonly ?array $tags = null,
+        public readonly ?string $title = null,
     ) {
     }
 

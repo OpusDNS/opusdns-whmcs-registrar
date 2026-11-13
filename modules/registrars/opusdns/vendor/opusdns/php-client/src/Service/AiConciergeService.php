@@ -38,6 +38,7 @@ use OpusDNS\Client\Model\MemoryFactPatchRequest;
 use OpusDNS\Client\Model\Message;
 use OpusDNS\Client\Model\MessageCreateRequest;
 use OpusDNS\Client\Model\MessageListResponse;
+use OpusDNS\Client\Model\SupportTicketContext;
 use OpusDNS\Client\Model\ZonesContext;
 use OpusDNS\Client\Model\ZonesContextCreate;
 use OpusDNS\Client\Union;
@@ -60,12 +61,12 @@ final class AiConciergeService
      * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
      *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
      *     serialized as RFC 3339 with a `Z` suffix.
-     * @return ZonesContext|ContactsContext|DomainsContext|DomainForwardsContext|EmailForwardsContext|DomainRecommendationsContext|AggregationsContext|BrandingDesignContext|CallOperationResultContext|AuditFindingsContext
+     * @return ZonesContext|ContactsContext|DomainsContext|DomainForwardsContext|EmailForwardsContext|DomainRecommendationsContext|AggregationsContext|BrandingDesignContext|CallOperationResultContext|AuditFindingsContext|SupportTicketContext
      */
     public function getContext(
         string $contextId,
         ?string $xDatetimeFormat = null,
-    ): ZonesContext|ContactsContext|DomainsContext|DomainForwardsContext|EmailForwardsContext|DomainRecommendationsContext|AggregationsContext|BrandingDesignContext|CallOperationResultContext|AuditFindingsContext {
+    ): ZonesContext|ContactsContext|DomainsContext|DomainForwardsContext|EmailForwardsContext|DomainRecommendationsContext|AggregationsContext|BrandingDesignContext|CallOperationResultContext|AuditFindingsContext|SupportTicketContext {
         $response = $this->client->request(
             'GET',
             Endpoint::AI_CONCIERGE_CONTEXTS_BY_CONTEXT_ID,
@@ -73,7 +74,7 @@ final class AiConciergeService
             headers: ['X-Datetime-Format' => $xDatetimeFormat],
         );
 
-        return $this->client->hydrate($response, static fn (array $data): ZonesContext|ContactsContext|DomainsContext|DomainForwardsContext|EmailForwardsContext|DomainRecommendationsContext|AggregationsContext|BrandingDesignContext|CallOperationResultContext|AuditFindingsContext => Union::discriminate($data, 'kind', [
+        return $this->client->hydrate($response, static fn (array $data): ZonesContext|ContactsContext|DomainsContext|DomainForwardsContext|EmailForwardsContext|DomainRecommendationsContext|AggregationsContext|BrandingDesignContext|CallOperationResultContext|AuditFindingsContext|SupportTicketContext => Union::discriminate($data, 'kind', [
             'aggregations' => AggregationsContext::class,
             'audit_findings' => AuditFindingsContext::class,
             'branding_design' => BrandingDesignContext::class,
@@ -83,6 +84,7 @@ final class AiConciergeService
             'domain_recommendations' => DomainRecommendationsContext::class,
             'domains' => DomainsContext::class,
             'email_forwards' => EmailForwardsContext::class,
+            'support_ticket' => SupportTicketContext::class,
             'zones' => ZonesContext::class,
         ]));
     }
@@ -251,13 +253,13 @@ final class AiConciergeService
      * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
      *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
      *     serialized as RFC 3339 with a `Z` suffix.
-     * @return ZonesContext|ContactsContext|DomainsContext|DomainForwardsContext|EmailForwardsContext|DomainRecommendationsContext|AggregationsContext|BrandingDesignContext|CallOperationResultContext|AuditFindingsContext
+     * @return ZonesContext|ContactsContext|DomainsContext|DomainForwardsContext|EmailForwardsContext|DomainRecommendationsContext|AggregationsContext|BrandingDesignContext|CallOperationResultContext|AuditFindingsContext|SupportTicketContext
      */
     public function createContext(
         string $conversationId,
         ZonesContextCreate|ContactsContextCreate|DomainsContextCreate|DomainForwardsContextCreate|EmailForwardsContextCreate|DomainRecommendationsContextCreate|AggregationsContextCreate|array $body,
         ?string $xDatetimeFormat = null,
-    ): ZonesContext|ContactsContext|DomainsContext|DomainForwardsContext|EmailForwardsContext|DomainRecommendationsContext|AggregationsContext|BrandingDesignContext|CallOperationResultContext|AuditFindingsContext {
+    ): ZonesContext|ContactsContext|DomainsContext|DomainForwardsContext|EmailForwardsContext|DomainRecommendationsContext|AggregationsContext|BrandingDesignContext|CallOperationResultContext|AuditFindingsContext|SupportTicketContext {
         $response = $this->client->request(
             'POST',
             Endpoint::AI_CONCIERGE_CONVERSATIONS_BY_CONVERSATION_ID_CONTEXTS,
@@ -266,7 +268,7 @@ final class AiConciergeService
             headers: ['X-Datetime-Format' => $xDatetimeFormat],
         );
 
-        return $this->client->hydrate($response, static fn (array $data): ZonesContext|ContactsContext|DomainsContext|DomainForwardsContext|EmailForwardsContext|DomainRecommendationsContext|AggregationsContext|BrandingDesignContext|CallOperationResultContext|AuditFindingsContext => Union::discriminate($data, 'kind', [
+        return $this->client->hydrate($response, static fn (array $data): ZonesContext|ContactsContext|DomainsContext|DomainForwardsContext|EmailForwardsContext|DomainRecommendationsContext|AggregationsContext|BrandingDesignContext|CallOperationResultContext|AuditFindingsContext|SupportTicketContext => Union::discriminate($data, 'kind', [
             'aggregations' => AggregationsContext::class,
             'audit_findings' => AuditFindingsContext::class,
             'branding_design' => BrandingDesignContext::class,
@@ -276,6 +278,7 @@ final class AiConciergeService
             'domain_recommendations' => DomainRecommendationsContext::class,
             'domains' => DomainsContext::class,
             'email_forwards' => EmailForwardsContext::class,
+            'support_ticket' => SupportTicketContext::class,
             'zones' => ZonesContext::class,
         ]));
     }

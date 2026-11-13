@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\ExecutingEntity;
 use OpusDNS\Client\Enum\HTTPMethod;
 use OpusDNS\Client\Serializer;
 
-final readonly class RequestHistory implements ApiModel
+final class RequestHistory implements ApiModel
 {
     /**
      * @param string $clientIp Client IP address
@@ -31,18 +31,18 @@ final readonly class RequestHistory implements ApiModel
      * @param array<string, mixed>|null $responseBody Response body
      */
     public function __construct(
-        public string $clientIp,
-        public float $duration,
-        public HTTPMethod|string $method,
-        public string $path,
-        public \DateTimeImmutable $requestCompletedAt,
-        public \DateTimeImmutable $requestStartedAt,
-        public string $serverRequestId,
-        public int $statusCode,
-        public ?string $performedById = null,
-        public ExecutingEntity|string|null $performedByType = null,
-        public ?array $requestBody = null,
-        public ?array $responseBody = null,
+        public readonly string $clientIp,
+        public readonly float $duration,
+        public readonly HTTPMethod|string $method,
+        public readonly string $path,
+        public readonly \DateTimeImmutable $requestCompletedAt,
+        public readonly \DateTimeImmutable $requestStartedAt,
+        public readonly string $serverRequestId,
+        public readonly int $statusCode,
+        public readonly ?string $performedById = null,
+        public readonly ExecutingEntity|string|null $performedByType = null,
+        public readonly ?array $requestBody = null,
+        public readonly ?array $responseBody = null,
     ) {
     }
 

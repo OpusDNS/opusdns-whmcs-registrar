@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\AgreementType;
 use OpusDNS\Client\Serializer;
 
-final readonly class UserAgreementAcceptance implements ApiModel
+final class UserAgreementAcceptance implements ApiModel
 {
     /**
      * @param bool $accepted Whether the agreement has been accepted.
@@ -22,10 +22,10 @@ final readonly class UserAgreementAcceptance implements ApiModel
      * @param string|null $version Version of the agreement being accepted.
      */
     public function __construct(
-        public bool $accepted,
-        public AgreementType|string $type,
-        public ?string $url = null,
-        public ?string $version = null,
+        public readonly bool $accepted,
+        public readonly AgreementType|string $type,
+        public readonly ?string $url = null,
+        public readonly ?string $version = null,
     ) {
     }
 

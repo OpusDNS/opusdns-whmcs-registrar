@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\DomainContactType;
 use OpusDNS\Client\Enum\LocalPresenceRequirementType;
 use OpusDNS\Client\Serializer;
 
-final readonly class LocalPresenceBase implements ApiModel
+final class LocalPresenceBase implements ApiModel
 {
     /**
      * @param bool $required Whether a local presence is required to register and maintain a domain name
@@ -24,11 +24,11 @@ final readonly class LocalPresenceBase implements ApiModel
      * @param list<DomainContactType|string>|null $type Who must meet the requirement
      */
     public function __construct(
-        public bool $required,
-        public ?array $eligibleCountries = null,
-        public ?array $exemptions = null,
-        public ?array $requirement = null,
-        public ?array $type = null,
+        public readonly bool $required,
+        public readonly ?array $eligibleCountries = null,
+        public readonly ?array $exemptions = null,
+        public readonly ?array $requirement = null,
+        public readonly ?array $type = null,
     ) {
     }
 

@@ -22,4 +22,6 @@ enum BillingTransactionProductType: string
     case RAS_DOMAIN_LIFECYCLE = 'ras_domain_lifecycle';
     case AMS_DOMAIN_LIFECYCLE = 'ams_domain_lifecycle';
     case AMS_MAINTENANCE_FEE = 'ams_maintenance_fee';
+    case DE_AUTHINFO2 = 'de_authinfo2';
+    case MARKETPLACE_DOMAIN_PURCHASE = 'marketplace_domain_purchase';
 }

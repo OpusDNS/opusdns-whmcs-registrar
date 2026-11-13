@@ -12,14 +12,14 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class RegistrarNameserver implements ApiModel
+final class RegistrarNameserver implements ApiModel
 {
     /**
      * @param list<string> $ipAddresses
      */
     public function __construct(
-        public string $hostname = '',
-        public array $ipAddresses = [],
+        public readonly string $hostname = '',
+        public readonly array $ipAddresses = [],
     ) {
     }
 

@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class PublicPermissionSet implements ApiModel
+final class PublicPermissionSet implements ApiModel
 {
     /**
      * @param list<string>|null $permissions
      */
     public function __construct(
-        public ?array $permissions = null,
+        public readonly ?array $permissions = null,
     ) {
     }
 

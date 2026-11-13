@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\MemoryFactKind;
 use OpusDNS\Client\Serializer;
 
-final readonly class MemoryFact implements ApiModel
+final class MemoryFact implements ApiModel
 {
     /**
      * @param string $factId TypeID prefix: fact.
@@ -21,14 +21,14 @@ final readonly class MemoryFact implements ApiModel
      * @param array<string, mixed>|null $value
      */
     public function __construct(
-        public \DateTimeImmutable $createdAt,
-        public string $factId,
-        public string $key,
-        public MemoryFactKind|string $kind,
-        public string $organizationId,
-        public \DateTimeImmutable $updatedAt,
-        public ?\DateTimeImmutable $expiresAt = null,
-        public ?array $value = null,
+        public readonly \DateTimeImmutable $createdAt,
+        public readonly string $factId,
+        public readonly string $key,
+        public readonly MemoryFactKind|string $kind,
+        public readonly string $organizationId,
+        public readonly \DateTimeImmutable $updatedAt,
+        public readonly ?\DateTimeImmutable $expiresAt = null,
+        public readonly ?array $value = null,
     ) {
     }
 

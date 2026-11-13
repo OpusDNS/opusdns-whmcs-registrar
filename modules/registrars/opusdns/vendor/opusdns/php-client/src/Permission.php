@@ -42,6 +42,23 @@ final class Permission
         '/v1/archive/object-logs' => ['GET' => ['audit_logs:read']],
         '/v1/archive/object-logs/{object_id}' => ['GET' => ['audit_logs:read']],
         '/v1/archive/request-history' => ['GET' => ['audit_logs:read']],
+        '/v1/connect/registrars' => [
+            'GET' => ['ai_concierge:manage', 'registrar_credentials:read'],
+            'POST' => ['ai_concierge:manage', 'registrar_credentials:manage'],
+        ],
+        '/v1/connect/registrars/{registrar_credential_id}' => [
+            'GET' => ['ai_concierge:manage', 'registrar_credentials:read'],
+            'PUT' => ['ai_concierge:manage', 'registrar_credentials:manage'],
+            'DELETE' => ['ai_concierge:manage', 'registrar_credentials:delete'],
+        ],
+        '/v1/connect/registrars/{registrar_credential_id}/sync' => [
+            'GET' => ['ai_concierge:manage', 'registrar_credentials:read'],
+            'POST' => ['ai_concierge:manage', 'registrar_credentials:manage'],
+            'DELETE' => ['ai_concierge:manage', 'registrar_credentials:manage'],
+        ],
+        '/v1/connect/registrars/{registrar_credential_id}/sync/failures' => [
+            'GET' => ['ai_concierge:manage', 'registrar_credentials:read'],
+        ],
         '/v1/contacts' => ['GET' => ['contacts:read'], 'POST' => ['contacts:manage']],
         '/v1/contacts/attribute-sets' => ['GET' => ['contacts:read'], 'POST' => ['contacts:manage']],
         '/v1/contacts/attribute-sets/{contact_attribute_set_id}' => [
@@ -92,6 +109,8 @@ final class Permission
         '/v1/domain-forwards/metrics/time-series' => ['GET' => ['domain_forwards:read']],
         '/v1/domain-forwards/metrics/user-agent' => ['GET' => ['domain_forwards:read']],
         '/v1/domain-forwards/metrics/visits-by-key' => ['GET' => ['domain_forwards:read']],
+        '/v1/domain-forwards/statistics' => ['GET' => ['domain_forwards:read']],
+        '/v1/domain-forwards/statistics/movers' => ['GET' => ['domain_forwards:read']],
         '/v1/domain-forwards/{hostname}' => [
             'GET' => ['domain_forwards:read'],
             'POST' => ['domain_forwards:manage'],
@@ -113,6 +132,7 @@ final class Permission
         '/v1/domains/tld-specific/be/{domain_reference}/auth_code/request' => ['POST' => ['domains:manage']],
         '/v1/domains/tld-specific/cymru/{domain_reference}/auth_code/request' => ['POST' => ['domains:manage']],
         '/v1/domains/tld-specific/cz/{domain_reference}/auth_code/request' => ['POST' => ['domains:manage']],
+        '/v1/domains/tld-specific/de/{domain_reference}/authinfo2' => ['POST' => ['domains:manage']],
         '/v1/domains/tld-specific/de/{domain_reference}/transit' => ['POST' => ['domains:manage']],
         '/v1/domains/tld-specific/dk/{domain_reference}/auth_code/request' => ['POST' => ['domains:manage']],
         '/v1/domains/tld-specific/eu/{domain_reference}/auth_code/request' => ['POST' => ['domains:manage']],
@@ -179,6 +199,9 @@ final class Permission
         '/v1/jobs/{batch_id}/pause' => ['POST' => ['jobs:manage']],
         '/v1/jobs/{batch_id}/resume' => ['POST' => ['jobs:manage']],
         '/v1/jobs/{batch_id}/retry' => ['POST' => ['jobs:manage']],
+        '/v1/orders' => ['GET' => ['domains:read'], 'POST' => ['domains:manage']],
+        '/v1/orders/{order_id}' => ['GET' => ['domains:read']],
+        '/v1/orders/{order_id}/items/{item_id}/delivery' => ['GET' => ['domain_auth_codes:read', 'domains:manage']],
         '/v1/organizations' => ['GET' => ['organization:read']],
         '/v1/organizations/attributes' => ['GET' => ['organization:read']],
         '/v1/organizations/ip-restrictions' => ['GET' => ['organization:read']],

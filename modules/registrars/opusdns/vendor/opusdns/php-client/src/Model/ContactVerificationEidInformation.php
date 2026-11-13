@@ -13,11 +13,11 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\LevelOfAssurance;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactVerificationEidInformation implements ApiModel
+final class ContactVerificationEidInformation implements ApiModel
 {
     public function __construct(
-        public string $eidScheme,
-        public LevelOfAssurance|string $levelOfAssurance,
+        public readonly string $eidScheme,
+        public readonly LevelOfAssurance|string $levelOfAssurance,
     ) {
     }
 

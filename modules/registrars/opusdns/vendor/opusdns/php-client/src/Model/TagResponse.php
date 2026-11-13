@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\TagColor;
 use OpusDNS\Client\Enum\TagType;
 use OpusDNS\Client\Serializer;
 
-final readonly class TagResponse implements ApiModel
+final class TagResponse implements ApiModel
 {
     /**
      * @param TagColor|string $color The color of the tag
@@ -27,14 +27,14 @@ final readonly class TagResponse implements ApiModel
      * @param int $objectCount Number of objects tagged with this tag
      */
     public function __construct(
-        public TagColor|string $color,
-        public \DateTimeImmutable $createdOn,
-        public string $label,
-        public string $tagId,
-        public TagType|string $type,
-        public \DateTimeImmutable $updatedOn,
-        public ?string $description = null,
-        public int $objectCount = 0,
+        public readonly TagColor|string $color,
+        public readonly \DateTimeImmutable $createdOn,
+        public readonly string $label,
+        public readonly string $tagId,
+        public readonly TagType|string $type,
+        public readonly \DateTimeImmutable $updatedOn,
+        public readonly ?string $description = null,
+        public readonly int $objectCount = 0,
     ) {
     }
 

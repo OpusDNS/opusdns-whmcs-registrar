@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactAttributeSetResponse implements ApiModel
+final class ContactAttributeSetResponse implements ApiModel
 {
     /**
      * @param array<string, string> $attributes Key-value map of contact attributes for this set
@@ -26,14 +26,14 @@ final readonly class ContactAttributeSetResponse implements ApiModel
      * @param int $linkedContacts Number of contacts linked to this attribute set
      */
     public function __construct(
-        public array $attributes,
-        public string $contactAttributeSetId,
-        public \DateTimeImmutable $createdOn,
-        public string $label,
-        public string $organizationId,
-        public string $tld,
-        public \DateTimeImmutable $updatedOn,
-        public int $linkedContacts = 0,
+        public readonly array $attributes,
+        public readonly string $contactAttributeSetId,
+        public readonly \DateTimeImmutable $createdOn,
+        public readonly string $label,
+        public readonly string $organizationId,
+        public readonly string $tld,
+        public readonly \DateTimeImmutable $updatedOn,
+        public readonly int $linkedContacts = 0,
     ) {
     }
 

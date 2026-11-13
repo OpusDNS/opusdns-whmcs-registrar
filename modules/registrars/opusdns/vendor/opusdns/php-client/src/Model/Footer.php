@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class Footer implements ApiModel
+final class Footer implements ApiModel
 {
     /**
      * @param list<string>|null $lines
      */
     public function __construct(
-        public ?string $legalEntity = null,
-        public ?array $lines = null,
-        public ?string $vatId = null,
+        public readonly ?string $legalEntity = null,
+        public readonly ?array $lines = null,
+        public readonly ?string $vatId = null,
     ) {
     }
 

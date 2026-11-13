@@ -12,11 +12,11 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContextMeta implements ApiModel
+final class ContextMeta implements ApiModel
 {
     public function __construct(
-        public ?int $processingTimeMs = null,
-        public ?int $total = null,
+        public readonly ?int $processingTimeMs = null,
+        public readonly ?int $total = null,
     ) {
     }
 

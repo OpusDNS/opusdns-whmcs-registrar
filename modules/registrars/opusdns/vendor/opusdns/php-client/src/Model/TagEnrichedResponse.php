@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\TagColor;
 use OpusDNS\Client\Serializer;
 
-final readonly class TagEnrichedResponse implements ApiModel
+final class TagEnrichedResponse implements ApiModel
 {
     /**
      * @param TagColor|string $color The color of the tag
@@ -21,9 +21,9 @@ final readonly class TagEnrichedResponse implements ApiModel
      * @param string $tagId The unique identifier of the tag TypeID prefix: tag.
      */
     public function __construct(
-        public TagColor|string $color,
-        public string $label,
-        public string $tagId,
+        public readonly TagColor|string $color,
+        public readonly string $label,
+        public readonly string $tagId,
     ) {
     }
 

@@ -12,14 +12,17 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class RegistrarZone implements ApiModel
+/**
+ * A DNS zone read from an external registrar, or from `GET /v1/dns` in a zones context.
+ */
+final class RegistrarZone implements ApiModel
 {
     /**
      * @param list<RegistrarRRSet> $rrsets
      */
     public function __construct(
-        public string $name,
-        public array $rrsets = [],
+        public readonly string $name,
+        public readonly array $rrsets = [],
     ) {
     }
 

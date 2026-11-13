@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class UserAttributeResponse implements ApiModel
+final class UserAttributeResponse implements ApiModel
 {
     /**
      * @param string $key Key of the attribute.
      * @param mixed $value Value of the attribute.
      */
     public function __construct(
-        public string $key,
-        public mixed $value = null,
+        public readonly string $key,
+        public readonly mixed $value = null,
     ) {
     }
 

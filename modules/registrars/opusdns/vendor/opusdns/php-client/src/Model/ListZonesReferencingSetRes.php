@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ListZonesReferencingSetRes implements ApiModel
+final class ListZonesReferencingSetRes implements ApiModel
 {
     /**
      * @param PaginationMetadataDTO $pagination Pagination metadata
      * @param list<DnsZoneDTO>|null $results Zones whose apex is branded by the set, ordered by zone name
      */
     public function __construct(
-        public PaginationMetadataDTO $pagination,
-        public ?array $results = null,
+        public readonly PaginationMetadataDTO $pagination,
+        public readonly ?array $results = null,
     ) {
     }
 

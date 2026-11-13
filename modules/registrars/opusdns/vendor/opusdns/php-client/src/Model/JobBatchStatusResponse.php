@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class JobBatchStatusResponse implements ApiModel
+final class JobBatchStatusResponse implements ApiModel
 {
     /**
      * @param string $batchId TypeID identifying this batch. All jobs in a batch share the same batch_id, while each
@@ -31,18 +31,18 @@ final readonly class JobBatchStatusResponse implements ApiModel
      * @param int $paused Number of jobs in paused state
      */
     public function __construct(
-        public string $batchId,
-        public int $canceled,
-        public int $deadLetter,
-        public int $failed,
-        public float $progressPercentage,
-        public int $queued,
-        public int $running,
-        public int $succeeded,
-        public int $total,
-        public int $blocked = 0,
-        public ?string $label = null,
-        public int $paused = 0,
+        public readonly string $batchId,
+        public readonly int $canceled,
+        public readonly int $deadLetter,
+        public readonly int $failed,
+        public readonly float $progressPercentage,
+        public readonly int $queued,
+        public readonly int $running,
+        public readonly int $succeeded,
+        public readonly int $total,
+        public readonly int $blocked = 0,
+        public readonly ?string $label = null,
+        public readonly int $paused = 0,
     ) {
     }
 

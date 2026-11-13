@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainForwardUpdateBulkCommand implements ApiModel
+final class DomainForwardUpdateBulkCommand implements ApiModel
 {
     /**
      * @param DomainForwardUpdateBulkPayload $payload Bulk domain forward update payload
@@ -20,10 +20,10 @@ final readonly class DomainForwardUpdateBulkCommand implements ApiModel
      * @param string $version Command version
      */
     public function __construct(
-        public DomainForwardUpdateBulkPayload $payload,
-        public string $command = 'domain_forward_update_bulk',
-        public ?string $idempotencyKey = null,
-        public string $version = 'v1',
+        public readonly DomainForwardUpdateBulkPayload $payload,
+        public readonly string $command = 'domain_forward_update_bulk',
+        public readonly ?string $idempotencyKey = null,
+        public readonly string $version = 'v1',
     ) {
     }
 

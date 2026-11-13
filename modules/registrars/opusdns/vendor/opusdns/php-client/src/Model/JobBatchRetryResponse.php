@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class JobBatchRetryResponse implements ApiModel
+final class JobBatchRetryResponse implements ApiModel
 {
     /**
      * @param string $batchId TypeID identifying this batch TypeID prefix: batch.
@@ -21,10 +21,10 @@ final readonly class JobBatchRetryResponse implements ApiModel
      * @param int $queuedCount Number of retried jobs dispatched immediately (QUEUED)
      */
     public function __construct(
-        public string $batchId,
-        public int $retriedCount,
-        public int $blockedCount = 0,
-        public int $queuedCount = 0,
+        public readonly string $batchId,
+        public readonly int $retriedCount,
+        public readonly int $blockedCount = 0,
+        public readonly int $queuedCount = 0,
     ) {
     }
 

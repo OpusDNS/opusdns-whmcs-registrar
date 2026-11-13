@@ -15,23 +15,23 @@ use OpusDNS\Client\Enum\ReportTriggerType;
 use OpusDNS\Client\Enum\ReportType;
 use OpusDNS\Client\Serializer;
 
-final readonly class PublicReportRes implements ApiModel
+final class PublicReportRes implements ApiModel
 {
     /**
      * @param string $organizationId TypeID prefix: organization.
      * @param string $reportId TypeID prefix: report.
      */
     public function __construct(
-        public \DateTimeImmutable $createdOn,
-        public string $organizationId,
-        public string $reportId,
-        public ReportType|string $reportType,
-        public ReportStatus|string $status,
-        public ReportTriggerType|string $triggerType,
-        public \DateTimeImmutable $updatedOn,
-        public ?int $fileSizeBytes = null,
-        public ?\DateTimeImmutable $generatedOn = null,
-        public ?int $recordCount = null,
+        public readonly \DateTimeImmutable $createdOn,
+        public readonly string $organizationId,
+        public readonly string $reportId,
+        public readonly ReportType|string $reportType,
+        public readonly ReportStatus|string $status,
+        public readonly ReportTriggerType|string $triggerType,
+        public readonly \DateTimeImmutable $updatedOn,
+        public readonly ?int $fileSizeBytes = null,
+        public readonly ?\DateTimeImmutable $generatedOn = null,
+        public readonly ?int $recordCount = null,
     ) {
     }
 

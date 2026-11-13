@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class Communication implements ApiModel
+final class Communication implements ApiModel
 {
     /**
      * @param list<string> $timedelta The Timedeltas of when to send a verification notice of the Communication
@@ -20,8 +20,8 @@ final readonly class Communication implements ApiModel
      * @param string $type Which Communication channel is used for the Verification [email]
      */
     public function __construct(
-        public array $timedelta,
-        public string $type,
+        public readonly array $timedelta,
+        public readonly string $type,
     ) {
     }
 

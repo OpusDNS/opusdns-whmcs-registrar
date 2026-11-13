@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\NizzaClaim;
 use OpusDNS\Client\Enum\NizzaVerificationProof;
 use OpusDNS\Client\Serializer;
 
-final readonly class RequiredClaim implements ApiModel
+final class RequiredClaim implements ApiModel
 {
     /**
      * @param NizzaClaim|string $claim Which contact claim the registry requires to have been verified
@@ -22,8 +22,8 @@ final readonly class RequiredClaim implements ApiModel
      *     claim; any proof is accepted when omitted
      */
     public function __construct(
-        public NizzaClaim|string $claim,
-        public ?array $acceptedProofs = null,
+        public readonly NizzaClaim|string $claim,
+        public readonly ?array $acceptedProofs = null,
     ) {
     }
 

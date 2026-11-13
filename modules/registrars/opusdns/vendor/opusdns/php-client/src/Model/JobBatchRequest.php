@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 use OpusDNS\Client\Union;
 
-final readonly class JobBatchRequest implements ApiModel
+final class JobBatchRequest implements ApiModel
 {
     /**
      * @param list<DomainCreateCommand|DomainUpdateCommand|DomainTransferCommand|DnsZoneCreateCommand|DnsZoneUpdateCommand|DomainCreateBulkCommand|DomainTransferBulkCommand|DomainUpdateBulkCommand|DnsZoneCreateBulkCommand|DnsZoneUpdateBulkCommand|DnsZonePatchRrsetsBulkCommand|DnsZonePatchRecordsBulkCommand|DnsZoneRestampVanityNsBulkCommand|ContactCreateBulkCommand|ContactCreateCommand|ParkingCreateBulkCommand|ParkingEnableBulkCommand|ParkingDisableBulkCommand|ParkingDeleteBulkCommand|EmailForwardCreateBulkCommand|EmailForwardEnableBulkCommand|EmailForwardDisableBulkCommand|EmailForwardDeleteBulkCommand|EmailForwardUpdateBulkCommand|DomainForwardCreateBulkCommand|DomainForwardUpdateBulkCommand|DomainForwardEnableBulkCommand|DomainForwardDisableBulkCommand|DomainForwardDeleteBulkCommand> $commands List of commands to execute
@@ -23,10 +23,10 @@ final readonly class JobBatchRequest implements ApiModel
      * @param bool $paused If true, jobs are created in paused state and must be explicitly resumed
      */
     public function __construct(
-        public array $commands,
-        public ?string $label = null,
-        public ?\DateTimeImmutable $notBefore = null,
-        public bool $paused = false,
+        public readonly array $commands,
+        public readonly ?string $label = null,
+        public readonly ?\DateTimeImmutable $notBefore = null,
+        public readonly bool $paused = false,
     ) {
     }
 

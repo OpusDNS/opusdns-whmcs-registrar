@@ -13,16 +13,16 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DnsProtectedReason;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsRecordResponse implements ApiModel
+final class DnsRecordResponse implements ApiModel
 {
     /**
      * @param bool $protected Whether the record is protected
      * @param DnsProtectedReason|string|null $protectedReason Reason why the record is protected
      */
     public function __construct(
-        public string $rdata,
-        public bool $protected = false,
-        public DnsProtectedReason|string|null $protectedReason = null,
+        public readonly string $rdata,
+        public readonly bool $protected = false,
+        public readonly DnsProtectedReason|string|null $protectedReason = null,
     ) {
     }
 

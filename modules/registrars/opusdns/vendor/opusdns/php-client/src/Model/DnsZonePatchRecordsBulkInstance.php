@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZonePatchRecordsBulkInstance implements ApiModel
+final class DnsZonePatchRecordsBulkInstance implements ApiModel
 {
     /**
      * @param list<DnsRecordPatchOp> $ops
      * @param string $zoneName DNS zone name to patch
      */
     public function __construct(
-        public array $ops,
-        public string $zoneName,
+        public readonly array $ops,
+        public readonly string $zoneName,
     ) {
     }
 

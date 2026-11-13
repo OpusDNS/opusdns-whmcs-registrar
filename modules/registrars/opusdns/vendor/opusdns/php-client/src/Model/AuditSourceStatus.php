@@ -12,14 +12,14 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class AuditSourceStatus implements ApiModel
+final class AuditSourceStatus implements ApiModel
 {
     /**
      * @param string $status ok | partial | timeout | error | disabled
      */
     public function __construct(
-        public ?string $detail = null,
-        public string $status = '',
+        public readonly ?string $detail = null,
+        public readonly string $status = '',
     ) {
     }
 

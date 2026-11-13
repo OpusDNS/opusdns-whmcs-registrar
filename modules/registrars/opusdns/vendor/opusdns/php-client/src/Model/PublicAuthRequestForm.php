@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class PublicAuthRequestForm implements ApiModel
+final class PublicAuthRequestForm implements ApiModel
 {
     /**
      * @param string $clientId The organization ID associated with the credentials. TypeID prefix: organization.
@@ -21,9 +21,9 @@ final readonly class PublicAuthRequestForm implements ApiModel
      *     'client_credentials').
      */
     public function __construct(
-        public string $clientId,
-        public string $clientSecret,
-        public string $grantType,
+        public readonly string $clientId,
+        public readonly string $clientSecret,
+        public readonly string $grantType,
     ) {
     }
 

@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class EmailForwardAliasUpdate implements ApiModel
+final class EmailForwardAliasUpdate implements ApiModel
 {
     /**
      * @param list<string> $forwardTo
      */
     public function __construct(
-        public array $forwardTo,
+        public readonly array $forwardTo,
     ) {
     }
 

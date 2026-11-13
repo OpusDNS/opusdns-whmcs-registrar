@@ -12,14 +12,14 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class SetVanityNameserverSetDefaultRes implements ApiModel
+final class SetVanityNameserverSetDefaultRes implements ApiModel
 {
     /**
      * @param VanityNameserverSetDTO $vanityNameserverSet The set that is now the org's default (or unchanged set on
      *     a no-op 200).
      */
     public function __construct(
-        public VanityNameserverSetDTO $vanityNameserverSet,
+        public readonly VanityNameserverSetDTO $vanityNameserverSet,
     ) {
     }
 

@@ -20,7 +20,7 @@ use OpusDNS\Client\Serializer;
  * subscription's auto-renew intent synchronously (EXPIRE = cancel at period end, RENEW = un-cancel);
  * it is not a purchase either - no price change. At least one must be given.
  */
-final readonly class WhitelabelBrandingPatch implements ApiModel
+final class WhitelabelBrandingPatch implements ApiModel
 {
     /**
      * @param bool|null $enabled Whether this whitelabel should be served
@@ -30,9 +30,9 @@ final readonly class WhitelabelBrandingPatch implements ApiModel
      *     (serves out the term), renew un-cancels
      */
     public function __construct(
-        public ?bool $enabled = null,
-        public ?string $label = null,
-        public WhitelabelRenewalMode|string|null $renewalMode = null,
+        public readonly ?bool $enabled = null,
+        public readonly ?string $label = null,
+        public readonly WhitelabelRenewalMode|string|null $renewalMode = null,
     ) {
     }
 

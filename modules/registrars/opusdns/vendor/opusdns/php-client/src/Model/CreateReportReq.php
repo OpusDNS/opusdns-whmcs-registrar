@@ -13,11 +13,11 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\ReportType;
 use OpusDNS\Client\Serializer;
 
-final readonly class CreateReportReq implements ApiModel
+final class CreateReportReq implements ApiModel
 {
     public function __construct(
-        public ?string $registrarCredentialId = null,
-        public ReportType|string $reportType = ReportType::DOMAIN_INVENTORY,
+        public readonly ?string $registrarCredentialId = null,
+        public readonly ReportType|string $reportType = ReportType::DOMAIN_INVENTORY,
     ) {
     }
 

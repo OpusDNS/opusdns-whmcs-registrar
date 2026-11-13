@@ -12,12 +12,12 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneRestampVanityNsWorkerPayload implements ApiModel
+final class DnsZoneRestampVanityNsWorkerPayload implements ApiModel
 {
     public function __construct(
-        public string $operation,
-        public DnsZoneRestampVanityNsBulkInstance $zone,
-        public string $type = 'dns_zone_restamp_vanity_ns_bulk',
+        public readonly string $operation,
+        public readonly DnsZoneRestampVanityNsBulkInstance $zone,
+        public readonly string $type = 'dns_zone_restamp_vanity_ns_bulk',
     ) {
     }
 

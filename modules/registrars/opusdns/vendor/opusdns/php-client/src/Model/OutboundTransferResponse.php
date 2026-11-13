@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\OutboundTransferAction;
 use OpusDNS\Client\Serializer;
 
-final readonly class OutboundTransferResponse implements ApiModel
+final class OutboundTransferResponse implements ApiModel
 {
     /**
      * @param OutboundTransferAction|string $action The action that was applied to the outbound transfer
@@ -21,9 +21,9 @@ final readonly class OutboundTransferResponse implements ApiModel
      * @param string $domainName The name of the domain whose outbound transfer was resolved
      */
     public function __construct(
-        public OutboundTransferAction|string $action,
-        public string $domainId,
-        public string $domainName,
+        public readonly OutboundTransferAction|string $action,
+        public readonly string $domainId,
+        public readonly string $domainName,
     ) {
     }
 

@@ -13,15 +13,15 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DomainClientStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class StatusChanges implements ApiModel
+final class StatusChanges implements ApiModel
 {
     /**
      * @param list<DomainClientStatus|string>|null $add Statuses to add to the domain
      * @param list<DomainClientStatus|string>|null $remove Statuses to remove from the domain
      */
     public function __construct(
-        public ?array $add = null,
-        public ?array $remove = null,
+        public readonly ?array $add = null,
+        public readonly ?array $remove = null,
     ) {
     }
 

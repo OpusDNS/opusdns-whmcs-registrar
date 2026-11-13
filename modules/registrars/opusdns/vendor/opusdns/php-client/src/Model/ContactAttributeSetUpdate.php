@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactAttributeSetUpdate implements ApiModel
+final class ContactAttributeSetUpdate implements ApiModel
 {
     /**
      * @param string|null $label A human-readable label explaining the purpose of this attribute set
      */
     public function __construct(
-        public ?string $label = null,
+        public readonly ?string $label = null,
     ) {
     }
 

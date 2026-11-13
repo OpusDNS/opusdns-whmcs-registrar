@@ -16,16 +16,16 @@ use OpusDNS\Client\Serializer;
 /**
  * Holder of the mark (holderType in RFC 9361). name or org must be set.
  */
-final readonly class TmHolder implements ApiModel
+final class TmHolder implements ApiModel
 {
     public function __construct(
-        public TmAddr $addr,
-        public HolderEntitlement|string $entitlement,
-        public ?string $email = null,
-        public ?string $fax = null,
-        public ?string $name = null,
-        public ?string $org = null,
-        public ?string $voice = null,
+        public readonly TmAddr $addr,
+        public readonly HolderEntitlement|string $entitlement,
+        public readonly ?string $email = null,
+        public readonly ?string $fax = null,
+        public readonly ?string $name = null,
+        public readonly ?string $org = null,
+        public readonly ?string $voice = null,
     ) {
     }
 

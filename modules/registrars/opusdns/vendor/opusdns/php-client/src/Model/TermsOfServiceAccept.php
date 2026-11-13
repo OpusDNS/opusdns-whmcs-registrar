@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class TermsOfServiceAccept implements ApiModel
+final class TermsOfServiceAccept implements ApiModel
 {
     /**
      * @param bool $accepted The organization accepts Terms of Service.
      */
     public function __construct(
-        public bool $accepted,
+        public readonly bool $accepted,
     ) {
     }
 

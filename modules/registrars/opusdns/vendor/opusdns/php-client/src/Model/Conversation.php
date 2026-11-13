@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class Conversation implements ApiModel
+final class Conversation implements ApiModel
 {
     /**
      * @param string $conversationId TypeID prefix: conv.
@@ -22,16 +22,16 @@ final readonly class Conversation implements ApiModel
      * @param string|null $title Human-readable conversation title.
      */
     public function __construct(
-        public string $conversationId,
-        public \DateTimeImmutable $createdAt,
-        public string $organizationId,
-        public \DateTimeImmutable $updatedAt,
-        public string $userId,
-        public ?\DateTimeImmutable $lastMessageAt = null,
-        public int $messageCount = 0,
-        public ?array $metadata = null,
-        public ?string $summary = null,
-        public ?string $title = null,
+        public readonly string $conversationId,
+        public readonly \DateTimeImmutable $createdAt,
+        public readonly string $organizationId,
+        public readonly \DateTimeImmutable $updatedAt,
+        public readonly string $userId,
+        public readonly ?\DateTimeImmutable $lastMessageAt = null,
+        public readonly int $messageCount = 0,
+        public readonly ?array $metadata = null,
+        public readonly ?string $summary = null,
+        public readonly ?string $title = null,
     ) {
     }
 

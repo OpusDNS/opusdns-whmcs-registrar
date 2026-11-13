@@ -13,11 +13,11 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\TLDType;
 use OpusDNS\Client\Serializer;
 
-final readonly class TldResponseShort implements ApiModel
+final class TldResponseShort implements ApiModel
 {
     public function __construct(
-        public string $tld,
-        public TLDType|string $type,
+        public readonly string $tld,
+        public readonly TLDType|string $type,
     ) {
     }
 

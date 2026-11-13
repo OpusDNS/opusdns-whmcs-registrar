@@ -12,11 +12,11 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainAvailabilityMeta implements ApiModel
+final class DomainAvailabilityMeta implements ApiModel
 {
     public function __construct(
-        public int $processingTimeMs,
-        public int $total,
+        public readonly int $processingTimeMs,
+        public readonly int $total,
     ) {
     }
 

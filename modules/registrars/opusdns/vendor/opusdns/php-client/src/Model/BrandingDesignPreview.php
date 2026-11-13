@@ -12,18 +12,18 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class BrandingDesignPreview implements ApiModel
+final class BrandingDesignPreview implements ApiModel
 {
     public function __construct(
-        public ?string $darkStrategy = null,
-        public ?string $fontFamily = null,
-        public ?string $mood = null,
-        public ?string $neutralTint = null,
-        public ?string $presetBase = null,
-        public ?string $primaryColor = null,
-        public ?float $radiusRem = null,
-        public ?bool $recolorPreset = null,
-        public ?BrandingDesignSwatches $swatches = null,
+        public readonly ?string $darkStrategy = null,
+        public readonly ?string $fontFamily = null,
+        public readonly ?string $mood = null,
+        public readonly ?string $neutralTint = null,
+        public readonly ?string $presetBase = null,
+        public readonly ?string $primaryColor = null,
+        public readonly ?float $radiusRem = null,
+        public readonly ?bool $recolorPreset = null,
+        public readonly ?BrandingDesignSwatches $swatches = null,
     ) {
     }
 

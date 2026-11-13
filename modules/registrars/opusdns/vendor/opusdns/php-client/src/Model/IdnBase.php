@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class IdnBase implements ApiModel
+final class IdnBase implements ApiModel
 {
     /**
      * @param bool $idnCapable IDN allowed
      * @param list<string>|null $idnTables Allowed IDN characters, file with the IDN codes
      */
     public function __construct(
-        public bool $idnCapable,
-        public ?array $idnTables = null,
+        public readonly bool $idnCapable,
+        public readonly ?array $idnTables = null,
     ) {
     }
 

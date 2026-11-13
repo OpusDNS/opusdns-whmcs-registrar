@@ -4,7 +4,7 @@ OpusDNS is a domain registrar providing domain registration and management servi
 
 ## Requirements
 
-- WHMCS running on PHP 8.3 or newer
+- WHMCS running on PHP 8.1 or newer
 - An OpusDNS API key
 
 ## Installation

@@ -12,12 +12,12 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class VisitsByKeyBucket implements ApiModel
+final class VisitsByKeyBucket implements ApiModel
 {
     public function __construct(
-        public string $key,
-        public int $total,
-        public int $unique,
+        public readonly string $key,
+        public readonly int $total,
+        public readonly int $unique,
     ) {
     }
 

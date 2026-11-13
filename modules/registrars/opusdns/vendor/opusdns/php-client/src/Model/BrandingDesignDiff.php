@@ -12,14 +12,14 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class BrandingDesignDiff implements ApiModel
+final class BrandingDesignDiff implements ApiModel
 {
     /**
      * @param list<string>|null $changedPaths
      */
     public function __construct(
-        public ?array $changedPaths = null,
-        public ?bool $mergedWithCurrent = null,
+        public readonly ?array $changedPaths = null,
+        public readonly ?bool $mergedWithCurrent = null,
     ) {
     }
 

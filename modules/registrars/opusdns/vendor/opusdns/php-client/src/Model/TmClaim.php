@@ -15,7 +15,7 @@ use OpusDNS\Client\Serializer;
 /**
  * A single trademark claim within a notice (claimType in RFC 9361)
  */
-final readonly class TmClaim implements ApiModel
+final class TmClaim implements ApiModel
 {
     /**
      * @param string $goodsAndServices Full description of goods and services
@@ -27,13 +27,13 @@ final readonly class TmClaim implements ApiModel
      * @param TmNotExactMatch|null $notExactMatch Present if claim added by non-exact match rule
      */
     public function __construct(
-        public string $goodsAndServices,
-        public array $holders,
-        public TmJurDesc $jurDesc,
-        public string $markName,
-        public ?array $classDescs = null,
-        public ?array $contacts = null,
-        public ?TmNotExactMatch $notExactMatch = null,
+        public readonly string $goodsAndServices,
+        public readonly array $holders,
+        public readonly TmJurDesc $jurDesc,
+        public readonly string $markName,
+        public readonly ?array $classDescs = null,
+        public readonly ?array $contacts = null,
+        public readonly ?TmNotExactMatch $notExactMatch = null,
     ) {
     }
 

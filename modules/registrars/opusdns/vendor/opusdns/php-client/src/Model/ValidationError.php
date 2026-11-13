@@ -12,18 +12,18 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ValidationError implements ApiModel
+final class ValidationError implements ApiModel
 {
     /**
      * @param list<string|int> $loc
      * @param array<string, mixed>|null $ctx
      */
     public function __construct(
-        public array $loc,
-        public string $msg,
-        public string $type,
-        public ?array $ctx = null,
-        public mixed $input = null,
+        public readonly array $loc,
+        public readonly string $msg,
+        public readonly string $type,
+        public readonly ?array $ctx = null,
+        public readonly mixed $input = null,
     ) {
     }
 

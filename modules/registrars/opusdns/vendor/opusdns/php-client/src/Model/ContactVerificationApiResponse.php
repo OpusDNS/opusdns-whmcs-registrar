@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\EmailVerificationStatus;
 use OpusDNS\Client\Enum\VerificationType;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactVerificationApiResponse implements ApiModel
+final class ContactVerificationApiResponse implements ApiModel
 {
     /**
      * @param string $token The token to verify the email address
@@ -29,15 +29,15 @@ final readonly class ContactVerificationApiResponse implements ApiModel
      * @param \DateTimeImmutable|null $verifiedOn The date the verification was verified
      */
     public function __construct(
-        public string $token,
-        public VerificationType|string $type,
-        public ?\DateTimeImmutable $canceledOn = null,
-        public ?string $contactId = null,
-        public ?string $contactVerificationId = null,
-        public ?\DateTimeImmutable $createdOn = null,
-        public EmailVerificationStatus|string $status = EmailVerificationStatus::PENDING,
-        public ?\DateTimeImmutable $updatedOn = null,
-        public ?\DateTimeImmutable $verifiedOn = null,
+        public readonly string $token,
+        public readonly VerificationType|string $type,
+        public readonly ?\DateTimeImmutable $canceledOn = null,
+        public readonly ?string $contactId = null,
+        public readonly ?string $contactVerificationId = null,
+        public readonly ?\DateTimeImmutable $createdOn = null,
+        public readonly EmailVerificationStatus|string $status = EmailVerificationStatus::PENDING,
+        public readonly ?\DateTimeImmutable $updatedOn = null,
+        public readonly ?\DateTimeImmutable $verifiedOn = null,
     ) {
     }
 

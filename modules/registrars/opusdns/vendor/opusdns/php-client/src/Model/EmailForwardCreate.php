@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class EmailForwardCreate implements ApiModel
+final class EmailForwardCreate implements ApiModel
 {
     /**
      * @param list<EmailForwardAliasCreate> $aliases
      */
     public function __construct(
-        public string $hostname,
-        public array $aliases = [],
-        public bool $enabled = false,
+        public readonly string $hostname,
+        public readonly array $aliases = [],
+        public readonly bool $enabled = false,
     ) {
     }
 

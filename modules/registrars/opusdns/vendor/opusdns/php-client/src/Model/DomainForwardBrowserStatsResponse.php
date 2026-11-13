@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainForwardBrowserStatsResponse implements ApiModel
+final class DomainForwardBrowserStatsResponse implements ApiModel
 {
     /**
      * @param list<BrowserStatsBucket> $results
      */
     public function __construct(
-        public array $results,
+        public readonly array $results,
     ) {
     }
 

@@ -12,10 +12,10 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ParkingActionPayloadData implements ApiModel
+final class ParkingActionPayloadData implements ApiModel
 {
     public function __construct(
-        public string $parkingReference,
+        public readonly string $parkingReference,
     ) {
     }
 

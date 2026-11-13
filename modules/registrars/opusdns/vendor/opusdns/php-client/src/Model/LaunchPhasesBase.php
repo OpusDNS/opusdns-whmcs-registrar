@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class LaunchPhasesBase implements ApiModel
+final class LaunchPhasesBase implements ApiModel
 {
     /**
      * @param list<LaunchPhaseBase> $phases
      */
     public function __construct(
-        public GeneralAvailabilityBase $generalAvailability,
-        public array $phases = [],
-        public ?TrademarkClaimsBase $trademarkClaims = null,
+        public readonly GeneralAvailabilityBase $generalAvailability,
+        public readonly array $phases = [],
+        public readonly ?TrademarkClaimsBase $trademarkClaims = null,
     ) {
     }
 

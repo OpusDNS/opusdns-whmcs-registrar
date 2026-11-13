@@ -13,17 +13,17 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\UsageGranularity;
 use OpusDNS\Client\Serializer;
 
-final readonly class AiInferenceUsageSeriesResponse implements ApiModel
+final class AiInferenceUsageSeriesResponse implements ApiModel
 {
     /**
      * @param list<AiInferenceUsageBucket> $buckets
      */
     public function __construct(
-        public array $buckets,
-        public \DateTimeImmutable $endDate,
-        public UsageGranularity|string $granularity,
-        public \DateTimeImmutable $startDate,
-        public string $product = 'ai_inference',
+        public readonly array $buckets,
+        public readonly \DateTimeImmutable $endDate,
+        public readonly UsageGranularity|string $granularity,
+        public readonly \DateTimeImmutable $startDate,
+        public readonly string $product = 'ai_inference',
     ) {
     }
 

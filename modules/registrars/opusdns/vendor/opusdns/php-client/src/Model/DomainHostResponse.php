@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainHostResponse implements ApiModel
+final class DomainHostResponse implements ApiModel
 {
     /**
      * @param string $hostId The host id of the host TypeID prefix: host.
      */
     public function __construct(
-        public string $hostId,
+        public readonly string $hostId,
     ) {
     }
 

@@ -34,6 +34,11 @@ trait ServiceAccessors
         return new AvailabilityService($this);
     }
 
+    public function connect(): ConnectService
+    {
+        return new ConnectService($this);
+    }
+
     public function contact(): ContactService
     {
         return new ContactService($this);
@@ -82,6 +87,11 @@ trait ServiceAccessors
     public function vanityNameservers(): VanityNameserversService
     {
         return new VanityNameserversService($this);
+    }
+
+    public function orders(): OrdersService
+    {
+        return new OrdersService($this);
     }
 
     public function organization(): OrganizationService

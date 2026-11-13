@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainStatisticsBreakdownRowResponse implements ApiModel
+final class DomainStatisticsBreakdownRowResponse implements ApiModel
 {
     /**
      * @param string $key Organization id, or the TLD without the leading dot
@@ -21,16 +21,16 @@ final readonly class DomainStatisticsBreakdownRowResponse implements ApiModel
      * @param string|null $label Organization name; absent for TLD rows
      */
     public function __construct(
-        public int $create,
-        public int $delete,
-        public string $key,
-        public int $net,
-        public int $renew,
-        public int $restore,
-        public int $total,
-        public int $transfer,
-        public int $transferOut,
-        public ?string $label = null,
+        public readonly int $create,
+        public readonly int $delete,
+        public readonly string $key,
+        public readonly int $net,
+        public readonly int $renew,
+        public readonly int $restore,
+        public readonly int $total,
+        public readonly int $transfer,
+        public readonly int $transferOut,
+        public readonly ?string $label = null,
     ) {
     }
 

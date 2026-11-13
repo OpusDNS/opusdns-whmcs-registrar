@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class Nameserver implements ApiModel
+final class Nameserver implements ApiModel
 {
     /**
      * @param string $hostname The name server of the domain
      * @param list<string>|null $ipAddresses The ip addresses of the name server
      */
     public function __construct(
-        public string $hostname,
-        public ?array $ipAddresses = null,
+        public readonly string $hostname,
+        public readonly ?array $ipAddresses = null,
     ) {
     }
 

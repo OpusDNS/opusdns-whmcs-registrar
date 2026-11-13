@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class EmailForwardUpdateBulkInstance implements ApiModel
+final class EmailForwardUpdateBulkInstance implements ApiModel
 {
     /**
      * @param list<EmailForwardAliasCreate>|null $aliases Override aliases (replace-all)
@@ -21,10 +21,10 @@ final readonly class EmailForwardUpdateBulkInstance implements ApiModel
      * @param string|null $hostname Hostname to target
      */
     public function __construct(
-        public ?array $aliases = null,
-        public ?string $emailForwardId = null,
-        public ?bool $enabled = null,
-        public ?string $hostname = null,
+        public readonly ?array $aliases = null,
+        public readonly ?string $emailForwardId = null,
+        public readonly ?bool $enabled = null,
+        public readonly ?string $hostname = null,
     ) {
     }
 

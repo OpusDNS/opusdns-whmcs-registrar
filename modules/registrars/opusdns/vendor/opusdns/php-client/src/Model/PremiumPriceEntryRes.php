@@ -15,7 +15,7 @@ use OpusDNS\Client\Serializer;
 /**
  * A single premium price entry for a specific action
  */
-final readonly class PremiumPriceEntryRes implements ApiModel
+final class PremiumPriceEntryRes implements ApiModel
 {
     /**
      * @param string $action The action (e.g., create, renew, transfer)
@@ -23,9 +23,9 @@ final readonly class PremiumPriceEntryRes implements ApiModel
      * @param string $price Customer-facing price after markup
      */
     public function __construct(
-        public string $action,
-        public string $currency,
-        public string $price,
+        public readonly string $action,
+        public readonly string $currency,
+        public readonly string $price,
     ) {
     }
 

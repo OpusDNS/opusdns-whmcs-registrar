@@ -13,15 +13,15 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\VerificationClaimType;
 use OpusDNS\Client\Serializer;
 
-final readonly class VerificationResponse implements ApiModel
+final class VerificationResponse implements ApiModel
 {
     /**
      * @param list<VerificationClaimType|string> $claims Verification claims
      * @param list<VerificationDeadline>|null $deadlines Verification deadlines
      */
     public function __construct(
-        public array $claims,
-        public ?array $deadlines = null,
+        public readonly array $claims,
+        public readonly ?array $deadlines = null,
     ) {
     }
 

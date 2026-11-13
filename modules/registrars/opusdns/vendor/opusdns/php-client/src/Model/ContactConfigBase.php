@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DomainContactType;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactConfigBase implements ApiModel
+final class ContactConfigBase implements ApiModel
 {
     /**
      * @param int $max Maximum contacts per domain name
@@ -21,9 +21,9 @@ final readonly class ContactConfigBase implements ApiModel
      * @param DomainContactType|string $type The type of contact
      */
     public function __construct(
-        public int $max,
-        public int $min,
-        public DomainContactType|string $type,
+        public readonly int $max,
+        public readonly int $min,
+        public readonly DomainContactType|string $type,
     ) {
     }
 

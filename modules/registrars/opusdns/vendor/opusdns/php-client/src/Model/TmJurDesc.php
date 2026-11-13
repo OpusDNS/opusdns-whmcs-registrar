@@ -15,15 +15,15 @@ use OpusDNS\Client\Serializer;
 /**
  * Jurisdiction description (jurDescType in RFC 9361)
  */
-final readonly class TmJurDesc implements ApiModel
+final class TmJurDesc implements ApiModel
 {
     /**
      * @param string $description Name of jurisdiction in English
      * @param string $jurCc WIPO ST.3 two-character jurisdiction code
      */
     public function __construct(
-        public string $description,
-        public string $jurCc,
+        public readonly string $description,
+        public readonly string $jurCc,
     ) {
     }
 

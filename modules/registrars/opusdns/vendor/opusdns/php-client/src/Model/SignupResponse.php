@@ -12,11 +12,11 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class SignupResponse implements ApiModel
+final class SignupResponse implements ApiModel
 {
     public function __construct(
-        public Organization $organization,
-        public User $user,
+        public readonly Organization $organization,
+        public readonly User $user,
     ) {
     }
 

@@ -16,7 +16,7 @@ use OpusDNS\Client\Serializer;
  * Public create request body. The owning org comes from auth context, and the anycast IPs are
  * allocated server-side from `VanityNameserversConfig`, so neither is accepted here.
  */
-final readonly class VanityNameserverSetCreate implements ApiModel
+final class VanityNameserverSetCreate implements ApiModel
 {
     /**
      * @param list<string> $hostnames Fully-qualified vanity NS hostnames, ordered by intended position. A set may
@@ -27,10 +27,10 @@ final readonly class VanityNameserverSetCreate implements ApiModel
      * @param string $soaRname SOA RNAME stamped verbatim into the vanity NS zone
      */
     public function __construct(
-        public array $hostnames,
-        public string $name,
-        public string $parentDomainName,
-        public string $soaRname,
+        public readonly array $hostnames,
+        public readonly string $name,
+        public readonly string $parentDomainName,
+        public readonly string $soaRname,
     ) {
     }
 

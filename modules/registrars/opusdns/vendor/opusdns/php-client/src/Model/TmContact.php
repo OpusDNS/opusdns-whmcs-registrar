@@ -16,16 +16,16 @@ use OpusDNS\Client\Serializer;
 /**
  * Contact / representative of the mark (contactType in RFC 9361)
  */
-final readonly class TmContact implements ApiModel
+final class TmContact implements ApiModel
 {
     public function __construct(
-        public TmAddr $addr,
-        public string $email,
-        public string $name,
-        public ContactType|string $type,
-        public string $voice,
-        public ?string $fax = null,
-        public ?string $org = null,
+        public readonly TmAddr $addr,
+        public readonly string $email,
+        public readonly string $name,
+        public readonly ContactType|string $type,
+        public readonly string $voice,
+        public readonly ?string $fax = null,
+        public readonly ?string $org = null,
     ) {
     }
 

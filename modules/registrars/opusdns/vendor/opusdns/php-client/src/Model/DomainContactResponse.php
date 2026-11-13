@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DomainContactType;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainContactResponse implements ApiModel
+final class DomainContactResponse implements ApiModel
 {
     /**
      * @param string $contactId The contact id of the contact TypeID prefix: contact.
@@ -23,9 +23,9 @@ final readonly class DomainContactResponse implements ApiModel
      *     linked contact attribute set are not reported here.
      */
     public function __construct(
-        public string $contactId,
-        public DomainContactType|string $contactType,
-        public ?array $attributes = null,
+        public readonly string $contactId,
+        public readonly DomainContactType|string $contactType,
+        public readonly ?array $attributes = null,
     ) {
     }
 

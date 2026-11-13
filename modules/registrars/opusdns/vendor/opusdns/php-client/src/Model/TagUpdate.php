@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\TagColor;
 use OpusDNS\Client\Serializer;
 
-final readonly class TagUpdate implements ApiModel
+final class TagUpdate implements ApiModel
 {
     /**
      * @param TagColor|string|null $color The color of the tag
@@ -21,9 +21,9 @@ final readonly class TagUpdate implements ApiModel
      * @param string|null $label A human-readable label for the tag
      */
     public function __construct(
-        public TagColor|string|null $color = null,
-        public ?string $description = null,
-        public ?string $label = null,
+        public readonly TagColor|string|null $color = null,
+        public readonly ?string $description = null,
+        public readonly ?string $label = null,
     ) {
     }
 

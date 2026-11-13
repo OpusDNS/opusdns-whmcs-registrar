@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainTransitResponse implements ApiModel
+final class DomainTransitResponse implements ApiModel
 {
     /**
      * @param string $name The domain name that was transited
      * @param bool $success Whether the transit operation was successful
      */
     public function __construct(
-        public string $name,
-        public bool $success,
+        public readonly string $name,
+        public readonly bool $success,
     ) {
     }
 

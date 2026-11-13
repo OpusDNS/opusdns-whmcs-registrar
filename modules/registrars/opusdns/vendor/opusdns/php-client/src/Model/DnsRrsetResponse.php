@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\DnsProtectedReason;
 use OpusDNS\Client\Enum\DnsRrsetType;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsRrsetResponse implements ApiModel
+final class DnsRrsetResponse implements ApiModel
 {
     /**
      * @param bool $protected Whether the RRset is protected
@@ -22,12 +22,12 @@ final readonly class DnsRrsetResponse implements ApiModel
      * @param list<DnsRecordResponse>|null $records
      */
     public function __construct(
-        public string $name,
-        public int $ttl,
-        public DnsRrsetType|string $type,
-        public bool $protected = false,
-        public DnsProtectedReason|string|null $protectedReason = null,
-        public ?array $records = null,
+        public readonly string $name,
+        public readonly int $ttl,
+        public readonly DnsRrsetType|string $type,
+        public readonly bool $protected = false,
+        public readonly DnsProtectedReason|string|null $protectedReason = null,
+        public readonly ?array $records = null,
     ) {
     }
 

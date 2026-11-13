@@ -15,15 +15,15 @@ use OpusDNS\Client\Serializer;
 /**
  * Nice Classification description (classDescType in RFC 9361)
  */
-final readonly class TmClassDesc implements ApiModel
+final class TmClassDesc implements ApiModel
 {
     /**
      * @param int $classNum Nice Classification class number
      * @param string $description Description of the class in English
      */
     public function __construct(
-        public int $classNum,
-        public string $description,
+        public readonly int $classNum,
+        public readonly string $description,
     ) {
     }
 

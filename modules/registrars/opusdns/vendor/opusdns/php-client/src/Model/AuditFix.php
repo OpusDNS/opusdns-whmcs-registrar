@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class AuditFix implements ApiModel
+final class AuditFix implements ApiModel
 {
     /**
      * @param string|null $fixContextId A `domains` context of the OpusDNS-managed domains the rule found: the
@@ -24,12 +24,12 @@ final readonly class AuditFix implements ApiModel
      * @param string|null $tool The concierge tool that can apply the fix.
      */
     public function __construct(
-        public ?string $fixContextId = null,
-        public ?int $fixableCount = null,
-        public string $hint = '',
-        public ?string $reason = null,
-        public ?array $template = null,
-        public ?string $tool = null,
+        public readonly ?string $fixContextId = null,
+        public readonly ?int $fixableCount = null,
+        public readonly string $hint = '',
+        public readonly ?string $reason = null,
+        public readonly ?array $template = null,
+        public readonly ?string $tool = null,
     ) {
     }
 

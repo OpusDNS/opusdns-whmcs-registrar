@@ -12,12 +12,12 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneCreateWorkerPayload implements ApiModel
+final class DnsZoneCreateWorkerPayload implements ApiModel
 {
     public function __construct(
-        public string $operation,
-        public string $type,
-        public DnsZoneCreatePayloadData $zone,
+        public readonly string $operation,
+        public readonly string $type,
+        public readonly DnsZoneCreatePayloadData $zone,
     ) {
     }
 

@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DuplicateCommand implements ApiModel
+final class DuplicateCommand implements ApiModel
 {
     /**
      * @param string $existingJobId ID of the previously-created job whose idempotency_key matched this command
@@ -25,11 +25,11 @@ final readonly class DuplicateCommand implements ApiModel
      * @param string|null $resourceKey Resource identifier (zone name, domain name, contact email) for this duplicate
      */
     public function __construct(
-        public string $existingJobId,
-        public int $index,
-        public ?string $existingBatchId = null,
-        public ?int $instanceIndex = null,
-        public ?string $resourceKey = null,
+        public readonly string $existingJobId,
+        public readonly int $index,
+        public readonly ?string $existingBatchId = null,
+        public readonly ?int $instanceIndex = null,
+        public readonly ?string $resourceKey = null,
     ) {
     }
 

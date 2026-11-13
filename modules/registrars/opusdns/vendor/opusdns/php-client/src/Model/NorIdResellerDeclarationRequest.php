@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class NorIdResellerDeclarationRequest implements ApiModel
+final class NorIdResellerDeclarationRequest implements ApiModel
 {
     /**
      * @param string $acceptName The full name of the person signing the applicant declaration. For private
@@ -21,8 +21,8 @@ final readonly class NorIdResellerDeclarationRequest implements ApiModel
      *     the declaration was signed out-of-band (e.g. via Norid's own tool); defaults to the submission time.
      */
     public function __construct(
-        public string $acceptName,
-        public ?\DateTimeImmutable $acceptDate = null,
+        public readonly string $acceptName,
+        public readonly ?\DateTimeImmutable $acceptDate = null,
     ) {
     }
 

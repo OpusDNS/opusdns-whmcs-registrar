@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\TagType;
 use OpusDNS\Client\Serializer;
 
-final readonly class BulkObjectTagChanges implements ApiModel
+final class BulkObjectTagChanges implements ApiModel
 {
     /**
      * @param list<string> $objects Object references to operate on. TypeIDs and resource names may be mixed.
@@ -24,11 +24,11 @@ final readonly class BulkObjectTagChanges implements ApiModel
      *     existing tags. Mutually exclusive with 'add' and 'remove'. An empty list removes all tags.
      */
     public function __construct(
-        public array $objects,
-        public TagType|string $type,
-        public ?array $add = null,
-        public ?array $remove = null,
-        public ?array $replace = null,
+        public readonly array $objects,
+        public readonly TagType|string $type,
+        public readonly ?array $add = null,
+        public readonly ?array $remove = null,
+        public readonly ?array $replace = null,
     ) {
     }
 

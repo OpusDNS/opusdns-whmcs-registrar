@@ -12,17 +12,17 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class Content implements ApiModel
+final class Content implements ApiModel
 {
     /**
      * @param array<string, mixed>|null $emailBlocks
      */
     public function __construct(
-        public ?array $emailBlocks = null,
-        public ?Footer $footer = null,
-        public ?Legal $legal = null,
-        public ?string $signature = null,
-        public ?Support $support = null,
+        public readonly ?array $emailBlocks = null,
+        public readonly ?Footer $footer = null,
+        public readonly ?Legal $legal = null,
+        public readonly ?string $signature = null,
+        public readonly ?Support $support = null,
     ) {
     }
 

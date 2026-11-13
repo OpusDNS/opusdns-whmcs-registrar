@@ -12,16 +12,16 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class AiInferenceUsageSummaryResponse implements ApiModel
+final class AiInferenceUsageSummaryResponse implements ApiModel
 {
     /**
      * @param list<AiInferenceUsageGroup> $groups
      */
     public function __construct(
-        public \DateTimeImmutable $endDate,
-        public array $groups,
-        public \DateTimeImmutable $startDate,
-        public string $product = 'ai_inference',
+        public readonly \DateTimeImmutable $endDate,
+        public readonly array $groups,
+        public readonly \DateTimeImmutable $startDate,
+        public readonly string $product = 'ai_inference',
     ) {
     }
 

@@ -87,6 +87,7 @@ final class ApiClientFactory
             'timeout' => self::REQUEST_TIMEOUT,
             'connect_timeout' => self::CONNECT_TIMEOUT,
         ]);
+        $messageFactory = new GuzzleMessageFactory();
 
         return Client::create(
             new Config(
@@ -96,6 +97,8 @@ final class ApiClientFactory
                 clientToken: $userAgent,
             ),
             new ModuleLoggingHttpClient($httpClient, $apiKey),
+            $messageFactory,
+            $messageFactory,
         );
     }
 }

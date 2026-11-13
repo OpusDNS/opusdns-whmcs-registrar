@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainSummaryResponse implements ApiModel
+final class DomainSummaryResponse implements ApiModel
 {
     /**
      * @param DomainSummaryData $domains Domain summary data
      * @param string $organizationId The organization ID TypeID prefix: organization.
      */
     public function __construct(
-        public DomainSummaryData $domains,
-        public string $organizationId,
+        public readonly DomainSummaryData $domains,
+        public readonly string $organizationId,
     ) {
     }
 

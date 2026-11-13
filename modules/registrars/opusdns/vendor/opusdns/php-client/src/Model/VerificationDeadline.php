@@ -13,11 +13,11 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\VerificationDeadlineType;
 use OpusDNS\Client\Serializer;
 
-final readonly class VerificationDeadline implements ApiModel
+final class VerificationDeadline implements ApiModel
 {
     public function __construct(
-        public \DateTimeImmutable $date,
-        public VerificationDeadlineType|string $type,
+        public readonly \DateTimeImmutable $date,
+        public readonly VerificationDeadlineType|string $type,
     ) {
     }
 

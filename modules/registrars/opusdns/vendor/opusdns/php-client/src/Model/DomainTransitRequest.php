@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainTransitRequest implements ApiModel
+final class DomainTransitRequest implements ApiModel
 {
     /**
      * @param bool $disconnect Disconnect the domain from current nameserver and update to DENIC nameserver
      */
     public function __construct(
-        public bool $disconnect,
+        public readonly bool $disconnect,
     ) {
     }
 

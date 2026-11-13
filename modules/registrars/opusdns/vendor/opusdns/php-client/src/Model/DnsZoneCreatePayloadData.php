@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DnssecStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneCreatePayloadData implements ApiModel
+final class DnsZoneCreatePayloadData implements ApiModel
 {
     /**
      * @param list<DnsRrsetCreate>|null $rrsets
@@ -22,10 +22,10 @@ final readonly class DnsZoneCreatePayloadData implements ApiModel
      *     used.
      */
     public function __construct(
-        public string $name,
-        public DnssecStatus|string $dnssecStatus = DnssecStatus::DISABLED,
-        public ?array $rrsets = null,
-        public ?string $vanityNameserverSetId = null,
+        public readonly string $name,
+        public readonly DnssecStatus|string $dnssecStatus = DnssecStatus::DISABLED,
+        public readonly ?array $rrsets = null,
+        public readonly ?string $vanityNameserverSetId = null,
     ) {
     }
 

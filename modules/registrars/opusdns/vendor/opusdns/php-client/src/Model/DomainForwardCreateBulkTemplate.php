@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainForwardCreateBulkTemplate implements ApiModel
+final class DomainForwardCreateBulkTemplate implements ApiModel
 {
     /**
      * @param bool $autoCreateZone Create apex DNS zone automatically when missing
@@ -21,10 +21,10 @@ final readonly class DomainForwardCreateBulkTemplate implements ApiModel
      * @param DomainForwardProtocolSetRequest|null $https HTTPS redirect definitions
      */
     public function __construct(
-        public bool $autoCreateZone = false,
-        public bool $enabled = false,
-        public ?DomainForwardProtocolSetRequest $http = null,
-        public ?DomainForwardProtocolSetRequest $https = null,
+        public readonly bool $autoCreateZone = false,
+        public readonly bool $enabled = false,
+        public readonly ?DomainForwardProtocolSetRequest $http = null,
+        public readonly ?DomainForwardProtocolSetRequest $https = null,
     ) {
     }
 

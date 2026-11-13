@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class TransferLockPolicyBase implements ApiModel
+final class TransferLockPolicyBase implements ApiModel
 {
     /**
      * @param bool $supportedByRegistrar Whether the registrar supports transfer locks
      * @param bool $supportedByRegistry Whether the registry supports transfer locks
      */
     public function __construct(
-        public bool $supportedByRegistrar,
-        public bool $supportedByRegistry,
+        public readonly bool $supportedByRegistrar,
+        public readonly bool $supportedByRegistry,
     ) {
     }
 

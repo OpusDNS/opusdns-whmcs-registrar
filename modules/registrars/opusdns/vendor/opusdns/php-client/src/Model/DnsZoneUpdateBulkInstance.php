@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DnssecStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneUpdateBulkInstance implements ApiModel
+final class DnsZoneUpdateBulkInstance implements ApiModel
 {
     /**
      * @param string $name The DNS zone name (e.g., example.com)
@@ -22,9 +22,9 @@ final readonly class DnsZoneUpdateBulkInstance implements ApiModel
      *     records unchanged if the template also omits rrsets). Provide an empty list to delete all records.
      */
     public function __construct(
-        public string $name,
-        public DnssecStatus|string|null $dnssecStatus = null,
-        public ?array $rrsets = null,
+        public readonly string $name,
+        public readonly DnssecStatus|string|null $dnssecStatus = null,
+        public readonly ?array $rrsets = null,
     ) {
     }
 

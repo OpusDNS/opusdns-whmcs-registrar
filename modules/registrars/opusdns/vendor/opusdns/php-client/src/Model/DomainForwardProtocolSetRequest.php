@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainForwardProtocolSetRequest implements ApiModel
+final class DomainForwardProtocolSetRequest implements ApiModel
 {
     /**
      * @param list<HttpRedirectRequest> $redirects
      */
     public function __construct(
-        public array $redirects,
+        public readonly array $redirects,
     ) {
     }
 

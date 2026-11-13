@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainForwardProtocolSetResponse implements ApiModel
+final class DomainForwardProtocolSetResponse implements ApiModel
 {
     /**
      * @param list<HttpRedirectListResponse> $redirects
      */
     public function __construct(
-        public \DateTimeImmutable $createdOn,
-        public array $redirects,
-        public \DateTimeImmutable $updatedOn,
+        public readonly \DateTimeImmutable $createdOn,
+        public readonly array $redirects,
+        public readonly \DateTimeImmutable $updatedOn,
     ) {
     }
 

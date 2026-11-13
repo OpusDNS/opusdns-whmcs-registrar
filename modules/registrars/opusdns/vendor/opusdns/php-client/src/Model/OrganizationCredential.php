@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\OrganizationCredentialStatus;
 use OpusDNS\Client\Enum\PublicRole;
 use OpusDNS\Client\Serializer;
 
-final readonly class OrganizationCredential implements ApiModel
+final class OrganizationCredential implements ApiModel
 {
     /**
      * @param string $apiKeyId Unique identifier of the organization credential. TypeID prefix: api_key.
@@ -31,16 +31,16 @@ final readonly class OrganizationCredential implements ApiModel
      *     role. null when the key holds no role, which grants no permissions.
      */
     public function __construct(
-        public string $apiKeyId,
-        public OrganizationCredentialStatus|string $status,
-        public ?string $apiKeyDescription = null,
-        public ?string $apiKeyName = null,
-        public ?\DateTimeImmutable $createdOn = null,
-        public ?\DateTimeImmutable $deletedOn = null,
-        public ?\DateTimeImmutable $expiresAt = null,
-        public ?\DateTimeImmutable $lastUsedOn = null,
-        public ?string $organizationId = null,
-        public PublicRole|string|null $role = null,
+        public readonly string $apiKeyId,
+        public readonly OrganizationCredentialStatus|string $status,
+        public readonly ?string $apiKeyDescription = null,
+        public readonly ?string $apiKeyName = null,
+        public readonly ?\DateTimeImmutable $createdOn = null,
+        public readonly ?\DateTimeImmutable $deletedOn = null,
+        public readonly ?\DateTimeImmutable $expiresAt = null,
+        public readonly ?\DateTimeImmutable $lastUsedOn = null,
+        public readonly ?string $organizationId = null,
+        public readonly PublicRole|string|null $role = null,
     ) {
     }
 

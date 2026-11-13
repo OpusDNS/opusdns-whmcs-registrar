@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class AuditCoverage implements ApiModel
+final class AuditCoverage implements ApiModel
 {
     /**
      * @param list<string> $notChecked What the audit could not cover, in English.
@@ -22,12 +22,12 @@ final readonly class AuditCoverage implements ApiModel
      * @param AuditSourceStatus|null $opusdnsApi The live OpusDNS API.
      */
     public function __construct(
-        public array $notChecked,
-        public ?AuditSourceStatus $domainChecker = null,
-        public ?AuditSourceStatus $index = null,
-        public ?\DateTimeImmutable $newestSync = null,
-        public ?\DateTimeImmutable $oldestSync = null,
-        public ?AuditSourceStatus $opusdnsApi = null,
+        public readonly array $notChecked,
+        public readonly ?AuditSourceStatus $domainChecker = null,
+        public readonly ?AuditSourceStatus $index = null,
+        public readonly ?\DateTimeImmutable $newestSync = null,
+        public readonly ?\DateTimeImmutable $oldestSync = null,
+        public readonly ?AuditSourceStatus $opusdnsApi = null,
     ) {
     }
 

@@ -15,15 +15,15 @@ use OpusDNS\Client\Serializer;
 /**
  * ContextPayload[EmailForwardResponse]
  */
-final readonly class ContextPayloadEmailForwardResponse implements ApiModel
+final class ContextPayloadEmailForwardResponse implements ApiModel
 {
     /**
      * @param list<EmailForwardResponse> $results
      */
     public function __construct(
-        public array $results,
-        public ?ContextMeta $meta = null,
-        public ?PaginationMetadata $pagination = null,
+        public readonly array $results,
+        public readonly ?ContextMeta $meta = null,
+        public readonly ?PaginationMetadata $pagination = null,
     ) {
     }
 

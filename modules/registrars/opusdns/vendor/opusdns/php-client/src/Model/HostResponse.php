@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class HostResponse implements ApiModel
+final class HostResponse implements ApiModel
 {
     /**
      * @param \DateTimeImmutable $createdOn Timestamp when the host was created
@@ -22,11 +22,11 @@ final readonly class HostResponse implements ApiModel
      * @param list<string>|null $ipAddresses The ip addresses of the Host Object
      */
     public function __construct(
-        public \DateTimeImmutable $createdOn,
-        public string $hostId,
-        public string $hostname,
-        public \DateTimeImmutable $updatedOn,
-        public ?array $ipAddresses = null,
+        public readonly \DateTimeImmutable $createdOn,
+        public readonly string $hostId,
+        public readonly string $hostname,
+        public readonly \DateTimeImmutable $updatedOn,
+        public readonly ?array $ipAddresses = null,
     ) {
     }
 

@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class PaginationMetadata implements ApiModel
+final class PaginationMetadata implements ApiModel
 {
     public function __construct(
-        public int $currentPage,
-        public bool $hasNextPage,
-        public bool $hasPreviousPage,
-        public int $pageSize,
-        public int $totalItems,
-        public int $totalPages,
+        public readonly int $currentPage,
+        public readonly bool $hasNextPage,
+        public readonly bool $hasPreviousPage,
+        public readonly int $pageSize,
+        public readonly int $totalItems,
+        public readonly int $totalPages,
     ) {
     }
 

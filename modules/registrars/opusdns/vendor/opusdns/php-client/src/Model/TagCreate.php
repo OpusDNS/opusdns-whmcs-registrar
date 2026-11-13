@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\TagColor;
 use OpusDNS\Client\Enum\TagType;
 use OpusDNS\Client\Serializer;
 
-final readonly class TagCreate implements ApiModel
+final class TagCreate implements ApiModel
 {
     /**
      * @param string $label A human-readable label for the tag
@@ -23,10 +23,10 @@ final readonly class TagCreate implements ApiModel
      * @param string|null $description Optional description of the tag
      */
     public function __construct(
-        public string $label,
-        public TagType|string $type,
-        public TagColor|string|null $color = TagColor::COLOR_1,
-        public ?string $description = null,
+        public readonly string $label,
+        public readonly TagType|string $type,
+        public readonly TagColor|string|null $color = TagColor::COLOR_1,
+        public readonly ?string $description = null,
     ) {
     }
 

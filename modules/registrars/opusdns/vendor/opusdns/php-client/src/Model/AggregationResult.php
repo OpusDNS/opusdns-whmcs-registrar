@@ -12,20 +12,20 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class AggregationResult implements ApiModel
+final class AggregationResult implements ApiModel
 {
     /**
      * @param list<AggregationRow>|null $rows
      * @param array<string, float>|null $values
      */
     public function __construct(
-        public string $name,
-        public string $type,
-        public ?string $field = null,
-        public ?int $otherCount = null,
-        public ?array $rows = null,
-        public ?float $value = null,
-        public ?array $values = null,
+        public readonly string $name,
+        public readonly string $type,
+        public readonly ?string $field = null,
+        public readonly ?int $otherCount = null,
+        public readonly ?array $rows = null,
+        public readonly ?float $value = null,
+        public readonly ?array $values = null,
     ) {
     }
 

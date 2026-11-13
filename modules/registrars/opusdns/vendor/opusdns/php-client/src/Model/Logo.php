@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class Logo implements ApiModel
+final class Logo implements ApiModel
 {
     public function __construct(
-        public ?string $dark = null,
-        public ?string $favicon = null,
-        public ?string $icon = null,
-        public ?string $light = null,
+        public readonly ?string $dark = null,
+        public readonly ?string $favicon = null,
+        public readonly ?string $icon = null,
+        public readonly ?string $light = null,
     ) {
     }
 

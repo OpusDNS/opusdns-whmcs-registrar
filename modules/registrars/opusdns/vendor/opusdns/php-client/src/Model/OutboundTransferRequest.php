@@ -13,13 +13,13 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\OutboundTransferAction;
 use OpusDNS\Client\Serializer;
 
-final readonly class OutboundTransferRequest implements ApiModel
+final class OutboundTransferRequest implements ApiModel
 {
     /**
      * @param OutboundTransferAction|string $action Whether to approve or reject the pending outbound transfer
      */
     public function __construct(
-        public OutboundTransferAction|string $action,
+        public readonly OutboundTransferAction|string $action,
     ) {
     }
 

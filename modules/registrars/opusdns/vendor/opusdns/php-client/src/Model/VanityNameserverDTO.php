@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class VanityNameserverDTO implements ApiModel
+final class VanityNameserverDTO implements ApiModel
 {
     /**
      * @param string $hostname Fully-qualified hostname of the vanity nameserver
      * @param int $position Ordering within the set; lowest position becomes SOA MNAME
      */
     public function __construct(
-        public string $hostname,
-        public int $position,
+        public readonly string $hostname,
+        public readonly int $position,
     ) {
     }
 

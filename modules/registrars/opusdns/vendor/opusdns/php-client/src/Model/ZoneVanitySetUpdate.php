@@ -15,14 +15,14 @@ use OpusDNS\Client\Serializer;
 /**
  * Public request body for assigning/clearing a zone's vanity NS branding.
  */
-final readonly class ZoneVanitySetUpdate implements ApiModel
+final class ZoneVanitySetUpdate implements ApiModel
 {
     /**
      * @param string|null $vanityNameserverSetId Vanity NS set to brand the zone's apex NS + SOA with, or null to
      *     unassign and restamp the apex back to OpusDNS system defaults.
      */
     public function __construct(
-        public ?string $vanityNameserverSetId = null,
+        public readonly ?string $vanityNameserverSetId = null,
     ) {
     }
 

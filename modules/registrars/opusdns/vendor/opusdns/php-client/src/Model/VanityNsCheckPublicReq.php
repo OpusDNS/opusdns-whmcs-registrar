@@ -16,13 +16,13 @@ use OpusDNS\Client\Serializer;
  * Public `/check` request body. The owning org comes from auth context, so only the set identifier is
  * accepted here.
  */
-final readonly class VanityNsCheckPublicReq implements ApiModel
+final class VanityNsCheckPublicReq implements ApiModel
 {
     /**
      * @param string $setId The vanity NS set to diagnose TypeID prefix: vns.
      */
     public function __construct(
-        public string $setId,
+        public readonly string $setId,
     ) {
     }
 

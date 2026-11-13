@@ -18,7 +18,7 @@ use OpusDNS\Client\Serializer;
  * Status-aware variant of `VanityNameserverSetDTO` for list/get endpoints. `VanityNameserverSetDTO`
  * stays the brandable-only read shape (always ACTIVE).
  */
-final readonly class VanityNameserverSetSummaryDTO implements ApiModel
+final class VanityNameserverSetSummaryDTO implements ApiModel
 {
     /**
      * @param bool $isDefault Whether this is the org's default vanity NS set
@@ -39,18 +39,18 @@ final readonly class VanityNameserverSetSummaryDTO implements ApiModel
      *     current period
      */
     public function __construct(
-        public bool $isDefault,
-        public string $name,
-        public string $organizationId,
-        public string $parentDomainName,
-        public string $setId,
-        public string $soaRname,
-        public VanityNameserverSetStatusDTO|string $status,
-        public ?\DateTimeImmutable $expiresOn = null,
-        public ?\DateTimeImmutable $gracePeriodEndsAt = null,
-        public ?array $nameservers = null,
-        public ?\DateTimeImmutable $renewScheduledAt = null,
-        public RenewalModeDTO|string|null $renewalMode = null,
+        public readonly bool $isDefault,
+        public readonly string $name,
+        public readonly string $organizationId,
+        public readonly string $parentDomainName,
+        public readonly string $setId,
+        public readonly string $soaRname,
+        public readonly VanityNameserverSetStatusDTO|string $status,
+        public readonly ?\DateTimeImmutable $expiresOn = null,
+        public readonly ?\DateTimeImmutable $gracePeriodEndsAt = null,
+        public readonly ?array $nameservers = null,
+        public readonly ?\DateTimeImmutable $renewScheduledAt = null,
+        public readonly RenewalModeDTO|string|null $renewalMode = null,
     ) {
     }
 

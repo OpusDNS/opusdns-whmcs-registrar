@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainForwardEnableBulkInstance implements ApiModel
+final class DomainForwardEnableBulkInstance implements ApiModel
 {
     /**
      * @param string $hostname Hostname to enable forwarding for
      */
     public function __construct(
-        public string $hostname,
+        public readonly string $hostname,
     ) {
     }
 

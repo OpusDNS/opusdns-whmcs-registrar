@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class CommandError implements ApiModel
+final class CommandError implements ApiModel
 {
     /**
      * @param string $error Error message
@@ -26,12 +26,12 @@ final readonly class CommandError implements ApiModel
      *     'batch-empty'). Matches the 'type' field in top-level error responses.
      */
     public function __construct(
-        public string $error,
-        public int $index,
-        public ?string $code = null,
-        public ?int $instanceIndex = null,
-        public ?string $resourceKey = null,
-        public ?string $type = null,
+        public readonly string $error,
+        public readonly int $index,
+        public readonly ?string $code = null,
+        public readonly ?int $instanceIndex = null,
+        public readonly ?string $resourceKey = null,
+        public readonly ?string $type = null,
     ) {
     }
 

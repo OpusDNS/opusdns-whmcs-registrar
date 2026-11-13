@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactAttributeLinkResponse implements ApiModel
+final class ContactAttributeLinkResponse implements ApiModel
 {
     /**
      * @param string $contactAttributeLinkId The unique identifier of the link TypeID prefix: contact_attribute_link.
@@ -23,11 +23,11 @@ final readonly class ContactAttributeLinkResponse implements ApiModel
      * @param string $tld The TLD this link applies to
      */
     public function __construct(
-        public string $contactAttributeLinkId,
-        public string $contactAttributeSetId,
-        public string $contactId,
-        public \DateTimeImmutable $createdOn,
-        public string $tld,
+        public readonly string $contactAttributeLinkId,
+        public readonly string $contactAttributeSetId,
+        public readonly string $contactId,
+        public readonly \DateTimeImmutable $createdOn,
+        public readonly string $tld,
     ) {
     }
 

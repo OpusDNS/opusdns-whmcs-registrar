@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ObjectTagChanges implements ApiModel
+final class ObjectTagChanges implements ApiModel
 {
     /**
      * @param list<string>|null $add Object TypeIDs or resource names to tag. TypeIDs and names may be mixed.
      * @param list<string>|null $remove Object TypeIDs or resource names to untag. TypeIDs and names may be mixed.
      */
     public function __construct(
-        public ?array $add = null,
-        public ?array $remove = null,
+        public readonly ?array $add = null,
+        public readonly ?array $remove = null,
     ) {
     }
 

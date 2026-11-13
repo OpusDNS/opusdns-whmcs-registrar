@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class MessageListResponse implements ApiModel
+final class MessageListResponse implements ApiModel
 {
     /**
      * @param list<Message> $results
      * @param PaginationMetadata|null $pagination Omitted when the `recent` query parameter is used.
      */
     public function __construct(
-        public array $results,
-        public ?PaginationMetadata $pagination = null,
+        public readonly array $results,
+        public readonly ?PaginationMetadata $pagination = null,
     ) {
     }
 

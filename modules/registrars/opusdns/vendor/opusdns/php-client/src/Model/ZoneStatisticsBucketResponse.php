@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ZoneStatisticsBucketResponse implements ApiModel
+final class ZoneStatisticsBucketResponse implements ApiModel
 {
     /**
      * @param bool $partial True when the counts are not those of the whole bucket: `covered_from`..`covered_to` is
@@ -36,13 +36,13 @@ final readonly class ZoneStatisticsBucketResponse implements ApiModel
      *     were recorded. Null when the bucket is not covered: no data, rather than no queries
      */
     public function __construct(
-        public bool $partial,
-        public \DateTimeImmutable $periodEnd,
-        public \DateTimeImmutable $periodStart,
-        public ?\DateTimeImmutable $coveredFrom = null,
-        public ?\DateTimeImmutable $coveredTo = null,
-        public ?int $nxdomainCount = null,
-        public ?int $queryCount = null,
+        public readonly bool $partial,
+        public readonly \DateTimeImmutable $periodEnd,
+        public readonly \DateTimeImmutable $periodStart,
+        public readonly ?\DateTimeImmutable $coveredFrom = null,
+        public readonly ?\DateTimeImmutable $coveredTo = null,
+        public readonly ?int $nxdomainCount = null,
+        public readonly ?int $queryCount = null,
     ) {
     }
 

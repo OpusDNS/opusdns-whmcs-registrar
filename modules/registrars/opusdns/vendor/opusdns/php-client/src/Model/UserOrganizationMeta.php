@@ -13,15 +13,15 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\Currency;
 use OpusDNS\Client\Serializer;
 
-final readonly class UserOrganizationMeta implements ApiModel
+final class UserOrganizationMeta implements ApiModel
 {
     /**
      * @param Currency|string|null $currency Currency used by the user's organization.
      * @param string|null $parentOrganizationId ID of the parent organization, if any.
      */
     public function __construct(
-        public Currency|string|null $currency = null,
-        public ?string $parentOrganizationId = null,
+        public readonly Currency|string|null $currency = null,
+        public readonly ?string $parentOrganizationId = null,
     ) {
     }
 

@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactCreateCommand implements ApiModel
+final class ContactCreateCommand implements ApiModel
 {
     /**
      * @param ContactCreatePayloadData $payload Contact creation payload
@@ -20,10 +20,10 @@ final readonly class ContactCreateCommand implements ApiModel
      * @param string $version Command version
      */
     public function __construct(
-        public ContactCreatePayloadData $payload,
-        public string $command = 'contact_create',
-        public ?string $idempotencyKey = null,
-        public string $version = 'v1',
+        public readonly ContactCreatePayloadData $payload,
+        public readonly string $command = 'contact_create',
+        public readonly ?string $idempotencyKey = null,
+        public readonly string $version = 'v1',
     ) {
     }
 

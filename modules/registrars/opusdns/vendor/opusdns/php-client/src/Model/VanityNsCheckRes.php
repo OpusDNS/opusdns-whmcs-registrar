@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\VanityNameserverSetStatusDTO;
 use OpusDNS\Client\Serializer;
 
-final readonly class VanityNsCheckRes implements ApiModel
+final class VanityNsCheckRes implements ApiModel
 {
     /**
      * @param string $parentDomainName Parent domain of the set's vanity NS hostnames
@@ -23,11 +23,11 @@ final readonly class VanityNsCheckRes implements ApiModel
      * @param list<VanityNsCheckResultDTO>|null $checks Individual diagnostic checks
      */
     public function __construct(
-        public string $parentDomainName,
-        public string $setId,
-        public VanityNameserverSetStatusDTO|string $status,
-        public VanityNsCheckSummaryDTO $summary,
-        public ?array $checks = null,
+        public readonly string $parentDomainName,
+        public readonly string $setId,
+        public readonly VanityNameserverSetStatusDTO|string $status,
+        public readonly VanityNsCheckSummaryDTO $summary,
+        public readonly ?array $checks = null,
     ) {
     }
 

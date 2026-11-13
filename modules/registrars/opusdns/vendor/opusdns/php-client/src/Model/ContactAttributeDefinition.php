@@ -18,7 +18,7 @@ use OpusDNS\Client\Serializer;
 /**
  * Definition of a possible attribute for a TLD.
  */
-final readonly class ContactAttributeDefinition implements ApiModel
+final class ContactAttributeDefinition implements ApiModel
 {
     /**
      * @param RegistryHandleAttributeType|string $key Unique identifier for the attribute
@@ -31,12 +31,12 @@ final readonly class ContactAttributeDefinition implements ApiModel
      * @param list<string>|null $values Allowed values for enum types
      */
     public function __construct(
-        public RegistryHandleAttributeType|string $key,
-        public AttributeType|string $type,
-        public ?array $conditions = null,
-        public ?array $contactRoles = null,
-        public bool $required = false,
-        public ?array $values = null,
+        public readonly RegistryHandleAttributeType|string $key,
+        public readonly AttributeType|string $type,
+        public readonly ?array $conditions = null,
+        public readonly ?array $contactRoles = null,
+        public readonly bool $required = false,
+        public readonly ?array $values = null,
     ) {
     }
 

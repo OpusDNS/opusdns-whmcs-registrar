@@ -15,7 +15,7 @@ use OpusDNS\Client\Serializer;
 /**
  * RequestAuthcodeResponse
  */
-final readonly class ApiDomainTldSpecificLtModelsRequestAuthcodeResponse implements ApiModel
+final class ApiDomainTldSpecificLtModelsRequestAuthcodeResponse implements ApiModel
 {
     /**
      * @param string $name The domain name that had the auth code requested
@@ -25,11 +25,11 @@ final readonly class ApiDomainTldSpecificLtModelsRequestAuthcodeResponse impleme
      * @param string|null $detail Additional information about the result in case of failure
      */
     public function __construct(
-        public string $name,
-        public bool $success,
-        public ?string $authCode = null,
-        public ?\DateTimeImmutable $authCodeExpiresOn = null,
-        public ?string $detail = null,
+        public readonly string $name,
+        public readonly bool $success,
+        public readonly ?string $authCode = null,
+        public readonly ?\DateTimeImmutable $authCodeExpiresOn = null,
+        public readonly ?string $detail = null,
     ) {
     }
 

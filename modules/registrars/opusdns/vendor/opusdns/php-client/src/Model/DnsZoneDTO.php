@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DnssecStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneDTO implements ApiModel
+final class DnsZoneDTO implements ApiModel
 {
     /**
      * @param string $name The zone name (e.g., 'example.com')
@@ -25,12 +25,12 @@ final readonly class DnsZoneDTO implements ApiModel
      *     NS
      */
     public function __construct(
-        public string $name,
-        public ?\DateTimeImmutable $createdOn = null,
-        public DnssecStatus|string $dnssecStatus = DnssecStatus::DISABLED,
-        public ?array $rrsets = null,
-        public ?\DateTimeImmutable $updatedOn = null,
-        public ?string $vanityNameserverSetId = null,
+        public readonly string $name,
+        public readonly ?\DateTimeImmutable $createdOn = null,
+        public readonly DnssecStatus|string $dnssecStatus = DnssecStatus::DISABLED,
+        public readonly ?array $rrsets = null,
+        public readonly ?\DateTimeImmutable $updatedOn = null,
+        public readonly ?string $vanityNameserverSetId = null,
     ) {
     }
 

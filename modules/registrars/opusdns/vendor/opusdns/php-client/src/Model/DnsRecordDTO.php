@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsRecordDTO implements ApiModel
+final class DnsRecordDTO implements ApiModel
 {
     /**
      * @param string $rdata The record data (e.g., IP address, domain name)
      */
     public function __construct(
-        public string $rdata,
+        public readonly string $rdata,
     ) {
     }
 

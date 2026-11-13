@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DnsRrsetType;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsRrsetDTO implements ApiModel
+final class DnsRrsetDTO implements ApiModel
 {
     /**
      * @param string $name The RRset name (e.g., '@', 'www')
@@ -22,10 +22,10 @@ final readonly class DnsRrsetDTO implements ApiModel
      * @param list<DnsRecordDTO>|null $records List of records in this RRset
      */
     public function __construct(
-        public string $name,
-        public int $ttl,
-        public DnsRrsetType|string $type,
-        public ?array $records = null,
+        public readonly string $name,
+        public readonly int $ttl,
+        public readonly DnsRrsetType|string $type,
+        public readonly ?array $records = null,
     ) {
     }
 

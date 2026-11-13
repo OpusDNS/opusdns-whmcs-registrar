@@ -12,14 +12,14 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ConversationPatchRequest implements ApiModel
+final class ConversationPatchRequest implements ApiModel
 {
     /**
      * @param array<string, mixed>|null $metadata
      */
     public function __construct(
-        public ?array $metadata = null,
-        public ?string $title = null,
+        public readonly ?array $metadata = null,
+        public readonly ?string $title = null,
     ) {
     }
 

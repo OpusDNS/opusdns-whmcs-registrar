@@ -12,14 +12,14 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainSearchResponse implements ApiModel
+final class DomainSearchResponse implements ApiModel
 {
     /**
      * @param list<DomainSearchSuggestionWithPrice> $results
      */
     public function __construct(
-        public DomainSearchMeta $meta,
-        public array $results,
+        public readonly DomainSearchMeta $meta,
+        public readonly array $results,
     ) {
     }
 

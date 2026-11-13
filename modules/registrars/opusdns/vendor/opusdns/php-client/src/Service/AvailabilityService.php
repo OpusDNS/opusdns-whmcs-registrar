@@ -28,7 +28,7 @@ final class AvailabilityService
      * Check domain availability
      *
      * Check the availability of one or more domains. Invalid domains are reported per domain (status
-     * 'error' with error details) instead of failing the whole request.
+     * 'unavailable' with error details) instead of failing the whole request.
      *
      * @param list<string> $domains Specify one or more domains to check for availability.
      * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
@@ -81,9 +81,10 @@ final class AvailabilityService
      * Stream domain availability results using Server-Sent Events (SSE) until the `done` event is
      * received.
      *
-     * With `marketplaces` (e.g. `["fruits"]`, or `["all"]`), a taken domain that can be bought on one of
-     * them is reported as `market_available` with `marketplace: {"name": ...}` (best-effort); taken
-     * domains may then arrive slightly later.
+     * With `marketplaces` (e.g. `["fruits"]`, or `["all"]`), for organizations billed in EUR, a taken
+     * domain that can be bought on one of them is reported as `market_available` with `marketplace:
+     * {"name": ...}` (best-effort); taken domains may then arrive slightly later. For other organizations
+     * `marketplaces` is ignored and taken domains are reported as `unavailable`.
      *
      * @param DomainAvailabilityRequest|array<string, mixed> $body
      * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on

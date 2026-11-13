@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ParkingCreateBulkCommand implements ApiModel
+final class ParkingCreateBulkCommand implements ApiModel
 {
     /**
      * @param ParkingCreateBulkPayload $payload Bulk parking creation payload
@@ -20,10 +20,10 @@ final readonly class ParkingCreateBulkCommand implements ApiModel
      * @param string $version Command version
      */
     public function __construct(
-        public ParkingCreateBulkPayload $payload,
-        public string $command = 'parking_create_bulk',
-        public ?string $idempotencyKey = null,
-        public string $version = 'v1',
+        public readonly ParkingCreateBulkPayload $payload,
+        public readonly string $command = 'parking_create_bulk',
+        public readonly ?string $idempotencyKey = null,
+        public readonly string $version = 'v1',
     ) {
     }
 

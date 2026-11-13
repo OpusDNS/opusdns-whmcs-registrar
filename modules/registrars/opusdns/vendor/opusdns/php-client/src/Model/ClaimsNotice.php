@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ClaimsNotice implements ApiModel
+final class ClaimsNotice implements ApiModel
 {
     /**
      * @param string $claimsKey The claims key used to retrieve this claims notice
@@ -27,16 +27,16 @@ final readonly class ClaimsNotice implements ApiModel
      * @param string $renderedHtml The rendered trademark claims notice HTML
      */
     public function __construct(
-        public string $claimsKey,
-        public string $claimsNoticeAcceptanceHash,
-        public string $label,
-        public ?array $claims = null,
-        public string $noticeFooter = '',
-        public string $noticeFooterUrl = '',
-        public string $noticeIntro = '',
-        public string $noticeNotExactMatchIntro = '',
-        public string $noticeTitle = '',
-        public string $renderedHtml = '',
+        public readonly string $claimsKey,
+        public readonly string $claimsNoticeAcceptanceHash,
+        public readonly string $label,
+        public readonly ?array $claims = null,
+        public readonly string $noticeFooter = '',
+        public readonly string $noticeFooterUrl = '',
+        public readonly string $noticeIntro = '',
+        public readonly string $noticeNotExactMatchIntro = '',
+        public readonly string $noticeTitle = '',
+        public readonly string $renderedHtml = '',
     ) {
     }
 

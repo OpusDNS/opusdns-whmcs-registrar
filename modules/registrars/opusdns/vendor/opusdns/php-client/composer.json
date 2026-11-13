@@ -9,7 +9,7 @@
         "docs": "https://developers.opusdns.com/"
     },
     "require": {
-        "php": "^8.3",
+        "php": "^8.1",
         "ext-json": "*",
         "psr/http-client": "^1.0",
         "psr/http-factory": "^1.0",
@@ -19,8 +19,8 @@
         "guzzlehttp/guzzle": "^7.8",
         "nette/php-generator": "^4.1",
         "phpstan/phpstan": "^2.0",
-        "phpunit/phpunit": "^11.5 || ^12.0",
-        "symfony/yaml": "^7.0"
+        "phpunit/phpunit": "^10.5 || ^11.5 || ^12.0",
+        "symfony/yaml": "^6.4 || ^7.0"
     },
     "suggest": {
         "guzzlehttp/guzzle": "Provides the PSR-18 client and PSR-17 factories that Client::create() uses by default"
@@ -45,6 +45,9 @@
         "test": "phpunit"
     },
     "config": {
+        "platform": {
+            "php": "8.1.0"
+        },
         "sort-packages": true,
         "allow-plugins": false
     }

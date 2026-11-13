@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class CreateJobBatchResponse implements ApiModel
+final class CreateJobBatchResponse implements ApiModel
 {
     /**
      * @param string $batchId TypeID identifying this batch TypeID prefix: batch.
@@ -28,14 +28,14 @@ final readonly class CreateJobBatchResponse implements ApiModel
      *     previously-submitted job
      */
     public function __construct(
-        public string $batchId,
-        public int $jobsCreated,
-        public int $jobsFailed,
-        public string $statusUrl,
-        public int $totalCommands,
-        public ?array $duplicates = null,
-        public ?array $errors = null,
-        public int $jobsDuplicated = 0,
+        public readonly string $batchId,
+        public readonly int $jobsCreated,
+        public readonly int $jobsFailed,
+        public readonly string $statusUrl,
+        public readonly int $totalCommands,
+        public readonly ?array $duplicates = null,
+        public readonly ?array $errors = null,
+        public readonly int $jobsDuplicated = 0,
     ) {
     }
 

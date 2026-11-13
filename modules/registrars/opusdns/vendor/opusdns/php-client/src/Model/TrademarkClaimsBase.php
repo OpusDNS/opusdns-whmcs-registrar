@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class TrademarkClaimsBase implements ApiModel
+final class TrademarkClaimsBase implements ApiModel
 {
     /**
      * @param bool $supported Whether trademark claims are supported
@@ -21,10 +21,10 @@ final readonly class TrademarkClaimsBase implements ApiModel
      * @param bool|null $tmchRequired If true, claim notifications are mandatory within the timeframe
      */
     public function __construct(
-        public bool $supported,
-        public ?\DateTimeImmutable $endDate = null,
-        public ?\DateTimeImmutable $startDate = null,
-        public ?bool $tmchRequired = null,
+        public readonly bool $supported,
+        public readonly ?\DateTimeImmutable $endDate = null,
+        public readonly ?\DateTimeImmutable $startDate = null,
+        public readonly ?bool $tmchRequired = null,
     ) {
     }
 

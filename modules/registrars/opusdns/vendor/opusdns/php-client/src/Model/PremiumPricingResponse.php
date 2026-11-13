@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class PremiumPricingResponse implements ApiModel
+final class PremiumPricingResponse implements ApiModel
 {
     /**
      * @param list<PremiumPricingAction> $prices Premium prices per action
      */
     public function __construct(
-        public array $prices,
+        public readonly array $prices,
     ) {
     }
 

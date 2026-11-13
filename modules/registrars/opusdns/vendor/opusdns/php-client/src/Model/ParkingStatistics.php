@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\Currency;
 use OpusDNS\Client\Serializer;
 
-final readonly class ParkingStatistics implements ApiModel
+final class ParkingStatistics implements ApiModel
 {
     /**
      * @param int $conversions Number of conversions
@@ -24,12 +24,12 @@ final readonly class ParkingStatistics implements ApiModel
      * @param int $views Number of views
      */
     public function __construct(
-        public int $conversions,
-        public string $revenue,
-        public Currency|string $revenueCurrency,
-        public string $rpc,
-        public string $rpm,
-        public int $views,
+        public readonly int $conversions,
+        public readonly string $revenue,
+        public readonly Currency|string $revenueCurrency,
+        public readonly string $rpc,
+        public readonly string $rpm,
+        public readonly int $views,
     ) {
     }
 

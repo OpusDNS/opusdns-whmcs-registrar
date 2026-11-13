@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ListVanityNameserverSetsRes implements ApiModel
+final class ListVanityNameserverSetsRes implements ApiModel
 {
     /**
      * @param PaginationMetadataDTO $pagination Pagination metadata
@@ -20,8 +20,8 @@ final readonly class ListVanityNameserverSetsRes implements ApiModel
      *     non-ACTIVE rows
      */
     public function __construct(
-        public PaginationMetadataDTO $pagination,
-        public ?array $results = null,
+        public readonly PaginationMetadataDTO $pagination,
+        public readonly ?array $results = null,
     ) {
     }
 

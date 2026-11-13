@@ -12,12 +12,12 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class PreviewMailRes implements ApiModel
+final class PreviewMailRes implements ApiModel
 {
     public function __construct(
-        public string $html,
-        public string $subject,
-        public string $text,
+        public readonly string $html,
+        public readonly string $subject,
+        public readonly string $text,
     ) {
     }
 

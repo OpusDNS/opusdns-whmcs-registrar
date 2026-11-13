@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainRestoreResponse implements ApiModel
+final class DomainRestoreResponse implements ApiModel
 {
     /**
      * @param string $domainId The ID of the restored domain TypeID prefix: domain.
@@ -20,9 +20,9 @@ final readonly class DomainRestoreResponse implements ApiModel
      * @param \DateTimeImmutable $restoredAt When the domain restore operation was completed
      */
     public function __construct(
-        public string $domainId,
-        public string $name,
-        public \DateTimeImmutable $restoredAt,
+        public readonly string $domainId,
+        public readonly string $name,
+        public readonly \DateTimeImmutable $restoredAt,
     ) {
     }
 

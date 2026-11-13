@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class BrandingAsset implements ApiModel
+final class BrandingAsset implements ApiModel
 {
     /**
      * @param string $assetId Opaque handle used to delete or reference the asset
@@ -22,11 +22,11 @@ final readonly class BrandingAsset implements ApiModel
      * @param string|null $contentType MIME type of the asset
      */
     public function __construct(
-        public string $assetId,
-        public string $assetUrl,
-        public int $sizeBytes,
-        public \DateTimeImmutable $updatedOn,
-        public ?string $contentType = null,
+        public readonly string $assetId,
+        public readonly string $assetUrl,
+        public readonly int $sizeBytes,
+        public readonly \DateTimeImmutable $updatedOn,
+        public readonly ?string $contentType = null,
     ) {
     }
 

@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainForwardDeleteBulkCommand implements ApiModel
+final class DomainForwardDeleteBulkCommand implements ApiModel
 {
     /**
      * @param DomainForwardDeleteBulkPayload $payload Bulk domain forward delete payload
@@ -20,10 +20,10 @@ final readonly class DomainForwardDeleteBulkCommand implements ApiModel
      * @param string $version Command version
      */
     public function __construct(
-        public DomainForwardDeleteBulkPayload $payload,
-        public string $command = 'domain_forward_delete_bulk',
-        public ?string $idempotencyKey = null,
-        public string $version = 'v1',
+        public readonly DomainForwardDeleteBulkPayload $payload,
+        public readonly string $command = 'domain_forward_delete_bulk',
+        public readonly ?string $idempotencyKey = null,
+        public readonly string $version = 'v1',
     ) {
     }
 

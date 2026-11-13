@@ -12,10 +12,10 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class RegistrarRecord implements ApiModel
+final class RegistrarRecord implements ApiModel
 {
     public function __construct(
-        public string $rdata,
+        public readonly string $rdata,
     ) {
     }
 

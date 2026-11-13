@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneRestampVanityNsBulkPayload implements ApiModel
+final class DnsZoneRestampVanityNsBulkPayload implements ApiModel
 {
     /**
      * @param list<DnsZoneRestampVanityNsBulkInstance> $instances List of zones to restamp (1-1000)
      * @param DnsZoneRestampVanityNsBulkTemplate $template Shared vanity NS set for all zones
      */
     public function __construct(
-        public array $instances,
-        public DnsZoneRestampVanityNsBulkTemplate $template,
+        public readonly array $instances,
+        public readonly DnsZoneRestampVanityNsBulkTemplate $template,
     ) {
     }
 

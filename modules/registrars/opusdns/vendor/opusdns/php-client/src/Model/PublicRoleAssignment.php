@@ -13,15 +13,15 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\PublicRole;
 use OpusDNS\Client\Serializer;
 
-final readonly class PublicRoleAssignment implements ApiModel
+final class PublicRoleAssignment implements ApiModel
 {
     /**
      * @param bool $managedBySso The role comes from the organization's identity provider and cannot be changed here
      * @param PublicRole|string|null $role
      */
     public function __construct(
-        public bool $managedBySso = false,
-        public PublicRole|string|null $role = null,
+        public readonly bool $managedBySso = false,
+        public readonly PublicRole|string|null $role = null,
     ) {
     }
 

@@ -12,11 +12,11 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactCreateWorkerResult implements ApiModel
+final class ContactCreateWorkerResult implements ApiModel
 {
     public function __construct(
-        public string $contactId,
-        public string $type,
+        public readonly string $contactId,
+        public readonly string $type,
     ) {
     }
 

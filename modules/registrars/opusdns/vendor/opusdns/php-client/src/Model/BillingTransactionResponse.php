@@ -16,7 +16,7 @@ use OpusDNS\Client\Enum\BillingTransactionStatus;
 use OpusDNS\Client\Enum\Currency;
 use OpusDNS\Client\Serializer;
 
-final readonly class BillingTransactionResponse implements ApiModel
+final class BillingTransactionResponse implements ApiModel
 {
     /**
      * @param BillingTransactionAction|string $action The action performed in the transaction
@@ -38,21 +38,21 @@ final readonly class BillingTransactionResponse implements ApiModel
      * @param \DateTimeImmutable|null $updatedOn The date/time the transaction was updated
      */
     public function __construct(
-        public BillingTransactionAction|string $action,
-        public string $amount,
-        public string $price,
-        public BillingTransactionProductType|string $productType,
-        public string $taxAmount,
-        public string $taxRate,
-        public string $volume,
-        public ?string $billingTransactionId = null,
-        public ?\DateTimeImmutable $completedOn = null,
-        public ?\DateTimeImmutable $createdOn = null,
-        public Currency|string|null $currency = null,
-        public ?string $productReference = null,
-        public BillingTransactionStatus|string $status = BillingTransactionStatus::PENDING,
-        public ?string $unit = null,
-        public ?\DateTimeImmutable $updatedOn = null,
+        public readonly BillingTransactionAction|string $action,
+        public readonly string $amount,
+        public readonly string $price,
+        public readonly BillingTransactionProductType|string $productType,
+        public readonly string $taxAmount,
+        public readonly string $taxRate,
+        public readonly string $volume,
+        public readonly ?string $billingTransactionId = null,
+        public readonly ?\DateTimeImmutable $completedOn = null,
+        public readonly ?\DateTimeImmutable $createdOn = null,
+        public readonly Currency|string|null $currency = null,
+        public readonly ?string $productReference = null,
+        public readonly BillingTransactionStatus|string $status = BillingTransactionStatus::PENDING,
+        public readonly ?string $unit = null,
+        public readonly ?\DateTimeImmutable $updatedOn = null,
     ) {
     }
 

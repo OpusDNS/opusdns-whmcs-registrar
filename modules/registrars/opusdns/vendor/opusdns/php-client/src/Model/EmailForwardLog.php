@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\EmailForwardLogStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class EmailForwardLog implements ApiModel
+final class EmailForwardLog implements ApiModel
 {
     /**
      * @param \DateTimeImmutable $createdOn Timestamp when email was received by ImprovMX
@@ -35,22 +35,22 @@ final readonly class EmailForwardLog implements ApiModel
      * @param string|null $senderName Sender name
      */
     public function __construct(
-        public \DateTimeImmutable $createdOn,
-        public string $domain,
-        public EmailForwardLogStatus|string $finalStatus,
-        public string $forwardEmail,
-        public string $hostname,
-        public string $logId,
-        public string $messageId,
-        public string $recipientEmail,
-        public string $senderEmail,
-        public string $subject,
-        public \DateTimeImmutable $syncedOn,
-        public string $transport,
-        public ?array $events = null,
-        public ?string $forwardName = null,
-        public ?string $recipientName = null,
-        public ?string $senderName = null,
+        public readonly \DateTimeImmutable $createdOn,
+        public readonly string $domain,
+        public readonly EmailForwardLogStatus|string $finalStatus,
+        public readonly string $forwardEmail,
+        public readonly string $hostname,
+        public readonly string $logId,
+        public readonly string $messageId,
+        public readonly string $recipientEmail,
+        public readonly string $senderEmail,
+        public readonly string $subject,
+        public readonly \DateTimeImmutable $syncedOn,
+        public readonly string $transport,
+        public readonly ?array $events = null,
+        public readonly ?string $forwardName = null,
+        public readonly ?string $recipientName = null,
+        public readonly ?string $senderName = null,
     ) {
     }
 

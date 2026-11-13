@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZonePatchRecordsBulkCommand implements ApiModel
+final class DnsZonePatchRecordsBulkCommand implements ApiModel
 {
     /**
      * @param DnsZonePatchRecordsBulkPayload $payload DNS zone patch records bulk payload
@@ -20,10 +20,10 @@ final readonly class DnsZonePatchRecordsBulkCommand implements ApiModel
      * @param string $version Command version
      */
     public function __construct(
-        public DnsZonePatchRecordsBulkPayload $payload,
-        public string $command = 'dns_zone_patch_records_bulk',
-        public ?string $idempotencyKey = null,
-        public string $version = 'v1',
+        public readonly DnsZonePatchRecordsBulkPayload $payload,
+        public readonly string $command = 'dns_zone_patch_records_bulk',
+        public readonly ?string $idempotencyKey = null,
+        public readonly string $version = 'v1',
     ) {
     }
 

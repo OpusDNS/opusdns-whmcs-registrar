@@ -16,7 +16,7 @@ use OpusDNS\Client\Serializer;
  * Create the plus tier: served on the customer's own domain, with the managed base subdomain composed
  * from `label` served alongside it as a backup address.
  */
-final readonly class WhitelabelPlusCreate implements ApiModel
+final class WhitelabelPlusCreate implements ApiModel
 {
     /**
      * @param string $authSubdomain Subdomain the login is served on (e.g. auth -> auth.customer.com)
@@ -34,13 +34,13 @@ final readonly class WhitelabelPlusCreate implements ApiModel
      * @param string $tier Tier discriminator; plus = served on the customer's own domain
      */
     public function __construct(
-        public string $authSubdomain,
-        public string $hostname,
-        public string $label,
-        public Period $period,
-        public bool $createZone = false,
-        public ?string $dashboardSubdomain = null,
-        public string $tier = 'plus',
+        public readonly string $authSubdomain,
+        public readonly string $hostname,
+        public readonly string $label,
+        public readonly Period $period,
+        public readonly bool $createZone = false,
+        public readonly ?string $dashboardSubdomain = null,
+        public readonly string $tier = 'plus',
     ) {
     }
 

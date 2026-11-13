@@ -18,7 +18,7 @@ use OpusDNS\Client\Serializer;
  * Accepts either a single IP address or a CIDR network range. Individual IP addresses are stored and
  * returned with CIDR notation (/32 for IPv4, /128 for IPv6).
  */
-final readonly class IpRestrictionCreate implements ApiModel
+final class IpRestrictionCreate implements ApiModel
 {
     /**
      * @param string $ipNetwork IP address or CIDR network range. Individual IPs can be specified without CIDR
@@ -26,8 +26,8 @@ final readonly class IpRestrictionCreate implements ApiModel
      * @param string|null $organizationId TypeID prefix: organization.
      */
     public function __construct(
-        public string $ipNetwork,
-        public ?string $organizationId = null,
+        public readonly string $ipNetwork,
+        public readonly ?string $organizationId = null,
     ) {
     }
 

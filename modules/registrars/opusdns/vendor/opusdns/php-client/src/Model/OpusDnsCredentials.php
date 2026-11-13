@@ -1,0 +1,52 @@
+<?php
+
+/**
+ * This file is generated from the OpenAPI specification by bin/generate.
+ * Do not edit it by hand; regenerate it instead.
+ */
+
+declare(strict_types=1);
+
+namespace OpusDNS\Client\Model;
+
+use OpusDNS\Client\ApiModel;
+use OpusDNS\Client\Serializer;
+
+final class OpusDnsCredentials implements ApiModel
+{
+    /**
+     * @param string $apiKey API key at the registrar
+     */
+    public function __construct(
+        public readonly string $apiKey,
+    ) {
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    public static function fromArray(array $data): static
+    {
+        return new self(
+            apiKey: $data['api_key'],
+        );
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toArray(): array
+    {
+        return Serializer::normalize([
+            'api_key' => $this->apiKey,
+        ]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+}

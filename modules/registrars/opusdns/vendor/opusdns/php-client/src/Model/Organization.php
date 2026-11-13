@@ -15,7 +15,7 @@ use OpusDNS\Client\Enum\Currency;
 use OpusDNS\Client\Enum\OrganizationStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class Organization implements ApiModel
+final class Organization implements ApiModel
 {
     /**
      * @param string $name Name of the organization.
@@ -43,28 +43,28 @@ final readonly class Organization implements ApiModel
      * @param list<User>|null $users
      */
     public function __construct(
-        public string $name,
-        public ?string $address1 = null,
-        public ?string $address2 = null,
-        public ?array $attributes = null,
-        public BillingMode|string $billingMode = BillingMode::CONSOLIDATED,
-        public ?string $businessNumber = null,
-        public ?string $city = null,
-        public ?string $countryCode = null,
-        public ?\DateTimeImmutable $createdOn = null,
-        public Currency|string|null $currency = null,
-        public ?string $defaultLocale = null,
-        public ?\DateTimeImmutable $deletedOn = null,
-        public ?string $keycloakOrganizationId = null,
-        public ?string $organizationId = null,
-        public ?string $parentOrganizationId = null,
-        public ?string $postalCode = null,
-        public ?string $state = null,
-        public OrganizationStatus|string $status = OrganizationStatus::ACTIVE,
-        public ?string $taxId = null,
-        public ?string $taxIdType = null,
-        public ?string $taxRate = null,
-        public ?array $users = null,
+        public readonly string $name,
+        public readonly ?string $address1 = null,
+        public readonly ?string $address2 = null,
+        public readonly ?array $attributes = null,
+        public readonly BillingMode|string $billingMode = BillingMode::CONSOLIDATED,
+        public readonly ?string $businessNumber = null,
+        public readonly ?string $city = null,
+        public readonly ?string $countryCode = null,
+        public readonly ?\DateTimeImmutable $createdOn = null,
+        public readonly Currency|string|null $currency = null,
+        public readonly ?string $defaultLocale = null,
+        public readonly ?\DateTimeImmutable $deletedOn = null,
+        public readonly ?string $keycloakOrganizationId = null,
+        public readonly ?string $organizationId = null,
+        public readonly ?string $parentOrganizationId = null,
+        public readonly ?string $postalCode = null,
+        public readonly ?string $state = null,
+        public readonly OrganizationStatus|string $status = OrganizationStatus::ACTIVE,
+        public readonly ?string $taxId = null,
+        public readonly ?string $taxIdType = null,
+        public readonly ?string $taxRate = null,
+        public readonly ?array $users = null,
     ) {
     }
 

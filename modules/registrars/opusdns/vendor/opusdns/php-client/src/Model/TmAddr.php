@@ -15,18 +15,18 @@ use OpusDNS\Client\Serializer;
 /**
  * Address information (addrType in RFC 9361)
  */
-final readonly class TmAddr implements ApiModel
+final class TmAddr implements ApiModel
 {
     /**
      * @param string $cc ISO 3166-2 two-character country code
      * @param list<string> $street
      */
     public function __construct(
-        public string $cc,
-        public string $city,
-        public array $street,
-        public ?string $pc = null,
-        public ?string $sp = null,
+        public readonly string $cc,
+        public readonly string $city,
+        public readonly array $street,
+        public readonly ?string $pc = null,
+        public readonly ?string $sp = null,
     ) {
     }
 

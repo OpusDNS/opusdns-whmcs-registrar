@@ -13,17 +13,17 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DnssecRegistryPublishOutcome;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsChangesResponse implements ApiModel
+final class DnsChangesResponse implements ApiModel
 {
     /**
      * @param list<DnsChangeResponse> $changes
      */
     public function __construct(
-        public array $changes,
-        public int $numChanges,
-        public string $zoneName,
-        public ?string $changesetId = null,
-        public DnssecRegistryPublishOutcome|string|null $dnssecRegistryPublish = null,
+        public readonly array $changes,
+        public readonly int $numChanges,
+        public readonly string $zoneName,
+        public readonly ?string $changesetId = null,
+        public readonly DnssecRegistryPublishOutcome|string|null $dnssecRegistryPublish = null,
     ) {
     }
 

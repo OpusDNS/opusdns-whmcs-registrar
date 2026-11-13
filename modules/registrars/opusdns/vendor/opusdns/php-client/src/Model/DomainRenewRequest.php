@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainRenewRequest implements ApiModel
+final class DomainRenewRequest implements ApiModel
 {
     /**
      * @param \DateTimeImmutable $currentExpiryDate Current expiration date of the domain for validation
@@ -20,9 +20,9 @@ final readonly class DomainRenewRequest implements ApiModel
      * @param string|null $expectedPrice Expected price for premium domain confirmation
      */
     public function __construct(
-        public \DateTimeImmutable $currentExpiryDate,
-        public DomainPeriod $period,
-        public ?string $expectedPrice = null,
+        public readonly \DateTimeImmutable $currentExpiryDate,
+        public readonly DomainPeriod $period,
+        public readonly ?string $expectedPrice = null,
     ) {
     }
 

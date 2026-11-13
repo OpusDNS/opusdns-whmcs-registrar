@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DnssecStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneUpdateBulkTemplate implements ApiModel
+final class DnsZoneUpdateBulkTemplate implements ApiModel
 {
     /**
      * @param DnssecStatus|string|null $dnssecStatus DNSSEC status for all zones
@@ -21,8 +21,8 @@ final readonly class DnsZoneUpdateBulkTemplate implements ApiModel
      *     RRsets unchanged (useful for bulk DNSSEC toggles). Provide an empty list to delete all records.
      */
     public function __construct(
-        public DnssecStatus|string|null $dnssecStatus = null,
-        public ?array $rrsets = null,
+        public readonly DnssecStatus|string|null $dnssecStatus = null,
+        public readonly ?array $rrsets = null,
     ) {
     }
 

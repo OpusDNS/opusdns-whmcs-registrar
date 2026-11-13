@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainTransferCommand implements ApiModel
+final class DomainTransferCommand implements ApiModel
 {
     /**
      * @param DomainTransferPayloadData $payload Domain transfer payload
@@ -20,10 +20,10 @@ final readonly class DomainTransferCommand implements ApiModel
      * @param string $version Command version
      */
     public function __construct(
-        public DomainTransferPayloadData $payload,
-        public string $command = 'domain_transfer',
-        public ?string $idempotencyKey = null,
-        public string $version = 'v1',
+        public readonly DomainTransferPayloadData $payload,
+        public readonly string $command = 'domain_transfer',
+        public readonly ?string $idempotencyKey = null,
+        public readonly string $version = 'v1',
     ) {
     }
 

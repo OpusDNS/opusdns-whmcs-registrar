@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\BillingMode;
 use OpusDNS\Client\Enum\Currency;
 use OpusDNS\Client\Serializer;
 
-final readonly class SignupOrganizationCreate implements ApiModel
+final class SignupOrganizationCreate implements ApiModel
 {
     /**
      * @param string $countryCode ISO 3166-1 alpha-2 country code, plus XK (Kosovo).
@@ -38,23 +38,23 @@ final readonly class SignupOrganizationCreate implements ApiModel
      * @param list<UserCreate>|null $users List of users that needs to be created with the organization.
      */
     public function __construct(
-        public string $countryCode,
-        public string $name,
-        public ?string $address1 = null,
-        public ?string $address2 = null,
-        public ?array $attributes = null,
-        public BillingMode|string $billingMode = BillingMode::CONSOLIDATED,
-        public ?string $businessNumber = null,
-        public ?string $city = null,
-        public Currency|string|null $currency = null,
-        public ?string $defaultLocale = null,
-        public ?string $parentOrganizationId = null,
-        public ?string $postalCode = null,
-        public ?string $state = null,
-        public ?string $taxId = null,
-        public ?string $taxIdType = null,
-        public float|string|null $taxRate = null,
-        public ?array $users = null,
+        public readonly string $countryCode,
+        public readonly string $name,
+        public readonly ?string $address1 = null,
+        public readonly ?string $address2 = null,
+        public readonly ?array $attributes = null,
+        public readonly BillingMode|string $billingMode = BillingMode::CONSOLIDATED,
+        public readonly ?string $businessNumber = null,
+        public readonly ?string $city = null,
+        public readonly Currency|string|null $currency = null,
+        public readonly ?string $defaultLocale = null,
+        public readonly ?string $parentOrganizationId = null,
+        public readonly ?string $postalCode = null,
+        public readonly ?string $state = null,
+        public readonly ?string $taxId = null,
+        public readonly ?string $taxIdType = null,
+        public readonly float|string|null $taxRate = null,
+        public readonly ?array $users = null,
     ) {
     }
 

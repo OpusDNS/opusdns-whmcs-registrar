@@ -16,7 +16,7 @@ use OpusDNS\Client\Serializer;
  * Request body for updating a custom role. Omitted fields are left unchanged; `permissions` is a full
  * replacement set when provided.
  */
-final readonly class CustomRoleUpdate implements ApiModel
+final class CustomRoleUpdate implements ApiModel
 {
     /**
      * @param string|null $description New description.
@@ -24,9 +24,9 @@ final readonly class CustomRoleUpdate implements ApiModel
      * @param list<string>|null $permissions Full replacement set of `resource:scope` permissions the role grants.
      */
     public function __construct(
-        public ?string $description = null,
-        public ?string $name = null,
-        public ?array $permissions = null,
+        public readonly ?string $description = null,
+        public readonly ?string $name = null,
+        public readonly ?array $permissions = null,
     ) {
     }
 

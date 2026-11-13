@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class EmailForwardDisableBulkCommand implements ApiModel
+final class EmailForwardDisableBulkCommand implements ApiModel
 {
     /**
      * @param EmailForwardDisableBulkPayload $payload Bulk email forward disable payload
@@ -20,10 +20,10 @@ final readonly class EmailForwardDisableBulkCommand implements ApiModel
      * @param string $version Command version
      */
     public function __construct(
-        public EmailForwardDisableBulkPayload $payload,
-        public string $command = 'email_forward_disable_bulk',
-        public ?string $idempotencyKey = null,
-        public string $version = 'v1',
+        public readonly EmailForwardDisableBulkPayload $payload,
+        public readonly string $command = 'email_forward_disable_bulk',
+        public readonly ?string $idempotencyKey = null,
+        public readonly string $version = 'v1',
     ) {
     }
 

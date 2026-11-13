@@ -15,7 +15,7 @@ use OpusDNS\Client\Enum\DnssecDigestType;
 use OpusDNS\Client\Enum\DnssecRecordType;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainDnssecDataResponse implements ApiModel
+final class DomainDnssecDataResponse implements ApiModel
 {
     /**
      * @param DnssecAlgorithm|int $algorithm DNSSEC algorithm used
@@ -32,18 +32,18 @@ final readonly class DomainDnssecDataResponse implements ApiModel
      * @param \DateTimeImmutable|null $updatedOn The date/time the entry was last updated on
      */
     public function __construct(
-        public DnssecAlgorithm|int $algorithm,
-        public DnssecRecordType|string $recordType,
-        public ?\DateTimeImmutable $createdOn = null,
-        public ?string $digest = null,
-        public DnssecDigestType|int|null $digestType = null,
-        public ?string $domainDnssecDataId = null,
-        public ?string $domainId = null,
-        public ?int $flags = null,
-        public ?int $keyTag = null,
-        public ?int $protocol = null,
-        public ?string $publicKey = null,
-        public ?\DateTimeImmutable $updatedOn = null,
+        public readonly DnssecAlgorithm|int $algorithm,
+        public readonly DnssecRecordType|string $recordType,
+        public readonly ?\DateTimeImmutable $createdOn = null,
+        public readonly ?string $digest = null,
+        public readonly DnssecDigestType|int|null $digestType = null,
+        public readonly ?string $domainDnssecDataId = null,
+        public readonly ?string $domainId = null,
+        public readonly ?int $flags = null,
+        public readonly ?int $keyTag = null,
+        public readonly ?int $protocol = null,
+        public readonly ?string $publicKey = null,
+        public readonly ?\DateTimeImmutable $updatedOn = null,
     ) {
     }
 

@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ClearVanityNameserverSetDefaultRes implements ApiModel
+final class ClearVanityNameserverSetDefaultRes implements ApiModel
 {
     /**
      * @param bool $cleared True if an ACTIVE default was unset; False on an idempotent no-op (org had no default).
      */
     public function __construct(
-        public bool $cleared,
+        public readonly bool $cleared,
     ) {
     }
 

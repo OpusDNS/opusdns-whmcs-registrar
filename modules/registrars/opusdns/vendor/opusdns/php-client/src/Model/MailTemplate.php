@@ -16,7 +16,7 @@ use OpusDNS\Client\Serializer;
 /**
  * One editable transactional email template in the catalog.
  */
-final readonly class MailTemplate implements ApiModel
+final class MailTemplate implements ApiModel
 {
     /**
      * @param array<string, MailTemplateBlock>|null $blocks Org-editable content blocks
@@ -28,13 +28,13 @@ final readonly class MailTemplate implements ApiModel
      * @param string $version Template revision (major.minor)
      */
     public function __construct(
-        public ?array $blocks = null,
-        public MailTemplateCategory|string $category = MailTemplateCategory::UNKNOWN,
-        public string $label = '',
-        public ?array $locales = null,
-        public ?array $subject = null,
-        public ?array $variables = null,
-        public string $version = '',
+        public readonly ?array $blocks = null,
+        public readonly MailTemplateCategory|string $category = MailTemplateCategory::UNKNOWN,
+        public readonly string $label = '',
+        public readonly ?array $locales = null,
+        public readonly ?array $subject = null,
+        public readonly ?array $variables = null,
+        public readonly string $version = '',
     ) {
     }
 

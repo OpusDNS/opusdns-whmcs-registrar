@@ -13,15 +13,15 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\PeriodUnit;
 use OpusDNS\Client\Serializer;
 
-final readonly class Period implements ApiModel
+final class Period implements ApiModel
 {
     /**
      * @param PeriodUnit|string $unit The unit of the period
      * @param int $value Amount of time in the unit
      */
     public function __construct(
-        public PeriodUnit|string $unit,
-        public int $value,
+        public readonly PeriodUnit|string $unit,
+        public readonly int $value,
     ) {
     }
 

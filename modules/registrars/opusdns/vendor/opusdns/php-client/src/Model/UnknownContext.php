@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class UnknownContext implements ApiModel
+final class UnknownContext implements ApiModel
 {
     /**
      * @param string $contextId TypeID prefix: ctx.
@@ -21,13 +21,13 @@ final readonly class UnknownContext implements ApiModel
      * @param array<string, mixed> $payload
      */
     public function __construct(
-        public string $contextId,
-        public string $conversationId,
-        public \DateTimeImmutable $createdAt,
-        public string $kind,
-        public string $organizationId,
-        public array $payload,
-        public string $userId,
+        public readonly string $contextId,
+        public readonly string $conversationId,
+        public readonly \DateTimeImmutable $createdAt,
+        public readonly string $kind,
+        public readonly string $organizationId,
+        public readonly array $payload,
+        public readonly string $userId,
     ) {
     }
 

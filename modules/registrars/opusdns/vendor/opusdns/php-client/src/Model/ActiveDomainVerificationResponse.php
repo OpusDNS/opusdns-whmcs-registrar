@@ -16,7 +16,7 @@ use OpusDNS\Client\Enum\DomainVerificationTrigger;
 use OpusDNS\Client\Enum\VerificationClaimType;
 use OpusDNS\Client\Serializer;
 
-final readonly class ActiveDomainVerificationResponse implements ApiModel
+final class ActiveDomainVerificationResponse implements ApiModel
 {
     /**
      * @param list<VerificationClaimType|string> $claims What has to be verified about the registrant
@@ -27,16 +27,19 @@ final readonly class ActiveDomainVerificationResponse implements ApiModel
      * @param DomainVerificationStatus|string $status The status of the case
      * @param DomainVerificationTrigger|string $trigger What opened the case
      * @param string $verificationId The ID of the verification case TypeID prefix: domain_verification.
+     * @param string|null $verificationUrl Where the registrant verifies with the registry, null when the registry
+     *     handles it otherwise
      */
     public function __construct(
-        public array $claims,
-        public string $contactId,
-        public array $deadlines,
-        public \DateTimeImmutable $openedOn,
-        public DomainVerificationKind|string $source,
-        public DomainVerificationStatus|string $status,
-        public DomainVerificationTrigger|string $trigger,
-        public string $verificationId,
+        public readonly array $claims,
+        public readonly string $contactId,
+        public readonly array $deadlines,
+        public readonly \DateTimeImmutable $openedOn,
+        public readonly DomainVerificationKind|string $source,
+        public readonly DomainVerificationStatus|string $status,
+        public readonly DomainVerificationTrigger|string $trigger,
+        public readonly string $verificationId,
+        public readonly ?string $verificationUrl = null,
     ) {
     }
 
@@ -54,6 +57,7 @@ final readonly class ActiveDomainVerificationResponse implements ApiModel
             status: DomainVerificationStatus::tryFrom($data['status']) ?? $data['status'],
             trigger: DomainVerificationTrigger::tryFrom($data['trigger']) ?? $data['trigger'],
             verificationId: $data['verification_id'],
+            verificationUrl: $data['verification_url'] ?? null,
         );
     }
 
@@ -71,6 +75,7 @@ final readonly class ActiveDomainVerificationResponse implements ApiModel
             'status' => $this->status,
             'trigger' => $this->trigger,
             'verification_id' => $this->verificationId,
+            'verification_url' => $this->verificationUrl,
         ]);
     }
 

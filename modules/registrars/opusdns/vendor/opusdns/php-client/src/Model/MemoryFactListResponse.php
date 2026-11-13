@@ -12,14 +12,14 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class MemoryFactListResponse implements ApiModel
+final class MemoryFactListResponse implements ApiModel
 {
     /**
      * @param list<MemoryFact> $results
      */
     public function __construct(
-        public array $results,
-        public ?string $nextCursor = null,
+        public readonly array $results,
+        public readonly ?string $nextCursor = null,
     ) {
     }
 

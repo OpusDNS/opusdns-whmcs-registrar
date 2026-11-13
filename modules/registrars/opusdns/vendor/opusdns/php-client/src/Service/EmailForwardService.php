@@ -40,7 +40,9 @@ final class EmailForwardService
      *
      * @param int|null $page Server default: 1.
      * @param int|null $pageSize Server default: 10.
-     * @param string|null $search Search by hostname
+     * @param string|null $search Search by domain name (partial match), e.g. `example` finds email forwards on
+     *     `example.com`, `www.example.com` and `my-example.org`. Subdomains are not searched: `www` does not find
+     *     `www.example.com`.
      * @param bool|null $enabled Filter by enabled status
      * @param EmailForwardSortField|string|null $sortBy Field to sort by Server default: created_on.
      * @param SortOrder|string|null $sortOrder Sort order direction Server default: desc.

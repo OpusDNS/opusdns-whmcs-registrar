@@ -14,16 +14,16 @@ use OpusDNS\Client\Enum\EventVersion;
 use OpusDNS\Client\Serializer;
 use OpusDNS\Client\Union;
 
-final readonly class EventData implements ApiModel
+final class EventData implements ApiModel
 {
     /**
      * @param DomainRenewalDetails|DomainVerificationDetails|RegistrantChangeDetails|null $details
      */
     public function __construct(
-        public string $message,
-        public DomainRenewalDetails|DomainVerificationDetails|RegistrantChangeDetails|null $details = null,
-        public ?EventError $error = null,
-        public EventVersion|string $version = EventVersion::_1_0,
+        public readonly string $message,
+        public readonly DomainRenewalDetails|DomainVerificationDetails|RegistrantChangeDetails|null $details = null,
+        public readonly ?EventError $error = null,
+        public readonly EventVersion|string $version = EventVersion::_1_0,
     ) {
     }
 

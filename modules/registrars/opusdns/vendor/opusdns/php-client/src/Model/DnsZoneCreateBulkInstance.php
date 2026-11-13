@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DnssecStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneCreateBulkInstance implements ApiModel
+final class DnsZoneCreateBulkInstance implements ApiModel
 {
     /**
      * @param string $name The DNS zone name (e.g., example.com)
@@ -21,9 +21,9 @@ final readonly class DnsZoneCreateBulkInstance implements ApiModel
      * @param list<DnsRrsetCreate>|null $rrsets Override RRsets for this zone
      */
     public function __construct(
-        public string $name,
-        public DnssecStatus|string|null $dnssecStatus = null,
-        public ?array $rrsets = null,
+        public readonly string $name,
+        public readonly DnssecStatus|string|null $dnssecStatus = null,
+        public readonly ?array $rrsets = null,
     ) {
     }
 

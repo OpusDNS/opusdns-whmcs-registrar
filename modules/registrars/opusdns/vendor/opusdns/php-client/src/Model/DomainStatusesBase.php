@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DomainStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainStatusesBase implements ApiModel
+final class DomainStatusesBase implements ApiModel
 {
     /**
      * @param list<string> $default The default status for an active domain with no restrictions
@@ -22,9 +22,9 @@ final readonly class DomainStatusesBase implements ApiModel
      *     their equivalent default ones, if any
      */
     public function __construct(
-        public array $default,
-        public array $supportedStatuses,
-        public ?array $statusMapping = null,
+        public readonly array $default,
+        public readonly array $supportedStatuses,
+        public readonly ?array $statusMapping = null,
     ) {
     }
 

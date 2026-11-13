@@ -15,15 +15,15 @@ use OpusDNS\Client\Serializer;
 /**
  * Response after parking signup.
  */
-final readonly class ParkingSignupResponse implements ApiModel
+final class ParkingSignupResponse implements ApiModel
 {
     /**
      * @param bool $agreementStored Whether the agreement acceptance was stored
      * @param bool $success Whether the signup was successful
      */
     public function __construct(
-        public bool $agreementStored,
-        public bool $success,
+        public readonly bool $agreementStored,
+        public readonly bool $success,
     ) {
     }
 

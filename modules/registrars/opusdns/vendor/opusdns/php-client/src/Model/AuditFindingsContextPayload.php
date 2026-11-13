@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class AuditFindingsContextPayload implements ApiModel
+final class AuditFindingsContextPayload implements ApiModel
 {
     /**
      * @param list<AuditFinding> $findings Most severe first.
@@ -20,22 +20,23 @@ final readonly class AuditFindingsContextPayload implements ApiModel
      *     with its findings; `totals` still counts them.
      * @param bool $complete False when a source stopped early or failed, or RAS did not say: the findings are a
      *     lower bound.
-     * @param string $schema portfolio_audit/v1. Any other version arrives with only this field set.
+     * @param string $schema portfolio_audit/v1. Any other version arrives with every other field at its empty
+     *     default: compare this with the version before reading the rest.
      * @param string $scope zones | domains | security | all
      * @param bool $truncated True when `findings` was cut to fit the store; that cut leaves `totals` and `rules`
      *     whole.
      */
     public function __construct(
-        public AuditCoverage $coverage,
-        public AuditFilters $filters,
-        public array $findings,
-        public array $rules,
-        public AuditTotals $totals,
-        public bool $complete = false,
-        public ?\DateTimeImmutable $generatedAt = null,
-        public string $schema = '',
-        public string $scope = '',
-        public bool $truncated = false,
+        public readonly AuditCoverage $coverage,
+        public readonly AuditFilters $filters,
+        public readonly array $findings,
+        public readonly array $rules,
+        public readonly AuditTotals $totals,
+        public readonly bool $complete = false,
+        public readonly ?\DateTimeImmutable $generatedAt = null,
+        public readonly string $schema = '',
+        public readonly string $scope = '',
+        public readonly bool $truncated = false,
     ) {
     }
 

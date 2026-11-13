@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\PostalAddressType;
 use OpusDNS\Client\Enum\RegistrantChangeType;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactsBase implements ApiModel
+final class ContactsBase implements ApiModel
 {
     /**
      * @param bool|null $authinfoRequired Whether the registry requires authinfo for contact creation
@@ -38,20 +38,20 @@ final readonly class ContactsBase implements ApiModel
      *     back to supported_roles if not specified.
      */
     public function __construct(
-        public ?bool $authinfoRequired = null,
-        public bool $authinfoSupported = true,
-        public ?bool $isThick = null,
-        public ?array $possibleAttributes = null,
-        public ?bool $privacyProxy = null,
-        public RegistrantChangeType|string|null $registrantChange = null,
-        public ?RegistrantChangePolicyBase $registrantChangePolicy = null,
-        public ?bool $supportCheck = null,
-        public ?bool $supportClientContactId = null,
-        public ?bool $supportTransfer = null,
-        public ?array $supportedPostalTypes = null,
-        public ?array $supportedRoles = null,
-        public ?array $transferSupportedRoles = null,
-        public ?array $updateSupportedRoles = null,
+        public readonly ?bool $authinfoRequired = null,
+        public readonly bool $authinfoSupported = true,
+        public readonly ?bool $isThick = null,
+        public readonly ?array $possibleAttributes = null,
+        public readonly ?bool $privacyProxy = null,
+        public readonly RegistrantChangeType|string|null $registrantChange = null,
+        public readonly ?RegistrantChangePolicyBase $registrantChangePolicy = null,
+        public readonly ?bool $supportCheck = null,
+        public readonly ?bool $supportClientContactId = null,
+        public readonly ?bool $supportTransfer = null,
+        public readonly ?array $supportedPostalTypes = null,
+        public readonly ?array $supportedRoles = null,
+        public readonly ?array $transferSupportedRoles = null,
+        public readonly ?array $updateSupportedRoles = null,
     ) {
     }
 

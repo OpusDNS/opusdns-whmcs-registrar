@@ -12,16 +12,16 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainForwardZone implements ApiModel
+final class DomainForwardZone implements ApiModel
 {
     /**
      * @param list<DomainForward> $domainForwards
      * @param string $zoneId TypeID prefix: zone.
      */
     public function __construct(
-        public array $domainForwards,
-        public string $zoneId,
-        public string $zoneName,
+        public readonly array $domainForwards,
+        public readonly string $zoneId,
+        public readonly string $zoneName,
     ) {
     }
 

@@ -15,7 +15,7 @@ use OpusDNS\Client\Enum\DnssecDigestType;
 use OpusDNS\Client\Enum\DnssecRecordType;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainDnssecDataCreate implements ApiModel
+final class DomainDnssecDataCreate implements ApiModel
 {
     /**
      * @param DnssecAlgorithm|int $algorithm DNSSEC algorithm used
@@ -28,14 +28,14 @@ final readonly class DomainDnssecDataCreate implements ApiModel
      * @param string|null $publicKey Base64-encoded public key for key records
      */
     public function __construct(
-        public DnssecAlgorithm|int $algorithm,
-        public DnssecRecordType|string $recordType,
-        public ?string $digest = null,
-        public DnssecDigestType|int|null $digestType = null,
-        public ?int $flags = null,
-        public ?int $keyTag = null,
-        public ?int $protocol = null,
-        public ?string $publicKey = null,
+        public readonly DnssecAlgorithm|int $algorithm,
+        public readonly DnssecRecordType|string $recordType,
+        public readonly ?string $digest = null,
+        public readonly DnssecDigestType|int|null $digestType = null,
+        public readonly ?int $flags = null,
+        public readonly ?int $keyTag = null,
+        public readonly ?int $protocol = null,
+        public readonly ?string $publicKey = null,
     ) {
     }
 

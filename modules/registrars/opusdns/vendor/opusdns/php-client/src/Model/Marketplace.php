@@ -16,13 +16,13 @@ use OpusDNS\Client\Serializer;
 /**
  * The marketplace a domain is for sale on.
  */
-final readonly class Marketplace implements ApiModel
+final class Marketplace implements ApiModel
 {
     /**
      * @param MarketplaceName|string $name Name of the marketplace
      */
     public function __construct(
-        public MarketplaceName|string $name,
+        public readonly MarketplaceName|string $name,
     ) {
     }
 

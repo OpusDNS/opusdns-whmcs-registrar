@@ -15,14 +15,14 @@ use OpusDNS\Client\Serializer;
 /**
  * DomainAvailabilityResponse
  */
-final readonly class CommonModelsAvailabilityDatasourceDomainAvailabilityResponse implements ApiModel
+final class CommonModelsAvailabilityDatasourceDomainAvailabilityResponse implements ApiModel
 {
     /**
      * @param list<DomainAvailability> $results
      */
     public function __construct(
-        public DomainAvailabilityMeta $meta,
-        public array $results,
+        public readonly DomainAvailabilityMeta $meta,
+        public readonly array $results,
     ) {
     }
 

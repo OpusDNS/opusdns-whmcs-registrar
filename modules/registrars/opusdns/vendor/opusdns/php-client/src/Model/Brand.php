@@ -12,11 +12,11 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class Brand implements ApiModel
+final class Brand implements ApiModel
 {
     public function __construct(
-        public ?Logo $logo = null,
-        public ?string $name = null,
+        public readonly ?Logo $logo = null,
+        public readonly ?string $name = null,
     ) {
     }
 

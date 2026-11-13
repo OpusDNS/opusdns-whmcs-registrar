@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\JobStatus;
 use OpusDNS\Client\Serializer;
 use OpusDNS\Client\Union;
 
-final readonly class JobResponse implements ApiModel
+final class JobResponse implements ApiModel
 {
     /**
      * @param int $attempts Number of execution attempts made for this job
@@ -45,24 +45,24 @@ final readonly class JobResponse implements ApiModel
      * @param \DateTimeImmutable|null $startedAt Timestamp when job execution began (UTC)
      */
     public function __construct(
-        public int $attempts,
-        public \DateTimeImmutable $createdOn,
-        public string $jobId,
-        public JobStatus|string $status,
-        public ?string $command = null,
-        public ?string $display = null,
-        public ?string $domainName = null,
-        public ?string $errorClass = null,
-        public ?string $errorCode = null,
-        public ?array $errorDetails = null,
-        public ?string $errorMessage = null,
-        public ?\DateTimeImmutable $finishedAt = null,
-        public ?string $operation = null,
-        public ?\DateTimeImmutable $pausedAt = null,
-        public DomainCreateWorkerPayload|DomainUpdateWorkerPayload|DomainTransferWorkerPayload|DnsZoneCreateWorkerPayload|DnsZoneUpdateWorkerPayload|DnsZonePatchRrsetsWorkerPayload|DnsZonePatchRecordsWorkerPayload|DnsZoneRestampVanityNsWorkerPayload|ContactCreateWorkerPayload|ParkingCreateWorkerPayload|ParkingEnableWorkerPayload|ParkingDisableWorkerPayload|ParkingDeleteWorkerPayload|array|null $payload = null,
-        public ?string $resourceKey = null,
-        public ContactCreateWorkerResult|DomainCreateWorkerResult|DnsZoneCreateWorkerResult|array|null $result = null,
-        public ?\DateTimeImmutable $startedAt = null,
+        public readonly int $attempts,
+        public readonly \DateTimeImmutable $createdOn,
+        public readonly string $jobId,
+        public readonly JobStatus|string $status,
+        public readonly ?string $command = null,
+        public readonly ?string $display = null,
+        public readonly ?string $domainName = null,
+        public readonly ?string $errorClass = null,
+        public readonly ?string $errorCode = null,
+        public readonly ?array $errorDetails = null,
+        public readonly ?string $errorMessage = null,
+        public readonly ?\DateTimeImmutable $finishedAt = null,
+        public readonly ?string $operation = null,
+        public readonly ?\DateTimeImmutable $pausedAt = null,
+        public readonly DomainCreateWorkerPayload|DomainUpdateWorkerPayload|DomainTransferWorkerPayload|DnsZoneCreateWorkerPayload|DnsZoneUpdateWorkerPayload|DnsZonePatchRrsetsWorkerPayload|DnsZonePatchRecordsWorkerPayload|DnsZoneRestampVanityNsWorkerPayload|ContactCreateWorkerPayload|ParkingCreateWorkerPayload|ParkingEnableWorkerPayload|ParkingDisableWorkerPayload|ParkingDeleteWorkerPayload|array|null $payload = null,
+        public readonly ?string $resourceKey = null,
+        public readonly ContactCreateWorkerResult|DomainCreateWorkerResult|DnsZoneCreateWorkerResult|array|null $result = null,
+        public readonly ?\DateTimeImmutable $startedAt = null,
     ) {
     }
 

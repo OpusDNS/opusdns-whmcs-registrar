@@ -12,12 +12,12 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class VerificationRegistrantDetails implements ApiModel
+final class VerificationRegistrantDetails implements ApiModel
 {
     public function __construct(
-        public string $contactId,
-        public string $name,
-        public ?string $email = null,
+        public readonly string $contactId,
+        public readonly string $name,
+        public readonly ?string $email = null,
     ) {
     }
 

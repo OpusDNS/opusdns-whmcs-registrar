@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactHandle implements ApiModel
+final class ContactHandle implements ApiModel
 {
     /**
      * @param string $contactId The contact id of the contact TypeID prefix: contact.
      * @param array<string, string>|null $attributes Additional attributes related to the contact
      */
     public function __construct(
-        public string $contactId,
-        public ?array $attributes = null,
+        public readonly string $contactId,
+        public readonly ?array $attributes = null,
     ) {
     }
 

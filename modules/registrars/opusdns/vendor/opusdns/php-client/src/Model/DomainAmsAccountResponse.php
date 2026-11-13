@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\RegistryServiceBackend;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainAmsAccountResponse implements ApiModel
+final class DomainAmsAccountResponse implements ApiModel
 {
     /**
      * @param RegistryServiceBackend|string $registry The registry the account is accredited at
@@ -22,9 +22,9 @@ final readonly class DomainAmsAccountResponse implements ApiModel
      *     OpusDNS manages the domain.
      */
     public function __construct(
-        public RegistryServiceBackend|string $registry,
-        public string $registryAccountId,
-        public string $type = 'ams',
+        public readonly RegistryServiceBackend|string $registry,
+        public readonly string $registryAccountId,
+        public readonly string $type = 'ams',
     ) {
     }
 

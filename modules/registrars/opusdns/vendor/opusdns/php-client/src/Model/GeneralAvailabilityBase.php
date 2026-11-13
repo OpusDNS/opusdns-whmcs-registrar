@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class GeneralAvailabilityBase implements ApiModel
+final class GeneralAvailabilityBase implements ApiModel
 {
     /**
      * @param \DateTimeImmutable $startDate Start date of general availability
      */
     public function __construct(
-        public \DateTimeImmutable $startDate,
+        public readonly \DateTimeImmutable $startDate,
     ) {
     }
 

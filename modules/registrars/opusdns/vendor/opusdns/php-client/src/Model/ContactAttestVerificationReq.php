@@ -15,14 +15,14 @@ use OpusDNS\Client\Enum\ContactVerificationMethod;
 use OpusDNS\Client\Enum\ContactVerificationProof;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactAttestVerificationReq implements ApiModel
+final class ContactAttestVerificationReq implements ApiModel
 {
     public function __construct(
-        public string $attestationReference,
-        public ContactVerificationClaim|string $claim,
-        public ContactVerificationMethod|string $method,
-        public ContactVerificationProof|string $proof,
-        public ?ContactVerificationEidInformation $eid = null,
+        public readonly string $attestationReference,
+        public readonly ContactVerificationClaim|string $claim,
+        public readonly ContactVerificationMethod|string $method,
+        public readonly ContactVerificationProof|string $proof,
+        public readonly ?ContactVerificationEidInformation $eid = null,
     ) {
     }
 

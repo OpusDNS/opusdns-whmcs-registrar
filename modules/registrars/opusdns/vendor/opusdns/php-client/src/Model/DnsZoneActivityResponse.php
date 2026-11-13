@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneActivityResponse implements ApiModel
+final class DnsZoneActivityResponse implements ApiModel
 {
     /**
      * @param int $nxdomainCount Of those, queries answered with NXDOMAIN
@@ -25,13 +25,13 @@ final readonly class DnsZoneActivityResponse implements ApiModel
      * @param \DateTimeImmutable|null $zoneCreatedOn Day the zone was created (UTC); null when unknown
      */
     public function __construct(
-        public int $nxdomainCount,
-        public float $nxdomainRatio,
-        public string $organizationId,
-        public int $queryCount,
-        public string $zoneName,
-        public ?\DateTimeImmutable $lastQueryDate = null,
-        public ?\DateTimeImmutable $zoneCreatedOn = null,
+        public readonly int $nxdomainCount,
+        public readonly float $nxdomainRatio,
+        public readonly string $organizationId,
+        public readonly int $queryCount,
+        public readonly string $zoneName,
+        public readonly ?\DateTimeImmutable $lastQueryDate = null,
+        public readonly ?\DateTimeImmutable $zoneCreatedOn = null,
     ) {
     }
 

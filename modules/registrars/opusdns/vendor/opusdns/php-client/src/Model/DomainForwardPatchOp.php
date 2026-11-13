@@ -14,14 +14,14 @@ use OpusDNS\Client\Enum\PatchOp;
 use OpusDNS\Client\Serializer;
 use OpusDNS\Client\Union;
 
-final readonly class DomainForwardPatchOp implements ApiModel
+final class DomainForwardPatchOp implements ApiModel
 {
     /**
      * @param HttpRedirectUpsert|HttpRedirectRemove $redirect
      */
     public function __construct(
-        public PatchOp|string $op,
-        public HttpRedirectUpsert|HttpRedirectRemove $redirect,
+        public readonly PatchOp|string $op,
+        public readonly HttpRedirectUpsert|HttpRedirectRemove $redirect,
     ) {
     }
 

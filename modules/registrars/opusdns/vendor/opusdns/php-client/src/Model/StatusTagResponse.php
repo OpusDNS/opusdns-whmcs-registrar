@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\StatusTagType;
 use OpusDNS\Client\Enum\TagColor;
 use OpusDNS\Client\Serializer;
 
-final readonly class StatusTagResponse implements ApiModel
+final class StatusTagResponse implements ApiModel
 {
     /**
      * @param TagColor|string $color The color of the tag
@@ -23,10 +23,10 @@ final readonly class StatusTagResponse implements ApiModel
      * @param string|null $description Additional information about this status tag
      */
     public function __construct(
-        public TagColor|string $color,
-        public string $label,
-        public StatusTagType|string $tagType,
-        public ?string $description = null,
+        public readonly TagColor|string $color,
+        public readonly string $label,
+        public readonly StatusTagType|string $tagType,
+        public readonly ?string $description = null,
     ) {
     }
 

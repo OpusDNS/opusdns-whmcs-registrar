@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\RegistrantChangeConfirmationMethod;
 use OpusDNS\Client\Enum\RegistrantChangeStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class RegistrantChangeDetails implements ApiModel
+final class RegistrantChangeDetails implements ApiModel
 {
     /**
      * @param string $newRegistrantId TypeID prefix: contact.
@@ -22,16 +22,16 @@ final readonly class RegistrantChangeDetails implements ApiModel
      * @param string $registrantChangeId TypeID prefix: registrant_change.
      */
     public function __construct(
-        public string $newRegistrantId,
-        public string $priorRegistrantId,
-        public string $registrantChangeId,
-        public RegistrantChangeStatus|string $status,
-        public ?\DateTimeImmutable $confirmationDeadline = null,
-        public RegistrantChangeConfirmationMethod|string|null $confirmationMethod = null,
-        public string $detailType = 'registrant_change',
-        public ?string $notificationType = null,
-        public bool $transferLockOptOut = false,
-        public ?\DateTimeImmutable $transferLockUntil = null,
+        public readonly string $newRegistrantId,
+        public readonly string $priorRegistrantId,
+        public readonly string $registrantChangeId,
+        public readonly RegistrantChangeStatus|string $status,
+        public readonly ?\DateTimeImmutable $confirmationDeadline = null,
+        public readonly RegistrantChangeConfirmationMethod|string|null $confirmationMethod = null,
+        public readonly string $detailType = 'registrant_change',
+        public readonly ?string $notificationType = null,
+        public readonly bool $transferLockOptOut = false,
+        public readonly ?\DateTimeImmutable $transferLockUntil = null,
     ) {
     }
 

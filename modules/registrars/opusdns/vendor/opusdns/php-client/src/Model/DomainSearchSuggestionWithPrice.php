@@ -12,28 +12,28 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainSearchSuggestionWithPrice implements ApiModel
+final class DomainSearchSuggestionWithPrice implements ApiModel
 {
     /**
      * @param DomainAmsAccountResponse|null $connectedAccount Set when the organization registers this TLD on its own
      *     registry accreditation (`ams`). The registry bills the domain to that accreditation, so `price` and
      *     `renewal_price` are the OpusDNS service fee alone, premium or not. Null for TLDs registered on OpusDNS
      *     registry accounts.
-     * @param Marketplace|null $marketplace Set on a domain for sale on a marketplace, added after the suggestions
-     *     with `available: false`; null on suggestions. On such an item `price.amount` is the price to acquire the
-     *     domain from the marketplace (for 1 year, in the listing's currency; it does not include a transfer, which
-     *     the customer does with the auth code and is charged separately; null when the domain could not be priced),
-     *     and `renewal_price` is the TLD's standard renewal price. A domain can appear twice: as a suggestion with
-     *     its registry fields, and as a marketplace item.
+     * @param Marketplace|null $marketplace Set on a domain for sale on a marketplace, added to the suggestions with
+     *     `available: false`; null on suggestions. On such an item `price.amount` is the price to acquire the domain
+     *     from the marketplace (for 1 year, in the listing's currency; it does not include a transfer, which the
+     *     customer does with the auth code and is charged separately; null when the domain could not be priced), and
+     *     `renewal_price` is the TLD's standard renewal price. A domain can appear twice: as a suggestion with its
+     *     registry fields, and as a marketplace item.
      */
     public function __construct(
-        public bool $available,
-        public string $domain,
-        public bool $premium,
-        public DomainSearchSuggestionPriceData $price,
-        public ?DomainAmsAccountResponse $connectedAccount = null,
-        public ?Marketplace $marketplace = null,
-        public ?DomainSearchSuggestionPriceData $renewalPrice = null,
+        public readonly bool $available,
+        public readonly string $domain,
+        public readonly bool $premium,
+        public readonly DomainSearchSuggestionPriceData $price,
+        public readonly ?DomainAmsAccountResponse $connectedAccount = null,
+        public readonly ?Marketplace $marketplace = null,
+        public readonly ?DomainSearchSuggestionPriceData $renewalPrice = null,
     ) {
     }
 

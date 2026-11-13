@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneRestampVanityNsBulkInstance implements ApiModel
+final class DnsZoneRestampVanityNsBulkInstance implements ApiModel
 {
     /**
      * @param string $name The DNS zone name to restamp (e.g., example.com)
@@ -20,8 +20,8 @@ final readonly class DnsZoneRestampVanityNsBulkInstance implements ApiModel
      *     or null to unbrand this zone to system defaults. Omit the field entirely to inherit the template's value.
      */
     public function __construct(
-        public string $name,
-        public ?string $vanityNameserverSetId = null,
+        public readonly string $name,
+        public readonly ?string $vanityNameserverSetId = null,
     ) {
     }
 

@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ParkingDisableBulkPayload implements ApiModel
+final class ParkingDisableBulkPayload implements ApiModel
 {
     /**
      * @param list<ParkingDisableBulkInstance> $instances List of parking entries to disable (1-1000)
      */
     public function __construct(
-        public array $instances,
+        public readonly array $instances,
     ) {
     }
 
