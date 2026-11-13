@@ -12,16 +12,16 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class MailTemplateVariable implements ApiModel
+final class MailTemplateVariable implements ApiModel
 {
     /**
      * @param string $sample Sample value shown in previews
      * @param string $type Value type driving render-time escaping (text or url)
      */
     public function __construct(
-        public bool $required = false,
-        public string $sample = '',
-        public string $type = 'text',
+        public readonly bool $required = false,
+        public readonly string $sample = '',
+        public readonly string $type = 'text',
     ) {
     }
 

@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneMoverResponse implements ApiModel
+final class DnsZoneMoverResponse implements ApiModel
 {
     /**
      * @param int $change `query_count` minus `previous_query_count`
@@ -25,13 +25,13 @@ final readonly class DnsZoneMoverResponse implements ApiModel
      * @param \DateTimeImmutable|null $zoneCreatedOn Day the zone was created (UTC); null when unknown
      */
     public function __construct(
-        public int $change,
-        public string $organizationId,
-        public int $previousQueryCount,
-        public int $queryCount,
-        public string $zoneName,
-        public ?float $changeRatio = null,
-        public ?\DateTimeImmutable $zoneCreatedOn = null,
+        public readonly int $change,
+        public readonly string $organizationId,
+        public readonly int $previousQueryCount,
+        public readonly int $queryCount,
+        public readonly string $zoneName,
+        public readonly ?float $changeRatio = null,
+        public readonly ?\DateTimeImmutable $zoneCreatedOn = null,
     ) {
     }
 

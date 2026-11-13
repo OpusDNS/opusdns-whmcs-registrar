@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class EmailForwardLogEvent implements ApiModel
+final class EmailForwardLogEvent implements ApiModel
 {
     /**
      * @param int $code Event status code
@@ -24,13 +24,13 @@ final readonly class EmailForwardLogEvent implements ApiModel
      * @param string $status Event status (QUEUED, DELIVERED, REFUSED, SOFT-BOUNCE, HARD-BOUNCE)
      */
     public function __construct(
-        public int $code,
-        public \DateTimeImmutable $created,
-        public string $id,
-        public string $local,
-        public string $message,
-        public string $server,
-        public string $status,
+        public readonly int $code,
+        public readonly \DateTimeImmutable $created,
+        public readonly string $id,
+        public readonly string $local,
+        public readonly string $message,
+        public readonly string $server,
+        public readonly string $status,
     ) {
     }
 

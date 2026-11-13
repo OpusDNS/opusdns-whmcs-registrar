@@ -12,20 +12,20 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainForward implements ApiModel
+final class DomainForward implements ApiModel
 {
     /**
      * @param string $domainForwardId TypeID prefix: domain_forward.
      */
     public function __construct(
-        public \DateTimeImmutable $createdOn,
-        public string $domainForwardId,
-        public bool $enabled,
-        public string $hostname,
-        public \DateTimeImmutable $updatedOn,
-        public ?DomainForwardProtocolSetResponse $http = null,
-        public ?DomainForwardProtocolSetResponse $https = null,
-        public ?string $parkingId = null,
+        public readonly \DateTimeImmutable $createdOn,
+        public readonly string $domainForwardId,
+        public readonly bool $enabled,
+        public readonly string $hostname,
+        public readonly \DateTimeImmutable $updatedOn,
+        public readonly ?DomainForwardProtocolSetResponse $http = null,
+        public readonly ?DomainForwardProtocolSetResponse $https = null,
+        public readonly ?string $parkingId = null,
     ) {
     }
 

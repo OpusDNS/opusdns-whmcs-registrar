@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 use OpusDNS\Client\Union;
 
-final readonly class TldSpecificationResponse implements ApiModel
+final class TldSpecificationResponse implements ApiModel
 {
     /**
      * @param SldLength $characters Character limits for domain names
@@ -36,24 +36,24 @@ final readonly class TldSpecificationResponse implements ApiModel
      * @param WhoisBase|null $whois WHOIS configuration
      */
     public function __construct(
-        public SldLength $characters,
-        public DnsConfigurationBase $dnsConfiguration,
-        public DomainLifecycleBase $domainLifecycle,
-        public DomainStatusesBase $domainStatuses,
-        public IdnBase $idn,
-        public array $tlds,
-        public TransferPoliciesBase $transferPolicies,
-        public ?ContactsBase $contacts = null,
-        public ?LaunchPhasesBase $launchPhases = null,
-        public ?array $legalRequirements = null,
-        public ?LocalPresenceBase $localPresence = null,
-        public bool $parkingEnabled = false,
-        public ?PremiumDomainsBase $premiumDomains = null,
-        public ?RdapBase $rdap = null,
-        public ?RegistryLockBase $registryLock = null,
-        public ?ReservedDomainsBase $reservedDomains = null,
-        public ?array $verificationPolicies = null,
-        public ?WhoisBase $whois = null,
+        public readonly SldLength $characters,
+        public readonly DnsConfigurationBase $dnsConfiguration,
+        public readonly DomainLifecycleBase $domainLifecycle,
+        public readonly DomainStatusesBase $domainStatuses,
+        public readonly IdnBase $idn,
+        public readonly array $tlds,
+        public readonly TransferPoliciesBase $transferPolicies,
+        public readonly ?ContactsBase $contacts = null,
+        public readonly ?LaunchPhasesBase $launchPhases = null,
+        public readonly ?array $legalRequirements = null,
+        public readonly ?LocalPresenceBase $localPresence = null,
+        public readonly bool $parkingEnabled = false,
+        public readonly ?PremiumDomainsBase $premiumDomains = null,
+        public readonly ?RdapBase $rdap = null,
+        public readonly ?RegistryLockBase $registryLock = null,
+        public readonly ?ReservedDomainsBase $reservedDomains = null,
+        public readonly ?array $verificationPolicies = null,
+        public readonly ?WhoisBase $whois = null,
     ) {
     }
 

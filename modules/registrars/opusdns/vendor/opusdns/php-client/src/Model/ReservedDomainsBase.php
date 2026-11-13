@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\ReservedSourceType;
 use OpusDNS\Client\Serializer;
 
-final readonly class ReservedDomainsBase implements ApiModel
+final class ReservedDomainsBase implements ApiModel
 {
     /**
      * @param bool $supported Registry provides a reserved list
@@ -21,9 +21,9 @@ final readonly class ReservedDomainsBase implements ApiModel
      * @param string|null $url Link to reserved list
      */
     public function __construct(
-        public bool $supported,
-        public ReservedSourceType|string|null $source = null,
-        public ?string $url = null,
+        public readonly bool $supported,
+        public readonly ReservedSourceType|string|null $source = null,
+        public readonly ?string $url = null,
     ) {
     }
 

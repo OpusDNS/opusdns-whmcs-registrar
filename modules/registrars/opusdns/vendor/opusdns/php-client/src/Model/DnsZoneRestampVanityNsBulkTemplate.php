@@ -12,14 +12,14 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneRestampVanityNsBulkTemplate implements ApiModel
+final class DnsZoneRestampVanityNsBulkTemplate implements ApiModel
 {
     /**
      * @param string|null $vanityNameserverSetId Vanity NS set to restamp every zone's apex NS + SOA with, or null to
      *     unbrand all zones back to OpusDNS system default nameservers. An instance may override this.
      */
     public function __construct(
-        public ?string $vanityNameserverSetId = null,
+        public readonly ?string $vanityNameserverSetId = null,
     ) {
     }
 

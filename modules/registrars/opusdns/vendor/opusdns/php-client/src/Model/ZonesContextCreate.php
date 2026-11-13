@@ -12,11 +12,11 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ZonesContextCreate implements ApiModel
+final class ZonesContextCreate implements ApiModel
 {
     public function __construct(
-        public ContextPayloadRegistrarZone $payload,
-        public string $kind = 'zones',
+        public readonly ZonesContextPayload $payload,
+        public readonly string $kind = 'zones',
     ) {
     }
 
@@ -26,7 +26,7 @@ final readonly class ZonesContextCreate implements ApiModel
     public static function fromArray(array $data): static
     {
         return new self(
-            payload: ContextPayloadRegistrarZone::fromArray($data['payload']),
+            payload: ZonesContextPayload::fromArray($data['payload']),
             kind: $data['kind'] ?? 'zones',
         );
     }

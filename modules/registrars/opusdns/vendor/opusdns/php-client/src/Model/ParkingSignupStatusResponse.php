@@ -15,7 +15,7 @@ use OpusDNS\Client\Serializer;
 /**
  * Response for checking parking signup status.
  */
-final readonly class ParkingSignupStatusResponse implements ApiModel
+final class ParkingSignupStatusResponse implements ApiModel
 {
     /**
      * @param bool $hasAcceptedAgreement Whether the organization has accepted the parking agreement
@@ -23,9 +23,9 @@ final readonly class ParkingSignupStatusResponse implements ApiModel
      * @param string|null $agreementVersion Version of the accepted agreement
      */
     public function __construct(
-        public bool $hasAcceptedAgreement,
-        public ?\DateTimeImmutable $acceptedAt = null,
-        public ?string $agreementVersion = null,
+        public readonly bool $hasAcceptedAgreement,
+        public readonly ?\DateTimeImmutable $acceptedAt = null,
+        public readonly ?string $agreementVersion = null,
     ) {
     }
 

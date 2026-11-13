@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactCreateBulkTemplate implements ApiModel
+final class ContactCreateBulkTemplate implements ApiModel
 {
     /**
      * @param string $country The country of the contacts (ISO 3166-1 alpha-2, plus XK for Kosovo)
@@ -22,11 +22,11 @@ final readonly class ContactCreateBulkTemplate implements ApiModel
      * @param string|null $title Contact title
      */
     public function __construct(
-        public string $country,
-        public bool $disclose,
-        public ?string $org = null,
-        public ?string $state = null,
-        public ?string $title = null,
+        public readonly string $country,
+        public readonly bool $disclose,
+        public readonly ?string $org = null,
+        public readonly ?string $state = null,
+        public readonly ?string $title = null,
     ) {
     }
 

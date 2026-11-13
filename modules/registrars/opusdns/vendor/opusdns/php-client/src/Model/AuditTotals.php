@@ -12,19 +12,19 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class AuditTotals implements ApiModel
+final class AuditTotals implements ApiModel
 {
     /**
      * @param int $scansChecked Domains with a security scan (TLS, HSTS, DNSSEC).
      */
     public function __construct(
-        public int $critical = 0,
-        public int $domainsChecked = 0,
-        public int $findings = 0,
-        public int $info = 0,
-        public int $scansChecked = 0,
-        public int $warning = 0,
-        public int $zonesChecked = 0,
+        public readonly int $critical = 0,
+        public readonly int $domainsChecked = 0,
+        public readonly int $findings = 0,
+        public readonly int $info = 0,
+        public readonly int $scansChecked = 0,
+        public readonly int $warning = 0,
+        public readonly int $zonesChecked = 0,
     ) {
     }
 

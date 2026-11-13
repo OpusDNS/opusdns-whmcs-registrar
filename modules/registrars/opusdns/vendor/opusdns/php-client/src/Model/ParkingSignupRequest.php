@@ -15,13 +15,13 @@ use OpusDNS\Client\Serializer;
 /**
  * Request to sign up for parking (accept parking agreement).
  */
-final readonly class ParkingSignupRequest implements ApiModel
+final class ParkingSignupRequest implements ApiModel
 {
     /**
      * @param ParkingAgreementAcceptance $agreement Parking agreement acceptance
      */
     public function __construct(
-        public ParkingAgreementAcceptance $agreement,
+        public readonly ParkingAgreementAcceptance $agreement,
     ) {
     }
 

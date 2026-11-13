@@ -17,7 +17,7 @@ use OpusDNS\Client\Enum\DomainVerificationTrigger;
 use OpusDNS\Client\Enum\VerificationClaimType;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactVerificationCaseResponse implements ApiModel
+final class ContactVerificationCaseResponse implements ApiModel
 {
     /**
      * @param list<VerificationClaimType|string> $claims What has to be verified about the registrant
@@ -35,22 +35,25 @@ final readonly class ContactVerificationCaseResponse implements ApiModel
      * @param \DateTimeImmutable|null $closedOn When the case was closed, null while it is active
      * @param \DateTimeImmutable|null $lastReminderSentOn When the registrant's email was last reminded, null if
      *     never
+     * @param string|null $verificationUrl Where the registrant verifies with the registry, null when the registry
+     *     handles it otherwise
      */
     public function __construct(
-        public array $claims,
-        public string $contactId,
-        public array $deadlines,
-        public string $domainId,
-        public string $domainName,
-        public \DateTimeImmutable $openedOn,
-        public int $remindersSent,
-        public DomainVerificationKind|string $source,
-        public DomainVerificationStatus|string $status,
-        public DomainVerificationTrigger|string $trigger,
-        public string $verificationId,
-        public DomainVerificationCloseReason|string|null $closeReason = null,
-        public ?\DateTimeImmutable $closedOn = null,
-        public ?\DateTimeImmutable $lastReminderSentOn = null,
+        public readonly array $claims,
+        public readonly string $contactId,
+        public readonly array $deadlines,
+        public readonly string $domainId,
+        public readonly string $domainName,
+        public readonly \DateTimeImmutable $openedOn,
+        public readonly int $remindersSent,
+        public readonly DomainVerificationKind|string $source,
+        public readonly DomainVerificationStatus|string $status,
+        public readonly DomainVerificationTrigger|string $trigger,
+        public readonly string $verificationId,
+        public readonly DomainVerificationCloseReason|string|null $closeReason = null,
+        public readonly ?\DateTimeImmutable $closedOn = null,
+        public readonly ?\DateTimeImmutable $lastReminderSentOn = null,
+        public readonly ?string $verificationUrl = null,
     ) {
     }
 
@@ -74,6 +77,7 @@ final readonly class ContactVerificationCaseResponse implements ApiModel
             closeReason: isset($data['close_reason']) ? DomainVerificationCloseReason::tryFrom($data['close_reason']) ?? $data['close_reason'] : null,
             closedOn: isset($data['closed_on']) ? new \DateTimeImmutable($data['closed_on']) : null,
             lastReminderSentOn: isset($data['last_reminder_sent_on']) ? new \DateTimeImmutable($data['last_reminder_sent_on']) : null,
+            verificationUrl: $data['verification_url'] ?? null,
         );
     }
 
@@ -97,6 +101,7 @@ final readonly class ContactVerificationCaseResponse implements ApiModel
             'close_reason' => $this->closeReason,
             'closed_on' => $this->closedOn,
             'last_reminder_sent_on' => $this->lastReminderSentOn,
+            'verification_url' => $this->verificationUrl,
         ]);
     }
 

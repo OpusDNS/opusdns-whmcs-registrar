@@ -21,7 +21,7 @@ use OpusDNS\Client\Serializer;
  * the claim: `.dk` wants a photo ID for `NAME`, while a registry happy with a written attestation
  * would leave `accepted_proofs` out.
  */
-final readonly class IdentityVerificationPolicy implements ApiModel
+final class IdentityVerificationPolicy implements ApiModel
 {
     /**
      * @param list<DomainContactType|string> $contactRoles For which type of Contacts this verification needs to be
@@ -34,13 +34,13 @@ final readonly class IdentityVerificationPolicy implements ApiModel
      * @param list<string> $trigger The operations that will trigger this verification
      */
     public function __construct(
-        public array $contactRoles,
-        public bool $enabled,
-        public array $requiredClaims,
-        public string $suspensionDelay,
-        public bool $suspensionOnFailure,
-        public array $trigger,
-        public ?Period $validityPeriod = null,
+        public readonly array $contactRoles,
+        public readonly bool $enabled,
+        public readonly array $requiredClaims,
+        public readonly string $suspensionDelay,
+        public readonly bool $suspensionOnFailure,
+        public readonly array $trigger,
+        public readonly ?Period $validityPeriod = null,
     ) {
     }
 

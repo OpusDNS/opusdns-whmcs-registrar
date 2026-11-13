@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class AuditFilters implements ApiModel
+final class AuditFilters implements ApiModel
 {
     /**
      * @param list<string> $nameList The names themselves, only when 20 or fewer.
@@ -21,10 +21,10 @@ final readonly class AuditFilters implements ApiModel
      * @param int $names How many zone or domain names the audit was narrowed to; 0 = none.
      */
     public function __construct(
-        public array $nameList,
-        public array $registrar,
-        public array $tld,
-        public int $names = 0,
+        public readonly array $nameList,
+        public readonly array $registrar,
+        public readonly array $tld,
+        public readonly int $names = 0,
     ) {
     }
 

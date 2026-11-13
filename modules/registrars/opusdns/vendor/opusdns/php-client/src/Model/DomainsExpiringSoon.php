@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainsExpiringSoon implements ApiModel
+final class DomainsExpiringSoon implements ApiModel
 {
     /**
      * @param int $next30Days Number of domains expiring in the next 30 days
@@ -20,9 +20,9 @@ final readonly class DomainsExpiringSoon implements ApiModel
      * @param int $next90Days Number of domains expiring in the next 90 days
      */
     public function __construct(
-        public int $next30Days,
-        public int $next60Days,
-        public int $next90Days,
+        public readonly int $next30Days,
+        public readonly int $next60Days,
+        public readonly int $next90Days,
     ) {
     }
 

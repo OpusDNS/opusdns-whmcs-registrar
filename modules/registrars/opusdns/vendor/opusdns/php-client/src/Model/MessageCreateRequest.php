@@ -13,17 +13,17 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\MessageRole;
 use OpusDNS\Client\Serializer;
 
-final readonly class MessageCreateRequest implements ApiModel
+final class MessageCreateRequest implements ApiModel
 {
     /**
      * @param array<string, mixed>|null $metadata
      * @param int|null $n8nHistoryId Optional reference to the originating n8n_chat_histories row.
      */
     public function __construct(
-        public string $content,
-        public MessageRole|string $role,
-        public ?array $metadata = null,
-        public ?int $n8nHistoryId = null,
+        public readonly string $content,
+        public readonly MessageRole|string $role,
+        public readonly ?array $metadata = null,
+        public readonly ?int $n8nHistoryId = null,
     ) {
     }
 

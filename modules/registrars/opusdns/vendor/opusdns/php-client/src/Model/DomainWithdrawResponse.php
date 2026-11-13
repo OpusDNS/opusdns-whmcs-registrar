@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainWithdrawResponse implements ApiModel
+final class DomainWithdrawResponse implements ApiModel
 {
     /**
      * @param string $name The domain name that was withdrawn
@@ -20,9 +20,9 @@ final readonly class DomainWithdrawResponse implements ApiModel
      * @param string|null $detail Why the withdraw did not succeed
      */
     public function __construct(
-        public string $name,
-        public bool $success,
-        public ?string $detail = null,
+        public readonly string $name,
+        public readonly bool $success,
+        public readonly ?string $detail = null,
     ) {
     }
 

@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\PremiumAffectsType;
 use OpusDNS\Client\Enum\PremiumSourceType;
 use OpusDNS\Client\Serializer;
 
-final readonly class PremiumDomainsBase implements ApiModel
+final class PremiumDomainsBase implements ApiModel
 {
     /**
      * @param bool $supported Whether the registry has premium domains
@@ -22,9 +22,9 @@ final readonly class PremiumDomainsBase implements ApiModel
      * @param PremiumSourceType|string|null $source Source of premium domain information
      */
     public function __construct(
-        public bool $supported,
-        public ?array $affects = null,
-        public PremiumSourceType|string|null $source = null,
+        public readonly bool $supported,
+        public readonly ?array $affects = null,
+        public readonly PremiumSourceType|string|null $source = null,
     ) {
     }
 

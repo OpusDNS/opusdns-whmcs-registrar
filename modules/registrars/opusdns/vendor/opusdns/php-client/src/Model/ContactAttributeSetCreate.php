@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactAttributeSetCreate implements ApiModel
+final class ContactAttributeSetCreate implements ApiModel
 {
     /**
      * @param array<string, string> $attributes Key-value map of contact attributes for this set
@@ -20,9 +20,9 @@ final readonly class ContactAttributeSetCreate implements ApiModel
      * @param string $tld The TLD this attribute set applies to (e.g. 'de', '.de', 'DE')
      */
     public function __construct(
-        public array $attributes,
-        public string $label,
-        public string $tld,
+        public readonly array $attributes,
+        public readonly string $label,
+        public readonly string $tld,
     ) {
     }
 

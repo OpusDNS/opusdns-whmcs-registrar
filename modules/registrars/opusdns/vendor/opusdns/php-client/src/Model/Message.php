@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\MessageRole;
 use OpusDNS\Client\Serializer;
 
-final readonly class Message implements ApiModel
+final class Message implements ApiModel
 {
     /**
      * @param string $conversationId TypeID prefix: conv.
@@ -21,12 +21,12 @@ final readonly class Message implements ApiModel
      * @param array<string, mixed>|null $metadata
      */
     public function __construct(
-        public string $content,
-        public string $conversationId,
-        public \DateTimeImmutable $createdAt,
-        public string $messageId,
-        public MessageRole|string $role,
-        public ?array $metadata = null,
+        public readonly string $content,
+        public readonly string $conversationId,
+        public readonly \DateTimeImmutable $createdAt,
+        public readonly string $messageId,
+        public readonly MessageRole|string $role,
+        public readonly ?array $metadata = null,
     ) {
     }
 

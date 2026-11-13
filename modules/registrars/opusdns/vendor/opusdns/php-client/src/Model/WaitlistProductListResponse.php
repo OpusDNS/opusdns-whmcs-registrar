@@ -15,13 +15,13 @@ use OpusDNS\Client\Serializer;
 /**
  * The waitlisted products you may see.
  */
-final readonly class WaitlistProductListResponse implements ApiModel
+final class WaitlistProductListResponse implements ApiModel
 {
     /**
      * @param list<WaitlistProductState>|null $products Waitlisted products you may see
      */
     public function __construct(
-        public ?array $products = null,
+        public readonly ?array $products = null,
     ) {
     }
 

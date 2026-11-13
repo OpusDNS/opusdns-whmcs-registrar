@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace OpusDNS\Client;
 
-final readonly class Config
+final class Config
 {
     public const PRODUCTION_URL = 'https://api.opusdns.com';
     public const SANDBOX_URL = 'https://sandbox.opusdns.com';
@@ -12,11 +12,11 @@ final readonly class Config
     public const PRODUCT_NAME = 'opusdns-php-client';
     public const PACKAGE = 'opusdns/php-client';
 
-    public string $baseUrl;
+    public readonly string $baseUrl;
 
-    public string $userAgent;
+    public readonly string $userAgent;
 
-    public string $clientToken;
+    public readonly string $clientToken;
 
     /**
      * @param string $apiKey API key sent in the X-Api-Key header
@@ -28,12 +28,12 @@ final readonly class Config
      * @param string|null $clientToken Sent as X-OpusDNS-Client; an empty string omits the header
      */
     public function __construct(
-        public string $apiKey,
+        public readonly string $apiKey,
         string $baseUrl = self::PRODUCTION_URL,
         ?string $userAgent = null,
-        public array $headers = [],
-        public float $timeout = 60.0,
-        public float $connectTimeout = 10.0,
+        public readonly array $headers = [],
+        public readonly float $timeout = 60.0,
+        public readonly float $connectTimeout = 10.0,
         ?string $clientToken = null,
     ) {
         if (trim($apiKey) === '') {

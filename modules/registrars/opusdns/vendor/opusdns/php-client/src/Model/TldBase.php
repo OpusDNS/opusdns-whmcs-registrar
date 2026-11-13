@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\TLDType;
 use OpusDNS\Client\Serializer;
 
-final readonly class TldBase implements ApiModel
+final class TldBase implements ApiModel
 {
     /**
      * @param string $name The TLD being configured
@@ -21,9 +21,9 @@ final readonly class TldBase implements ApiModel
      * @param list<string> $thirdLevelStructure Name of the third levels (name and overrides)
      */
     public function __construct(
-        public string $name,
-        public TLDType|string $type,
-        public array $thirdLevelStructure = [],
+        public readonly string $name,
+        public readonly TLDType|string $type,
+        public readonly array $thirdLevelStructure = [],
     ) {
     }
 

@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneCreateBulkCommand implements ApiModel
+final class DnsZoneCreateBulkCommand implements ApiModel
 {
     /**
      * @param DnsZoneCreateBulkPayload $payload Bulk DNS zone creation payload
@@ -20,10 +20,10 @@ final readonly class DnsZoneCreateBulkCommand implements ApiModel
      * @param string $version Command version
      */
     public function __construct(
-        public DnsZoneCreateBulkPayload $payload,
-        public string $command = 'dns_zone_create_bulk',
-        public ?string $idempotencyKey = null,
-        public string $version = 'v1',
+        public readonly DnsZoneCreateBulkPayload $payload,
+        public readonly string $command = 'dns_zone_create_bulk',
+        public readonly ?string $idempotencyKey = null,
+        public readonly string $version = 'v1',
     ) {
     }
 

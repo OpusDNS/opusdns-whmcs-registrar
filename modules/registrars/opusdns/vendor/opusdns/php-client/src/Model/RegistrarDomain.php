@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class RegistrarDomain implements ApiModel
+final class RegistrarDomain implements ApiModel
 {
     /**
      * @param array<string, RegistrarContact> $contacts
@@ -21,14 +21,14 @@ final readonly class RegistrarDomain implements ApiModel
      * @param list<string>|null $statuses
      */
     public function __construct(
-        public string $name,
-        public array $contacts = [],
-        public array $contactsDedup = [],
-        public ?string $expiryDate = null,
-        public array $nameservers = [],
-        public ?string $registrar = null,
-        public ?array $statuses = null,
-        public ?RegistrarZone $zone = null,
+        public readonly string $name,
+        public readonly array $contacts = [],
+        public readonly array $contactsDedup = [],
+        public readonly ?string $expiryDate = null,
+        public readonly array $nameservers = [],
+        public readonly ?string $registrar = null,
+        public readonly ?array $statuses = null,
+        public readonly ?RegistrarZone $zone = null,
     ) {
     }
 

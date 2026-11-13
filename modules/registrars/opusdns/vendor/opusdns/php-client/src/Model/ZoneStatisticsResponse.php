@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\UsageGranularity;
 use OpusDNS\Client\Serializer;
 
-final readonly class ZoneStatisticsResponse implements ApiModel
+final class ZoneStatisticsResponse implements ApiModel
 {
     /**
      * @param list<ZoneStatisticsBucketResponse> $buckets One entry per bucket the window touches, oldest first,
@@ -33,14 +33,14 @@ final readonly class ZoneStatisticsResponse implements ApiModel
      *     collected since the zone was created.
      */
     public function __construct(
-        public array $buckets,
-        public \DateTimeImmutable $endDate,
-        public UsageGranularity|string $granularity,
-        public \DateTimeImmutable $startDate,
-        public ZoneStatisticsTotalsResponse $totals,
-        public string $zoneName,
-        public ?\DateTimeImmutable $dataAvailableFrom = null,
-        public ?\DateTimeImmutable $dataAvailableTo = null,
+        public readonly array $buckets,
+        public readonly \DateTimeImmutable $endDate,
+        public readonly UsageGranularity|string $granularity,
+        public readonly \DateTimeImmutable $startDate,
+        public readonly ZoneStatisticsTotalsResponse $totals,
+        public readonly string $zoneName,
+        public readonly ?\DateTimeImmutable $dataAvailableFrom = null,
+        public readonly ?\DateTimeImmutable $dataAvailableTo = null,
     ) {
     }
 

@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class OrganizationUpdate implements ApiModel
+final class OrganizationUpdate implements ApiModel
 {
     /**
      * @param string|null $address1 First line of the organization's address.
@@ -28,18 +28,18 @@ final readonly class OrganizationUpdate implements ApiModel
      * @param float|string|null $taxRate Tax rate for the organization.
      */
     public function __construct(
-        public ?string $address1 = null,
-        public ?string $address2 = null,
-        public ?string $businessNumber = null,
-        public ?string $city = null,
-        public ?string $countryCode = null,
-        public ?string $defaultLocale = null,
-        public ?string $name = null,
-        public ?string $postalCode = null,
-        public ?string $state = null,
-        public ?string $taxId = null,
-        public ?string $taxIdType = null,
-        public float|string|null $taxRate = null,
+        public readonly ?string $address1 = null,
+        public readonly ?string $address2 = null,
+        public readonly ?string $businessNumber = null,
+        public readonly ?string $city = null,
+        public readonly ?string $countryCode = null,
+        public readonly ?string $defaultLocale = null,
+        public readonly ?string $name = null,
+        public readonly ?string $postalCode = null,
+        public readonly ?string $state = null,
+        public readonly ?string $taxId = null,
+        public readonly ?string $taxIdType = null,
+        public readonly float|string|null $taxRate = null,
     ) {
     }
 

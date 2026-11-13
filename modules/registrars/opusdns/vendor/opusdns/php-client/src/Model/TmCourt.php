@@ -15,7 +15,7 @@ use OpusDNS\Client\Serializer;
 /**
  * Court resolution reference (courtType in RFC 9361)
  */
-final readonly class TmCourt implements ApiModel
+final class TmCourt implements ApiModel
 {
     /**
      * @param string $cc ISO 3166-2 jurisdiction country code
@@ -24,10 +24,10 @@ final readonly class TmCourt implements ApiModel
      * @param list<string>|null $region Region(s) within the jurisdiction
      */
     public function __construct(
-        public string $cc,
-        public string $courtName,
-        public string $refNum,
-        public ?array $region = null,
+        public readonly string $cc,
+        public readonly string $courtName,
+        public readonly string $refNum,
+        public readonly ?array $region = null,
     ) {
     }
 

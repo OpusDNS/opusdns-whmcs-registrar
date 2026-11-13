@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\AttributeType;
 use OpusDNS\Client\Enum\RegistrantChangeFieldKey;
 use OpusDNS\Client\Serializer;
 
-final readonly class RegistrantChangeField implements ApiModel
+final class RegistrantChangeField implements ApiModel
 {
     /**
      * @param RegistrantChangeFieldKey|string $key The key the field is sent under in `fields`
@@ -23,10 +23,10 @@ final readonly class RegistrantChangeField implements ApiModel
      * @param list<string>|null $values Allowed values for enum types
      */
     public function __construct(
-        public RegistrantChangeFieldKey|string $key,
-        public AttributeType|string $type,
-        public bool $required = false,
-        public ?array $values = null,
+        public readonly RegistrantChangeFieldKey|string $key,
+        public readonly AttributeType|string $type,
+        public readonly bool $required = false,
+        public readonly ?array $values = null,
     ) {
     }
 

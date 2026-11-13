@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainRenewalPriceResponse implements ApiModel
+final class DomainRenewalPriceResponse implements ApiModel
 {
     /**
      * @param string $currency ISO 4217 currency code
@@ -23,10 +23,10 @@ final readonly class DomainRenewalPriceResponse implements ApiModel
      *     excluded
      */
     public function __construct(
-        public string $currency,
-        public bool $isPremium,
-        public DomainPeriod $period,
-        public string $price,
+        public readonly string $currency,
+        public readonly bool $isPremium,
+        public readonly DomainPeriod $period,
+        public readonly string $price,
     ) {
     }
 

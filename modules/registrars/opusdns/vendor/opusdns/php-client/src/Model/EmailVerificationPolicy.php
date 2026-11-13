@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DomainContactType;
 use OpusDNS\Client\Serializer;
 
-final readonly class EmailVerificationPolicy implements ApiModel
+final class EmailVerificationPolicy implements ApiModel
 {
     /**
      * @param list<DomainContactType|string> $contactRoles For which type of Contacts this verification needs to be
@@ -24,14 +24,14 @@ final readonly class EmailVerificationPolicy implements ApiModel
      * @param list<string> $trigger The operations that will trigger this verification
      */
     public function __construct(
-        public Communication $communication,
-        public array $contactRoles,
-        public bool $enabled,
-        public string $suspensionDelay,
-        public bool $suspensionOnFailure,
-        public array $trigger,
-        public string $verificationMethod,
-        public ?Period $validityPeriod = null,
+        public readonly Communication $communication,
+        public readonly array $contactRoles,
+        public readonly bool $enabled,
+        public readonly string $suspensionDelay,
+        public readonly bool $suspensionOnFailure,
+        public readonly array $trigger,
+        public readonly string $verificationMethod,
+        public readonly ?Period $validityPeriod = null,
     ) {
     }
 

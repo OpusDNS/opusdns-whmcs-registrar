@@ -12,11 +12,11 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainForwardsContextCreate implements ApiModel
+final class DomainForwardsContextCreate implements ApiModel
 {
     public function __construct(
-        public ContextPayloadDomainForward $payload,
-        public string $kind = 'domain_forwards',
+        public readonly ContextPayloadDomainForward $payload,
+        public readonly string $kind = 'domain_forwards',
     ) {
     }
 

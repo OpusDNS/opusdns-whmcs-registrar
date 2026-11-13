@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainRenewTransferPendingResponse implements ApiModel
+final class DomainRenewTransferPendingResponse implements ApiModel
 {
     /**
      * @param string $name The domain name the renewal was requested for
@@ -21,9 +21,9 @@ final readonly class DomainRenewTransferPendingResponse implements ApiModel
      *     outcome is reported as domain events.
      */
     public function __construct(
-        public string $name,
-        public string $requestId,
-        public string $status = 'transfer_pending',
+        public readonly string $name,
+        public readonly string $requestId,
+        public readonly string $status = 'transfer_pending',
     ) {
     }
 

@@ -15,15 +15,15 @@ use OpusDNS\Client\Serializer;
 /**
  * UDRP case reference (udrpType in RFC 9361)
  */
-final readonly class TmUdrp implements ApiModel
+final class TmUdrp implements ApiModel
 {
     /**
      * @param string $caseNo UDRP case number
      * @param string $udrpProvider Name of the UDRP provider
      */
     public function __construct(
-        public string $caseNo,
-        public string $udrpProvider,
+        public readonly string $caseNo,
+        public readonly string $udrpProvider,
     ) {
     }
 

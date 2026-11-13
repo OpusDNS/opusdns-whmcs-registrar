@@ -13,14 +13,14 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\RenewalModeDTO;
 use OpusDNS\Client\Serializer;
 
-final readonly class SetRenewalModeReq implements ApiModel
+final class SetRenewalModeReq implements ApiModel
 {
     /**
      * @param RenewalModeDTO|string $renewalMode expire cancels the set at period end (serves out the term), renew
      *     un-cancels (resumes auto-renew)
      */
     public function __construct(
-        public RenewalModeDTO|string $renewalMode,
+        public readonly RenewalModeDTO|string $renewalMode,
     ) {
     }
 

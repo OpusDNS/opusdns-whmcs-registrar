@@ -13,15 +13,15 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DnssecStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneCreateBulkTemplate implements ApiModel
+final class DnsZoneCreateBulkTemplate implements ApiModel
 {
     /**
      * @param DnssecStatus|string $dnssecStatus DNSSEC status for all zones
      * @param list<DnsRrsetCreate>|null $rrsets DNS record sets to create
      */
     public function __construct(
-        public DnssecStatus|string $dnssecStatus = DnssecStatus::DISABLED,
-        public ?array $rrsets = null,
+        public readonly DnssecStatus|string $dnssecStatus = DnssecStatus::DISABLED,
+        public readonly ?array $rrsets = null,
     ) {
     }
 

@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ParkingCreateBulkInstance implements ApiModel
+final class ParkingCreateBulkInstance implements ApiModel
 {
     /**
      * @param string $domain The domain name for the parking ad
      * @param bool|null $enabled Override enabled setting for this domain
      */
     public function __construct(
-        public string $domain,
-        public ?bool $enabled = null,
+        public readonly string $domain,
+        public readonly ?bool $enabled = null,
     ) {
     }
 

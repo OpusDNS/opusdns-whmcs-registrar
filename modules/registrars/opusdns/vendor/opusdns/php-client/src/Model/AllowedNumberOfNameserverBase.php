@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class AllowedNumberOfNameserverBase implements ApiModel
+final class AllowedNumberOfNameserverBase implements ApiModel
 {
     /**
      * @param int $max Maximum number of nameserver per domain name
      * @param int $min Minimum number of nameserver per domain name
      */
     public function __construct(
-        public int $max,
-        public int $min,
+        public readonly int $max,
+        public readonly int $min,
     ) {
     }
 

@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\DomainClientStatus;
 use OpusDNS\Client\Enum\RenewalMode;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainUpdate implements ApiModel
+final class DomainUpdate implements ApiModel
 {
     /**
      * @param array<string, string>|null $attributes Additional attributes of the domain, keyed by attribute name.
@@ -28,23 +28,23 @@ final readonly class DomainUpdate implements ApiModel
      *     and update; a `monthly` stored before that rule applied is ignored at renewal. -
      *     `music_registrant_attestation`: `true`. `.music` registration. - `nic_it_compliance_confirmation`: `true`.
      *     `.it` registration and transfer. - `travel_industry_acknowledgement`: `true`. `.travel` registration. -
-     *     `internet_ee_registrant_agreement`: `true`. `.ee` registration. - `punktum_dk_terms_acceptance`: `true`.
-     *     `.dk` registration and registrant change. - `de_general_request_contact`, `de_abuse_contact`: id of a
-     *     contact whose `.de` attribute set has `DE_CONTACT_TYPE` = `REQUEST`. `.de` only. Boolean keys also accept
-     *     `1` and `yes`. Written by the platform and rejected if supplied: `verification_required`, `promotion`,
-     *     `promotion_eligibility`, `nor_id_declaration`, `nor_id_declaration_token`, `punktum_dk_tracking_no`,
-     *     `domain_contact_attributes`, `registry_reseller_id`. They are never returned under `attributes`; inline
-     *     contact attributes surface on the matching `contacts` entry instead. Derived from the signed `.no`
-     *     applicant declaration and ignored if supplied on create: `nor_id_applicant_version`,
-     *     `nor_id_applicant_accept_name`, `nor_id_applicant_accept_date`. On update, every registry stores the
-     *     supplied attributes, and the update is not sent to the registry unless they store; a registry that rejects
-     *     the change stores nothing. An empty value removes the stored attribute, except for `auto_renew_period`,
-     *     whose only accepted values are `monthly` and `yearly`. `.dk` also reads `punktum_dk_terms_acceptance` to
-     *     confirm a registrant change. An update cannot change what the registrant accepted at registration, so
-     *     these are rejected on update: `music_registrant_attestation`, `nic_it_compliance_confirmation`,
-     *     `travel_industry_acknowledgement`, `internet_ee_registrant_agreement` and the three `nor_id_applicant_*`
-     *     keys. `punktum_dk_terms_acceptance` stays settable for a registrant change but cannot be removed with an
-     *     empty value.
+     *     `internet_ee_registrant_agreement`: `true`. `.ee` registration and registrant change. -
+     *     `punktum_dk_terms_acceptance`: `true`. `.dk` registration and registrant change. -
+     *     `de_general_request_contact`, `de_abuse_contact`: id of a contact whose `.de` attribute set has
+     *     `DE_CONTACT_TYPE` = `REQUEST`. `.de` only. Boolean keys also accept `1` and `yes`. Written by the platform
+     *     and rejected if supplied: `verification_required`, `promotion`, `promotion_eligibility`,
+     *     `nor_id_declaration`, `nor_id_declaration_token`, `punktum_dk_tracking_no`, `domain_contact_attributes`,
+     *     `registry_reseller_id`. They are never returned under `attributes`; inline contact attributes surface on
+     *     the matching `contacts` entry instead. Derived from the signed `.no` applicant declaration and ignored if
+     *     supplied on create: `nor_id_applicant_version`, `nor_id_applicant_accept_name`,
+     *     `nor_id_applicant_accept_date`. On update, every registry stores the supplied attributes, and the update
+     *     is not sent to the registry unless they store; a registry that rejects the change stores nothing. An empty
+     *     value removes the stored attribute, except for `auto_renew_period`, whose only accepted values are
+     *     `monthly` and `yearly`. `.dk` also reads `punktum_dk_terms_acceptance` to confirm a registrant change. An
+     *     update cannot change what the registrant accepted at registration, so these are rejected on update:
+     *     `music_registrant_attestation`, `nic_it_compliance_confirmation`, `travel_industry_acknowledgement` and
+     *     the three `nor_id_applicant_*` keys. `punktum_dk_terms_acceptance` and `internet_ee_registrant_agreement`
+     *     stay settable for a registrant change but cannot be removed with an empty value.
      * @param string|null $authCode The new auth code for the domain
      * @param array<string, list<ContactHandle>>|null $contacts The new contacts of the domain
      * @param list<Nameserver>|null $nameservers The new name servers for the domain
@@ -53,13 +53,13 @@ final readonly class DomainUpdate implements ApiModel
      * @param list<DomainClientStatus|string>|null $statuses The new statuses of the domain
      */
     public function __construct(
-        public ?array $attributes = null,
-        public ?string $authCode = null,
-        public ?array $contacts = null,
-        public ?array $nameservers = null,
-        public RenewalMode|string|null $renewalMode = null,
-        public ?StatusChanges $statusChanges = null,
-        public ?array $statuses = null,
+        public readonly ?array $attributes = null,
+        public readonly ?string $authCode = null,
+        public readonly ?array $contacts = null,
+        public readonly ?array $nameservers = null,
+        public readonly RenewalMode|string|null $renewalMode = null,
+        public readonly ?StatusChanges $statusChanges = null,
+        public readonly ?array $statuses = null,
     ) {
     }
 

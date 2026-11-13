@@ -15,13 +15,13 @@ use OpusDNS\Client\Serializer;
 /**
  * Premium pricing details for a domain
  */
-final readonly class PremiumPricingRes implements ApiModel
+final class PremiumPricingRes implements ApiModel
 {
     /**
      * @param list<PremiumPriceEntryRes> $prices Premium prices per action
      */
     public function __construct(
-        public array $prices,
+        public readonly array $prices,
     ) {
     }
 

@@ -17,7 +17,7 @@ use OpusDNS\Client\Serializer;
 /**
  * Your own waitlist application.
  */
-final readonly class WaitlistEntryResponse implements ApiModel
+final class WaitlistEntryResponse implements ApiModel
 {
     /**
      * @param \DateTimeImmutable $appliedOn When you applied
@@ -26,10 +26,10 @@ final readonly class WaitlistEntryResponse implements ApiModel
      * @param \DateTimeImmutable|null $decidedOn When the application was decided; null while it is pending
      */
     public function __construct(
-        public \DateTimeImmutable $appliedOn,
-        public WaitlistProduct|string $product,
-        public WaitlistEntryStatus|string $status,
-        public ?\DateTimeImmutable $decidedOn = null,
+        public readonly \DateTimeImmutable $appliedOn,
+        public readonly WaitlistProduct|string $product,
+        public readonly WaitlistEntryStatus|string $status,
+        public readonly ?\DateTimeImmutable $decidedOn = null,
     ) {
     }
 

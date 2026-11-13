@@ -18,7 +18,7 @@ use OpusDNS\Client\Serializer;
  * null when the config has no live subscription (still provisioning, or terminated). A cancelled
  * whitelabel reads as renewal_mode=expire with expires_on set to when serving stops.
  */
-final readonly class WhitelabelSubscriptionInfo implements ApiModel
+final class WhitelabelSubscriptionInfo implements ApiModel
 {
     /**
      * @param Period $period Billing period the subscription renews on (same shape as the create body's period)
@@ -31,11 +31,11 @@ final readonly class WhitelabelSubscriptionInfo implements ApiModel
      *     renewing config
      */
     public function __construct(
-        public Period $period,
-        public WhitelabelRenewalMode|string $renewalMode,
-        public ?\DateTimeImmutable $expiresOn = null,
-        public ?\DateTimeImmutable $gracePeriodEndsAt = null,
-        public ?\DateTimeImmutable $renewScheduledAt = null,
+        public readonly Period $period,
+        public readonly WhitelabelRenewalMode|string $renewalMode,
+        public readonly ?\DateTimeImmutable $expiresOn = null,
+        public readonly ?\DateTimeImmutable $gracePeriodEndsAt = null,
+        public readonly ?\DateTimeImmutable $renewScheduledAt = null,
     ) {
     }
 

@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactCreateBulkInstance implements ApiModel
+final class ContactCreateBulkInstance implements ApiModel
 {
     /**
      * @param string $city City
@@ -30,19 +30,19 @@ final readonly class ContactCreateBulkInstance implements ApiModel
      * @param string|null $title Override title for this contact
      */
     public function __construct(
-        public string $city,
-        public string $email,
-        public string $firstName,
-        public string $lastName,
-        public string $phone,
-        public string $postalCode,
-        public string $street,
-        public ?string $country = null,
-        public ?bool $disclose = null,
-        public ?string $fax = null,
-        public ?string $org = null,
-        public ?string $state = null,
-        public ?string $title = null,
+        public readonly string $city,
+        public readonly string $email,
+        public readonly string $firstName,
+        public readonly string $lastName,
+        public readonly string $phone,
+        public readonly string $postalCode,
+        public readonly string $street,
+        public readonly ?string $country = null,
+        public readonly ?bool $disclose = null,
+        public readonly ?string $fax = null,
+        public readonly ?string $org = null,
+        public readonly ?string $state = null,
+        public readonly ?string $title = null,
     ) {
     }
 

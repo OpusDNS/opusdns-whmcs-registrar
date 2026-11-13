@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class VanityNameserverSetDTO implements ApiModel
+final class VanityNameserverSetDTO implements ApiModel
 {
     /**
      * @param string $name Human-readable name for the vanity NS set
@@ -22,11 +22,11 @@ final readonly class VanityNameserverSetDTO implements ApiModel
      * @param list<VanityNameserverDTO>|null $nameservers Nameservers in the set, ordered by position
      */
     public function __construct(
-        public string $name,
-        public string $parentDomainName,
-        public string $setId,
-        public string $soaRname,
-        public ?array $nameservers = null,
+        public readonly string $name,
+        public readonly string $parentDomainName,
+        public readonly string $setId,
+        public readonly string $soaRname,
+        public readonly ?array $nameservers = null,
     ) {
     }
 

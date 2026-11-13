@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class WhoisBase implements ApiModel
+final class WhoisBase implements ApiModel
 {
     /**
      * @param string|null $whoisServer WHOIS server
      */
     public function __construct(
-        public ?string $whoisServer = null,
+        public readonly ?string $whoisServer = null,
     ) {
     }
 

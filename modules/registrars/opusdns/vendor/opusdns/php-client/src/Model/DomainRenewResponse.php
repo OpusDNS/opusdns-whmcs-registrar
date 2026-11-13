@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainRenewResponse implements ApiModel
+final class DomainRenewResponse implements ApiModel
 {
     /**
      * @param string $name The domain name that was renewed
@@ -20,9 +20,9 @@ final readonly class DomainRenewResponse implements ApiModel
      * @param DomainPeriod $periodExtended The period by which the domain was extended
      */
     public function __construct(
-        public string $name,
-        public \DateTimeImmutable $newExpiryDate,
-        public DomainPeriod $periodExtended,
+        public readonly string $name,
+        public readonly \DateTimeImmutable $newExpiryDate,
+        public readonly DomainPeriod $periodExtended,
     ) {
     }
 

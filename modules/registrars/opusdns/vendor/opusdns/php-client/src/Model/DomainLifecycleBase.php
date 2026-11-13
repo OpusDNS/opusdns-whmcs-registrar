@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\DeletePolicyType;
 use OpusDNS\Client\Enum\SyncOperationType;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainLifecycleBase implements ApiModel
+final class DomainLifecycleBase implements ApiModel
 {
     /**
      * @param string|null $addGracePeriod Add grace period in days after registration in ISO 8601 format (e.g., 5D,
@@ -48,23 +48,23 @@ final readonly class DomainLifecycleBase implements ApiModel
      * @param list<Period>|null $transferRenewalPeriods List of allowed transfer renewal periods (eg. '1y')
      */
     public function __construct(
-        public ?string $addGracePeriod = null,
-        public ?string $autoRenewBeforeExpiration = null,
-        public ?Period $defaultTransferRenewalPeriod = null,
-        public ?string $deleteBeforeExpiration = null,
-        public ?array $deletePolicy = null,
-        public ?bool $explicitRenew = null,
-        public ?string $gracePeriod = null,
-        public ?string $pendingDelete = null,
-        public ?string $redemptionPeriod = null,
-        public ?array $registrationPeriods = null,
-        public ?bool $registryAutoRenew = null,
-        public ?array $renewalPeriods = null,
-        public bool $restoreTriggersRenewal = true,
-        public ?RgpOperations $rgpOperations = null,
-        public ?array $syncAfterOperations = null,
-        public ?string $transferGracePeriod = null,
-        public ?array $transferRenewalPeriods = null,
+        public readonly ?string $addGracePeriod = null,
+        public readonly ?string $autoRenewBeforeExpiration = null,
+        public readonly ?Period $defaultTransferRenewalPeriod = null,
+        public readonly ?string $deleteBeforeExpiration = null,
+        public readonly ?array $deletePolicy = null,
+        public readonly ?bool $explicitRenew = null,
+        public readonly ?string $gracePeriod = null,
+        public readonly ?string $pendingDelete = null,
+        public readonly ?string $redemptionPeriod = null,
+        public readonly ?array $registrationPeriods = null,
+        public readonly ?bool $registryAutoRenew = null,
+        public readonly ?array $renewalPeriods = null,
+        public readonly bool $restoreTriggersRenewal = true,
+        public readonly ?RgpOperations $rgpOperations = null,
+        public readonly ?array $syncAfterOperations = null,
+        public readonly ?string $transferGracePeriod = null,
+        public readonly ?array $transferRenewalPeriods = null,
     ) {
     }
 

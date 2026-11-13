@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneSummary implements ApiModel
+final class DnsZoneSummary implements ApiModel
 {
     /**
      * @param int $totalZones Total number of DNS zones
      * @param array<string, int>|null $zonesByDnssec Count of zones by DNSSEC status
      */
     public function __construct(
-        public int $totalZones,
-        public ?array $zonesByDnssec = null,
+        public readonly int $totalZones,
+        public readonly ?array $zonesByDnssec = null,
     ) {
     }
 

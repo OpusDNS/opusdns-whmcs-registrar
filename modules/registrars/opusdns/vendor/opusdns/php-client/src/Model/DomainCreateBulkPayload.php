@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainCreateBulkPayload implements ApiModel
+final class DomainCreateBulkPayload implements ApiModel
 {
     /**
      * @param list<DomainCreateBulkInstance> $instances List of domains to create (1-1000)
      * @param DomainCreateBulkTemplate $template Shared settings for all domains
      */
     public function __construct(
-        public array $instances,
-        public DomainCreateBulkTemplate $template,
+        public readonly array $instances,
+        public readonly DomainCreateBulkTemplate $template,
     ) {
     }
 

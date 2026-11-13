@@ -16,17 +16,17 @@ use OpusDNS\Client\Enum\ContactVerificationProof;
 use OpusDNS\Client\Enum\ContactVerificationState;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactVerificationStatus implements ApiModel
+final class ContactVerificationStatus implements ApiModel
 {
     public function __construct(
-        public ContactVerificationClaim|string $claim,
-        public ContactVerificationState|string $state,
-        public ?string $attestationReference = null,
-        public ?ContactVerificationEidInformation $eid = null,
-        public ?\DateTimeImmutable $expiresOn = null,
-        public ContactVerificationMethod|string|null $method = null,
-        public ContactVerificationProof|string|null $proof = null,
-        public ?\DateTimeImmutable $verifiedOn = null,
+        public readonly ContactVerificationClaim|string $claim,
+        public readonly ContactVerificationState|string $state,
+        public readonly ?string $attestationReference = null,
+        public readonly ?ContactVerificationEidInformation $eid = null,
+        public readonly ?\DateTimeImmutable $expiresOn = null,
+        public readonly ContactVerificationMethod|string|null $method = null,
+        public readonly ContactVerificationProof|string|null $proof = null,
+        public readonly ?\DateTimeImmutable $verifiedOn = null,
     ) {
     }
 

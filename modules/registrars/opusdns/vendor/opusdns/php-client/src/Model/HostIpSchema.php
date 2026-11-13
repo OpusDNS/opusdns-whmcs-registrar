@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\IPAddressType;
 use OpusDNS\Client\Serializer;
 
-final readonly class HostIpSchema implements ApiModel
+final class HostIpSchema implements ApiModel
 {
     /**
      * @param string $address IP address of the host object
@@ -24,12 +24,12 @@ final readonly class HostIpSchema implements ApiModel
      * @param \DateTimeImmutable|null $updatedOn The date/time the entry was last updated on
      */
     public function __construct(
-        public string $address,
-        public IPAddressType|string $type,
-        public ?\DateTimeImmutable $createdOn = null,
-        public ?string $hostId = null,
-        public ?string $hostIpId = null,
-        public ?\DateTimeImmutable $updatedOn = null,
+        public readonly string $address,
+        public readonly IPAddressType|string $type,
+        public readonly ?\DateTimeImmutable $createdOn = null,
+        public readonly ?string $hostId = null,
+        public readonly ?string $hostIpId = null,
+        public readonly ?\DateTimeImmutable $updatedOn = null,
     ) {
     }
 

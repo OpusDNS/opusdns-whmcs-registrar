@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\DomainVerificationKind;
 use OpusDNS\Client\Enum\VerificationClaimType;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainVerificationDetails implements ApiModel
+final class DomainVerificationDetails implements ApiModel
 {
     /**
      * @param list<VerificationRegistrantDetails>|null $registrants
@@ -22,13 +22,13 @@ final readonly class DomainVerificationDetails implements ApiModel
      * @param list<VerificationDeadline>|null $verificationDeadlines
      */
     public function __construct(
-        public string $domainId,
-        public string $detailType = 'domain_verification',
-        public ?array $registrants = null,
-        public DomainVerificationKind|string|null $source = null,
-        public ?array $verificationClaims = null,
-        public ?array $verificationDeadlines = null,
-        public ?string $verificationId = null,
+        public readonly string $domainId,
+        public readonly string $detailType = 'domain_verification',
+        public readonly ?array $registrants = null,
+        public readonly DomainVerificationKind|string|null $source = null,
+        public readonly ?array $verificationClaims = null,
+        public readonly ?array $verificationDeadlines = null,
+        public readonly ?string $verificationId = null,
     ) {
     }
 

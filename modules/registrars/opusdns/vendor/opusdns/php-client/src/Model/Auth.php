@@ -20,11 +20,11 @@ use OpusDNS\Client\Serializer;
  * System-owned: written only by onboarding (via branding-service's set-auth endpoint), never by a
  * customer document write - branding-service preserves this block across customer upserts.
  */
-final readonly class Auth implements ApiModel
+final class Auth implements ApiModel
 {
     public function __construct(
-        public ?string $authority = null,
-        public ?string $clientId = null,
+        public readonly ?string $authority = null,
+        public readonly ?string $clientId = null,
     ) {
     }
 

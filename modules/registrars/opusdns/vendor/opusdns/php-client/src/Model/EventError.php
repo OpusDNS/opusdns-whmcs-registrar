@@ -12,11 +12,11 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class EventError implements ApiModel
+final class EventError implements ApiModel
 {
     public function __construct(
-        public string $code,
-        public string $detail,
+        public readonly string $code,
+        public readonly string $detail,
     ) {
     }
 

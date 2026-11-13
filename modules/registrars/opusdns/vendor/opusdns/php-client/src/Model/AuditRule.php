@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\AuditRuleId;
 use OpusDNS\Client\Serializer;
 
-final readonly class AuditRule implements ApiModel
+final class AuditRule implements ApiModel
 {
     /**
      * @param AuditRuleId|string $id Stable rule id; never renamed. `title` and `explanation` are its English text.
@@ -21,13 +21,13 @@ final readonly class AuditRule implements ApiModel
      * @param string $severity critical | warning | info
      */
     public function __construct(
-        public AuditFix $fix,
-        public AuditRuleId|string $id,
-        public array $sample,
-        public int $count = 0,
-        public string $explanation = '',
-        public string $severity = '',
-        public string $title = '',
+        public readonly AuditFix $fix,
+        public readonly AuditRuleId|string $id,
+        public readonly array $sample,
+        public readonly int $count = 0,
+        public readonly string $explanation = '',
+        public readonly string $severity = '',
+        public readonly string $title = '',
     ) {
     }
 

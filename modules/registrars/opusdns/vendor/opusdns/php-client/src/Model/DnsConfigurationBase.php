@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DnssecModeType;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsConfigurationBase implements ApiModel
+final class DnsConfigurationBase implements ApiModel
 {
     /**
      * @param bool $dnssecAllowed Whether the registry supports DNSSEC
@@ -31,16 +31,16 @@ final readonly class DnsConfigurationBase implements ApiModel
      *     example.com)
      */
     public function __construct(
-        public AllowedNumberOfNameserverBase $allowedNumberOfNameserver,
-        public bool $dnssecAllowed,
-        public bool $hostObjects,
-        public bool $registryNameserverCheck,
-        public int $registryRootNameserverUpdate,
-        public ?bool $czdsAvailable = null,
-        public ?bool $dnssecMandatory = null,
-        public DnssecModeType|string|null $dnssecMode = null,
-        public ?array $dnssecSubmitDigestTypes = null,
-        public ?array $hostParentCheckTlds = null,
+        public readonly AllowedNumberOfNameserverBase $allowedNumberOfNameserver,
+        public readonly bool $dnssecAllowed,
+        public readonly bool $hostObjects,
+        public readonly bool $registryNameserverCheck,
+        public readonly int $registryRootNameserverUpdate,
+        public readonly ?bool $czdsAvailable = null,
+        public readonly ?bool $dnssecMandatory = null,
+        public readonly DnssecModeType|string|null $dnssecMode = null,
+        public readonly ?array $dnssecSubmitDigestTypes = null,
+        public readonly ?array $hostParentCheckTlds = null,
     ) {
     }
 

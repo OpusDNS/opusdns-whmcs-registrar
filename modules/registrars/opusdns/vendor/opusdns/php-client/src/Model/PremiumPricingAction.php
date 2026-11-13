@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class PremiumPricingAction implements ApiModel
+final class PremiumPricingAction implements ApiModel
 {
     /**
      * @param string $action The action this price applies to (e.g., create, renew, transfer)
@@ -20,9 +20,9 @@ final readonly class PremiumPricingAction implements ApiModel
      * @param string $price Price for the action
      */
     public function __construct(
-        public string $action,
-        public string $currency,
-        public string $price,
+        public readonly string $action,
+        public readonly string $currency,
+        public readonly string $price,
     ) {
     }
 

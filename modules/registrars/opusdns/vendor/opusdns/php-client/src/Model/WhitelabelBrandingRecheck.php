@@ -18,7 +18,7 @@ use OpusDNS\Client\Serializer;
  * only; server rejects once an authentication client exists). Plus tier only - a base whitelabel is
  * re-labelled through PATCH instead.
  */
-final readonly class WhitelabelBrandingRecheck implements ApiModel
+final class WhitelabelBrandingRecheck implements ApiModel
 {
     /**
      * @param string|null $authSubdomain Subdomain the login is served on; required together with hostname
@@ -30,10 +30,10 @@ final readonly class WhitelabelBrandingRecheck implements ApiModel
      * @param string|null $hostname New domain to run the whitelabel under; omit to re-run against the stored hosts
      */
     public function __construct(
-        public ?string $authSubdomain = null,
-        public ?bool $createZone = null,
-        public ?string $dashboardSubdomain = null,
-        public ?string $hostname = null,
+        public readonly ?string $authSubdomain = null,
+        public readonly ?bool $createZone = null,
+        public readonly ?string $dashboardSubdomain = null,
+        public readonly ?string $hostname = null,
     ) {
     }
 

@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class RgpOperations implements ApiModel
+final class RgpOperations implements ApiModel
 {
     /**
      * @param bool $report Whether registry supports RGP restore report
      * @param bool $request Whether registry supports RGP restore request
      */
     public function __construct(
-        public bool $report = true,
-        public bool $request = true,
+        public readonly bool $report = true,
+        public readonly bool $request = true,
     ) {
     }
 

@@ -12,12 +12,12 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainSearchSuggestionPriceData implements ApiModel
+final class DomainSearchSuggestionPriceData implements ApiModel
 {
     public function __construct(
-        public string $currency,
-        public DomainPeriod $period,
-        public ?string $amount = null,
+        public readonly string $currency,
+        public readonly DomainPeriod $period,
+        public readonly ?string $amount = null,
     ) {
     }
 

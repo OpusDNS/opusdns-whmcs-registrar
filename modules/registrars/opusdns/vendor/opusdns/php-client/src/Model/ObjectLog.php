@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\ExecutingEntity;
 use OpusDNS\Client\Enum\ObjectEventType;
 use OpusDNS\Client\Serializer;
 
-final readonly class ObjectLog implements ApiModel
+final class ObjectLog implements ApiModel
 {
     /**
      * @param ObjectEventType|string $action Action performed
@@ -34,16 +34,16 @@ final readonly class ObjectLog implements ApiModel
      * @param string|null $serverRequestId Server request ID
      */
     public function __construct(
-        public ObjectEventType|string $action,
-        public \DateTimeImmutable $createdOn,
-        public string $objectId,
-        public string $objectLogId,
-        public string $objectType,
-        public ?array $changes = null,
-        public ?array $details = null,
-        public ?string $performedById = null,
-        public ExecutingEntity|string|null $performedByType = null,
-        public ?string $serverRequestId = null,
+        public readonly ObjectEventType|string $action,
+        public readonly \DateTimeImmutable $createdOn,
+        public readonly string $objectId,
+        public readonly string $objectLogId,
+        public readonly string $objectType,
+        public readonly ?array $changes = null,
+        public readonly ?array $details = null,
+        public readonly ?string $performedById = null,
+        public readonly ExecutingEntity|string|null $performedByType = null,
+        public readonly ?string $serverRequestId = null,
     ) {
     }
 

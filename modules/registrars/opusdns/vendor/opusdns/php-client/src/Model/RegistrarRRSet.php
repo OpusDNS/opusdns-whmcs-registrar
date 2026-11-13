@@ -12,17 +12,21 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class RegistrarRRSet implements ApiModel
+/**
+ * A DNS record set from an external registrar or `GET /v1/dns`.
+ *
+ * Shaped like `DnsRrsetResponse`: MX and SRV values start with their priority.
+ */
+final class RegistrarRRSet implements ApiModel
 {
     /**
-     * @param list<RegistrarRecord> $record
+     * @param list<RegistrarRecord> $records
      */
     public function __construct(
-        public string $name,
-        public int $ttl,
-        public string $type,
-        public ?int $priority = null,
-        public array $record = [],
+        public readonly string $name,
+        public readonly int $ttl,
+        public readonly string $type,
+        public readonly array $records = [],
     ) {
     }
 
@@ -35,8 +39,7 @@ final readonly class RegistrarRRSet implements ApiModel
             name: $data['name'],
             ttl: $data['ttl'],
             type: $data['type'],
-            priority: $data['priority'] ?? null,
-            record: isset($data['record']) ? array_map(static fn (array $item): RegistrarRecord => RegistrarRecord::fromArray($item), $data['record']) : [],
+            records: isset($data['records']) ? array_map(static fn (array $item): RegistrarRecord => RegistrarRecord::fromArray($item), $data['records']) : [],
         );
     }
 
@@ -49,8 +52,7 @@ final readonly class RegistrarRRSet implements ApiModel
             'name' => $this->name,
             'ttl' => $this->ttl,
             'type' => $this->type,
-            'priority' => $this->priority,
-            'record' => $this->record,
+            'records' => $this->records,
         ]);
     }
 

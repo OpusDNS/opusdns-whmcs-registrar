@@ -13,11 +13,11 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\PatchOp;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsRrsetPatchOp implements ApiModel
+final class DnsRrsetPatchOp implements ApiModel
 {
     public function __construct(
-        public PatchOp|string $op,
-        public DnsRrsetPatch $rrset,
+        public readonly PatchOp|string $op,
+        public readonly DnsRrsetPatch $rrset,
     ) {
     }
 

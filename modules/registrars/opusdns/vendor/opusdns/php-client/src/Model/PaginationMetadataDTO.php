@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class PaginationMetadataDTO implements ApiModel
+final class PaginationMetadataDTO implements ApiModel
 {
     /**
      * @param int $currentPage Current page number
@@ -23,12 +23,12 @@ final readonly class PaginationMetadataDTO implements ApiModel
      * @param int $totalPages Total number of pages
      */
     public function __construct(
-        public int $currentPage,
-        public bool $hasNextPage,
-        public bool $hasPreviousPage,
-        public int $pageSize,
-        public int $totalItems,
-        public int $totalPages,
+        public readonly int $currentPage,
+        public readonly bool $hasNextPage,
+        public readonly bool $hasPreviousPage,
+        public readonly int $pageSize,
+        public readonly int $totalItems,
+        public readonly int $totalPages,
     ) {
     }
 

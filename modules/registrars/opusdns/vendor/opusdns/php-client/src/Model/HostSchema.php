@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\HostStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class HostSchema implements ApiModel
+final class HostSchema implements ApiModel
 {
     /**
      * @param string $hostname Hostname of the host object
@@ -25,13 +25,13 @@ final readonly class HostSchema implements ApiModel
      * @param \DateTimeImmutable|null $updatedOn The date/time the entry was last updated on
      */
     public function __construct(
-        public string $hostname,
-        public ?\DateTimeImmutable $createdOn = null,
-        public ?string $domainId = null,
-        public ?string $hostId = null,
-        public ?string $registryAccountId = null,
-        public HostStatus|string $status = HostStatus::INACTIVE,
-        public ?\DateTimeImmutable $updatedOn = null,
+        public readonly string $hostname,
+        public readonly ?\DateTimeImmutable $createdOn = null,
+        public readonly ?string $domainId = null,
+        public readonly ?string $hostId = null,
+        public readonly ?string $registryAccountId = null,
+        public readonly HostStatus|string $status = HostStatus::INACTIVE,
+        public readonly ?\DateTimeImmutable $updatedOn = null,
     ) {
     }
 

@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class SldLength implements ApiModel
+final class SldLength implements ApiModel
 {
     /**
      * @param int $max Maximum length of a domain name
      * @param int $min Minimum length of a domain name
      */
     public function __construct(
-        public int $max,
-        public int $min,
+        public readonly int $max,
+        public readonly int $min,
     ) {
     }
 

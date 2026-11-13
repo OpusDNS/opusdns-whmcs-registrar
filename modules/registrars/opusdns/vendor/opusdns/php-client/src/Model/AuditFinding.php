@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\AuditRuleId;
 use OpusDNS\Client\Serializer;
 
-final readonly class AuditFinding implements ApiModel
+final class AuditFinding implements ApiModel
 {
     /**
      * @param AuditRuleId|string $rule `AuditRule.id` of the rule that found it.
@@ -24,14 +24,14 @@ final readonly class AuditFinding implements ApiModel
      * @param string $severity critical | warning | info
      */
     public function __construct(
-        public AuditRuleId|string $rule,
-        public ?string $downgradedFrom = null,
-        public string $entity = '',
-        public ?string $evidence = null,
-        public bool $managed = false,
-        public string $name = '',
-        public ?string $registrar = null,
-        public string $severity = '',
+        public readonly AuditRuleId|string $rule,
+        public readonly ?string $downgradedFrom = null,
+        public readonly string $entity = '',
+        public readonly ?string $evidence = null,
+        public readonly bool $managed = false,
+        public readonly string $name = '',
+        public readonly ?string $registrar = null,
+        public readonly string $severity = '',
     ) {
     }
 

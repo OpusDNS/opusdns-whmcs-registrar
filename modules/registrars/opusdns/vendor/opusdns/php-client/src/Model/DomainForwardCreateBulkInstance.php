@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainForwardCreateBulkInstance implements ApiModel
+final class DomainForwardCreateBulkInstance implements ApiModel
 {
     /**
      * @param string $hostname Hostname to create forward for
@@ -21,10 +21,10 @@ final readonly class DomainForwardCreateBulkInstance implements ApiModel
      * @param DomainForwardProtocolSetRequest|null $https Override HTTPS redirects
      */
     public function __construct(
-        public string $hostname,
-        public ?bool $enabled = null,
-        public ?DomainForwardProtocolSetRequest $http = null,
-        public ?DomainForwardProtocolSetRequest $https = null,
+        public readonly string $hostname,
+        public readonly ?bool $enabled = null,
+        public readonly ?DomainForwardProtocolSetRequest $http = null,
+        public readonly ?DomainForwardProtocolSetRequest $https = null,
     ) {
     }
 

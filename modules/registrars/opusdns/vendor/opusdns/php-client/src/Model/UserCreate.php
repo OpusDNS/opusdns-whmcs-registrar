@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class UserCreate implements ApiModel
+final class UserCreate implements ApiModel
 {
     /**
      * @param string $email The user's email address
@@ -24,14 +24,14 @@ final readonly class UserCreate implements ApiModel
      * @param list<UserAttributeBase>|null $userAttributes User attributes
      */
     public function __construct(
-        public string $email,
-        public string $firstName,
-        public string $lastName,
-        public string $locale,
-        public string $username,
-        public ?string $password = null,
-        public ?string $phone = null,
-        public ?array $userAttributes = null,
+        public readonly string $email,
+        public readonly string $firstName,
+        public readonly string $lastName,
+        public readonly string $locale,
+        public readonly string $username,
+        public readonly ?string $password = null,
+        public readonly ?string $phone = null,
+        public readonly ?array $userAttributes = null,
     ) {
     }
 

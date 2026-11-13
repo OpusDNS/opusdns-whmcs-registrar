@@ -36,6 +36,7 @@ use OpusDNS\Client\Model\OrganizationAttributeUpdate;
 use OpusDNS\Client\Model\OrganizationCreate;
 use OpusDNS\Client\Model\OrganizationUpdate;
 use OpusDNS\Client\Model\OrganizationWithBillingData;
+use OpusDNS\Client\Model\OwnershipTransferRequest;
 use OpusDNS\Client\Model\PaginationBillingTransactionResponse;
 use OpusDNS\Client\Model\PaginationInvoiceResponse;
 use OpusDNS\Client\Model\PaginationOrganization;
@@ -709,6 +710,32 @@ final class OrganizationService
         );
 
         return $this->client->hydrate($response, static fn (array $data): PaginationInvoiceResponse => PaginationInvoiceResponse::fromArray($data));
+    }
+
+    /**
+     * Transfer ownership of the organization
+     *
+     * Makes another active user of the organization its owner, at once. You become an admin, or get your
+     * identity provider's default role when it decides your role. Only the owner, on a top-level
+     * organization.
+     *
+     * @param OwnershipTransferRequest|array<string, mixed> $body
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
+     */
+    public function transferOwnership(
+        string $organizationId,
+        OwnershipTransferRequest|array $body,
+        ?string $xDatetimeFormat = null,
+    ): void {
+        $this->client->request(
+            'POST',
+            Endpoint::ORGANIZATIONS_BY_ORGANIZATION_ID_OWNERSHIP_TRANSFER,
+            path: ['organization_id' => $organizationId],
+            body: $body,
+            headers: ['X-Datetime-Format' => $xDatetimeFormat],
+        );
     }
 
     /**

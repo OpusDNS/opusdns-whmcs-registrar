@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class EmailForwardCreateBulkInstance implements ApiModel
+final class EmailForwardCreateBulkInstance implements ApiModel
 {
     /**
      * @param string $hostname Hostname to create email forwarding for
@@ -20,9 +20,9 @@ final readonly class EmailForwardCreateBulkInstance implements ApiModel
      * @param bool|null $enabled Override enabled setting for this hostname
      */
     public function __construct(
-        public string $hostname,
-        public ?array $aliases = null,
-        public ?bool $enabled = null,
+        public readonly string $hostname,
+        public readonly ?array $aliases = null,
+        public readonly ?bool $enabled = null,
     ) {
     }
 

@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneVanitySetUpdateRes implements ApiModel
+final class DnsZoneVanitySetUpdateRes implements ApiModel
 {
     /**
      * @param DnsZoneDTO $zone The zone after restamping
      */
     public function __construct(
-        public DnsZoneDTO $zone,
+        public readonly DnsZoneDTO $zone,
     ) {
     }
 

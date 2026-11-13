@@ -12,11 +12,11 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class AggregationsContextCreate implements ApiModel
+final class AggregationsContextCreate implements ApiModel
 {
     public function __construct(
-        public AggregationsContextPayload $payload,
-        public string $kind = 'aggregations',
+        public readonly AggregationsContextPayload $payload,
+        public readonly string $kind = 'aggregations',
     ) {
     }
 

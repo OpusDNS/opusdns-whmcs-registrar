@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class SignupCreate implements ApiModel
+final class SignupCreate implements ApiModel
 {
     /**
      * @param SignupOrganizationCreate $organization Organization signup.
@@ -21,10 +21,10 @@ final readonly class SignupCreate implements ApiModel
      * @param TermsOfServiceAccept|null $termsOfService Terms of service acceptance (legacy).
      */
     public function __construct(
-        public SignupOrganizationCreate $organization,
-        public UserCreate $user,
-        public ?array $agreements = null,
-        public ?TermsOfServiceAccept $termsOfService = null,
+        public readonly SignupOrganizationCreate $organization,
+        public readonly UserCreate $user,
+        public readonly ?array $agreements = null,
+        public readonly ?TermsOfServiceAccept $termsOfService = null,
     ) {
     }
 

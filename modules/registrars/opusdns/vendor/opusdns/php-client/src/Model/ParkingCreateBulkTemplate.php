@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ParkingCreateBulkTemplate implements ApiModel
+final class ParkingCreateBulkTemplate implements ApiModel
 {
     /**
      * @param bool $enabled Whether to enable parking immediately after creation
      */
     public function __construct(
-        public bool $enabled = false,
+        public readonly bool $enabled = false,
     ) {
     }
 

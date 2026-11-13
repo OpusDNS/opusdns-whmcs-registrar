@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class EmailForwardMetrics implements ApiModel
+final class EmailForwardMetrics implements ApiModel
 {
     /**
      * @param array<string, int> $byStatus Log counts grouped by status (QUEUED, DELIVERED, REFUSED, SOFT-BOUNCE,
@@ -24,12 +24,12 @@ final readonly class EmailForwardMetrics implements ApiModel
      * @param list<EmailForwardAliasMetrics>|null $byAlias Metrics breakdown per alias
      */
     public function __construct(
-        public array $byStatus,
-        public EmailForwardMetricsFilters $filters,
-        public EmailForwardMetricsRates $rates,
-        public int $totalLogs,
-        public ?int $aliasCount = null,
-        public ?array $byAlias = null,
+        public readonly array $byStatus,
+        public readonly EmailForwardMetricsFilters $filters,
+        public readonly EmailForwardMetricsRates $rates,
+        public readonly int $totalLogs,
+        public readonly ?int $aliasCount = null,
+        public readonly ?array $byAlias = null,
     ) {
     }
 

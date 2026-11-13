@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class BodyUploadWhitelabelAssetV1WhitelabelBrandingAssetsPost implements ApiModel
+final class BodyUploadWhitelabelAssetV1WhitelabelBrandingAssetsPost implements ApiModel
 {
     /**
      * @param string $file Asset file (image/font)
      */
     public function __construct(
-        public string $file,
+        public readonly string $file,
     ) {
     }
 

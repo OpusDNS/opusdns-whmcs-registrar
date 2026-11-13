@@ -17,5 +17,6 @@ enum EventObjectType: string
     case ACCOUNT = 'ACCOUNT';
     case VANITY_NS_SET = 'VANITY_NS_SET';
     case RAW = 'RAW';
+    case DRAINED = 'DRAINED';
     case UNKNOWN = 'UNKNOWN';
 }

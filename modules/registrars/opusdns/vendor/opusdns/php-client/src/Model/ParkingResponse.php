@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\ComplianceStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class ParkingResponse implements ApiModel
+final class ParkingResponse implements ApiModel
 {
     /**
      * @param \DateTimeImmutable $createdOn When the parking entry was created
@@ -27,15 +27,15 @@ final readonly class ParkingResponse implements ApiModel
      * @param string|null $note Additional notes about the parking ad
      */
     public function __construct(
-        public \DateTimeImmutable $createdOn,
-        public string $domain,
-        public bool $enabled,
-        public string $parkingId,
-        public \DateTimeImmutable $updatedOn,
-        public ComplianceStatus|string|null $complianceStatus = null,
-        public ?string $contentLanguage = null,
-        public ?string $contentUrl = null,
-        public ?string $note = null,
+        public readonly \DateTimeImmutable $createdOn,
+        public readonly string $domain,
+        public readonly bool $enabled,
+        public readonly string $parkingId,
+        public readonly \DateTimeImmutable $updatedOn,
+        public readonly ComplianceStatus|string|null $complianceStatus = null,
+        public readonly ?string $contentLanguage = null,
+        public readonly ?string $contentUrl = null,
+        public readonly ?string $note = null,
     ) {
     }
 

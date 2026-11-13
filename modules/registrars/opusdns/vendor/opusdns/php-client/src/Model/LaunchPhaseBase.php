@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\AllocationMethodType;
 use OpusDNS\Client\Enum\LaunchPhaseType;
 use OpusDNS\Client\Serializer;
 
-final readonly class LaunchPhaseBase implements ApiModel
+final class LaunchPhaseBase implements ApiModel
 {
     /**
      * @param bool $supported Whether this phase is supported
@@ -25,12 +25,12 @@ final readonly class LaunchPhaseBase implements ApiModel
      * @param \DateTimeImmutable|null $startDate Start date of the phase
      */
     public function __construct(
-        public bool $supported,
-        public LaunchPhaseType|string $type,
-        public AllocationMethodType|string|null $allocation = null,
-        public ?\DateTimeImmutable $endDate = null,
-        public ?bool $smdRequired = null,
-        public ?\DateTimeImmutable $startDate = null,
+        public readonly bool $supported,
+        public readonly LaunchPhaseType|string $type,
+        public readonly AllocationMethodType|string|null $allocation = null,
+        public readonly ?\DateTimeImmutable $endDate = null,
+        public readonly ?bool $smdRequired = null,
+        public readonly ?\DateTimeImmutable $startDate = null,
     ) {
     }
 

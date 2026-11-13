@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class RegistryLockBase implements ApiModel
+final class RegistryLockBase implements ApiModel
 {
     /**
      * @param bool $supported Whether the registry provides a Registry Lock feature
@@ -21,10 +21,10 @@ final readonly class RegistryLockBase implements ApiModel
      * @param bool|null $requiresManualRequest Whether a manual request is required
      */
     public function __construct(
-        public bool $supported,
-        public ?array $prevents = null,
-        public ?string $removalProcess = null,
-        public ?bool $requiresManualRequest = null,
+        public readonly bool $supported,
+        public readonly ?array $prevents = null,
+        public readonly ?string $removalProcess = null,
+        public readonly ?bool $requiresManualRequest = null,
     ) {
     }
 

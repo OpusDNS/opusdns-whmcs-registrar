@@ -19,7 +19,7 @@ use OpusDNS\Client\Serializer;
  * upgrade bills nothing now. Downgrades (plus -> base) are not supported - cancel + rebook instead -
  * so this body only ever moves to plus (no tier field, no period).
  */
-final readonly class WhitelabelUpgradeToPlus implements ApiModel
+final class WhitelabelUpgradeToPlus implements ApiModel
 {
     /**
      * @param string $authSubdomain Subdomain the login is served on (e.g. auth -> auth.customer.com)
@@ -33,10 +33,10 @@ final readonly class WhitelabelUpgradeToPlus implements ApiModel
      *     omit for apex
      */
     public function __construct(
-        public string $authSubdomain,
-        public string $hostname,
-        public bool $createZone = false,
-        public ?string $dashboardSubdomain = null,
+        public readonly string $authSubdomain,
+        public readonly string $hostname,
+        public readonly bool $createZone = false,
+        public readonly ?string $dashboardSubdomain = null,
     ) {
     }
 

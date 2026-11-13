@@ -12,14 +12,14 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class AiInferenceUsageBucket implements ApiModel
+final class AiInferenceUsageBucket implements ApiModel
 {
     /**
      * @param list<AiInferenceUsageGroup> $groups
      */
     public function __construct(
-        public array $groups,
-        public \DateTimeImmutable $periodStart,
+        public readonly array $groups,
+        public readonly \DateTimeImmutable $periodStart,
     ) {
     }
 

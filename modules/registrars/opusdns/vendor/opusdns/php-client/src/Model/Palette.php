@@ -12,45 +12,45 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class Palette implements ApiModel
+final class Palette implements ApiModel
 {
     /**
      * @param list<string>|null $chartColors
      * @param list<string>|null $tagColors
      */
     public function __construct(
-        public ?string $accent = null,
-        public ?string $accentForeground = null,
-        public ?string $background = null,
-        public ?string $body = null,
-        public ?string $bodyForeground = null,
-        public ?string $border = null,
-        public ?string $card = null,
-        public ?string $cardForeground = null,
-        public ?array $chartColors = null,
-        public ?string $danger = null,
-        public ?string $foreground = null,
-        public ?string $info = null,
-        public ?string $input = null,
-        public ?string $link = null,
-        public ?string $muted = null,
-        public ?string $mutedForeground = null,
-        public ?string $primary = null,
-        public ?string $primaryForeground = null,
-        public ?string $secondary = null,
-        public ?string $secondaryForeground = null,
-        public ?string $sidebar = null,
-        public ?string $sidebarAccent = null,
-        public ?string $sidebarAccentForeground = null,
-        public ?string $sidebarBorder = null,
-        public ?string $sidebarForeground = null,
-        public ?string $success = null,
-        public ?string $table = null,
-        public ?string $tableHeader = null,
-        public ?string $tableRow = null,
-        public ?string $tableRowInteractive = null,
-        public ?array $tagColors = null,
-        public ?string $warning = null,
+        public readonly ?string $accent = null,
+        public readonly ?string $accentForeground = null,
+        public readonly ?string $background = null,
+        public readonly ?string $body = null,
+        public readonly ?string $bodyForeground = null,
+        public readonly ?string $border = null,
+        public readonly ?string $card = null,
+        public readonly ?string $cardForeground = null,
+        public readonly ?array $chartColors = null,
+        public readonly ?string $danger = null,
+        public readonly ?string $foreground = null,
+        public readonly ?string $info = null,
+        public readonly ?string $input = null,
+        public readonly ?string $link = null,
+        public readonly ?string $muted = null,
+        public readonly ?string $mutedForeground = null,
+        public readonly ?string $primary = null,
+        public readonly ?string $primaryForeground = null,
+        public readonly ?string $secondary = null,
+        public readonly ?string $secondaryForeground = null,
+        public readonly ?string $sidebar = null,
+        public readonly ?string $sidebarAccent = null,
+        public readonly ?string $sidebarAccentForeground = null,
+        public readonly ?string $sidebarBorder = null,
+        public readonly ?string $sidebarForeground = null,
+        public readonly ?string $success = null,
+        public readonly ?string $table = null,
+        public readonly ?string $tableHeader = null,
+        public readonly ?string $tableRow = null,
+        public readonly ?string $tableRowInteractive = null,
+        public readonly ?array $tagColors = null,
+        public readonly ?string $warning = null,
     ) {
     }
 

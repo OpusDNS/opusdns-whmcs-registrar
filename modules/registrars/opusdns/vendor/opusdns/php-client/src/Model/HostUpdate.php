@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class HostUpdate implements ApiModel
+final class HostUpdate implements ApiModel
 {
     /**
      * @param list<string> $ipAddresses List of IP addresses for the host object
      */
     public function __construct(
-        public array $ipAddresses,
+        public readonly array $ipAddresses,
     ) {
     }
 

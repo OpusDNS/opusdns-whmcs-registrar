@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneUpdateBulkPayload implements ApiModel
+final class DnsZoneUpdateBulkPayload implements ApiModel
 {
     /**
      * @param list<DnsZoneUpdateBulkInstance> $instances List of zones to update (1-1000)
      * @param DnsZoneUpdateBulkTemplate $template Shared RRsets for all zones
      */
     public function __construct(
-        public array $instances,
-        public DnsZoneUpdateBulkTemplate $template,
+        public readonly array $instances,
+        public readonly DnsZoneUpdateBulkTemplate $template,
     ) {
     }
 

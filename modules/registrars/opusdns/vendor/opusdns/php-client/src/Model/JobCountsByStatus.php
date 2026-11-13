@@ -12,17 +12,17 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class JobCountsByStatus implements ApiModel
+final class JobCountsByStatus implements ApiModel
 {
     public function __construct(
-        public int $blocked = 0,
-        public int $canceled = 0,
-        public int $deadLetter = 0,
-        public int $failed = 0,
-        public int $paused = 0,
-        public int $queued = 0,
-        public int $running = 0,
-        public int $succeeded = 0,
+        public readonly int $blocked = 0,
+        public readonly int $canceled = 0,
+        public readonly int $deadLetter = 0,
+        public readonly int $failed = 0,
+        public readonly int $paused = 0,
+        public readonly int $queued = 0,
+        public readonly int $running = 0,
+        public readonly int $succeeded = 0,
     ) {
     }
 

@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainCheckResponse implements ApiModel
+final class DomainCheckResponse implements ApiModel
 {
     /**
      * @param list<CommonModelsDomainDomainDomainAvailabilityResponse> $results
      */
     public function __construct(
-        public array $results,
+        public readonly array $results,
     ) {
     }
 

@@ -15,13 +15,13 @@ use OpusDNS\Client\Serializer;
 /**
  * What you say when applying for a product.
  */
-final readonly class WaitlistApplyRequest implements ApiModel
+final class WaitlistApplyRequest implements ApiModel
 {
     /**
      * @param string|null $note What you would use the product for
      */
     public function __construct(
-        public ?string $note = null,
+        public readonly ?string $note = null,
     ) {
     }
 

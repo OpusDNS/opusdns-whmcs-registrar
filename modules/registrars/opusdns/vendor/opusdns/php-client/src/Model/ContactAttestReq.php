@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactAttestReq implements ApiModel
+final class ContactAttestReq implements ApiModel
 {
     /**
      * @param list<ContactAttestVerificationReq> $attestations
      */
     public function __construct(
-        public array $attestations,
+        public readonly array $attestations,
     ) {
     }
 

@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DnssecStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneResponse implements ApiModel
+final class DnsZoneResponse implements ApiModel
 {
     /**
      * @param string $dnsZoneId The unique identifier of the zone TypeID prefix: zone.
@@ -26,15 +26,15 @@ final readonly class DnsZoneResponse implements ApiModel
      *     zone uses the system default nameservers.
      */
     public function __construct(
-        public string $dnsZoneId,
-        public string $name,
-        public ?\DateTimeImmutable $createdOn = null,
-        public DnssecStatus|string $dnssecStatus = DnssecStatus::DISABLED,
-        public ?DomainNameParts $domainParts = null,
-        public ?array $rrsets = null,
-        public ?array $tags = null,
-        public ?\DateTimeImmutable $updatedOn = null,
-        public ?string $vanityNameserverSetId = null,
+        public readonly string $dnsZoneId,
+        public readonly string $name,
+        public readonly ?\DateTimeImmutable $createdOn = null,
+        public readonly DnssecStatus|string $dnssecStatus = DnssecStatus::DISABLED,
+        public readonly ?DomainNameParts $domainParts = null,
+        public readonly ?array $rrsets = null,
+        public readonly ?array $tags = null,
+        public readonly ?\DateTimeImmutable $updatedOn = null,
+        public readonly ?string $vanityNameserverSetId = null,
     ) {
     }
 

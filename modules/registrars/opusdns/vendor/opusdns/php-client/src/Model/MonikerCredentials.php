@@ -12,18 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-/**
- * ContextPayload[RegistrarZone]
- */
-final readonly class ContextPayloadRegistrarZone implements ApiModel
+final class MonikerCredentials implements ApiModel
 {
     /**
-     * @param list<RegistrarZone> $results
+     * @param string $apiKey API key at Moniker
+     * @param string $password Password at Moniker
      */
     public function __construct(
-        public array $results,
-        public ?ContextMeta $meta = null,
-        public ?PaginationMetadata $pagination = null,
+        public readonly string $apiKey,
+        public readonly string $password,
     ) {
     }
 
@@ -33,9 +30,8 @@ final readonly class ContextPayloadRegistrarZone implements ApiModel
     public static function fromArray(array $data): static
     {
         return new self(
-            results: array_map(static fn (array $item): RegistrarZone => RegistrarZone::fromArray($item), $data['results']),
-            meta: isset($data['meta']) ? ContextMeta::fromArray($data['meta']) : null,
-            pagination: isset($data['pagination']) ? PaginationMetadata::fromArray($data['pagination']) : null,
+            apiKey: $data['api_key'],
+            password: $data['password'],
         );
     }
 
@@ -45,9 +41,8 @@ final readonly class ContextPayloadRegistrarZone implements ApiModel
     public function toArray(): array
     {
         return Serializer::normalize([
-            'results' => $this->results,
-            'meta' => $this->meta,
-            'pagination' => $this->pagination,
+            'api_key' => $this->apiKey,
+            'password' => $this->password,
         ]);
     }
 

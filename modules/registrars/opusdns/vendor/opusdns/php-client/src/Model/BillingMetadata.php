@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class BillingMetadata implements ApiModel
+final class BillingMetadata implements ApiModel
 {
     /**
      * @param string|null $billingModel Payment terms for the organization.
@@ -20,9 +20,9 @@ final readonly class BillingMetadata implements ApiModel
      * @param int|null $customerNumber Customer account number for the organization.
      */
     public function __construct(
-        public ?string $billingModel = null,
-        public ?int $creditLimit = null,
-        public ?int $customerNumber = null,
+        public readonly ?string $billingModel = null,
+        public readonly ?int $creditLimit = null,
+        public readonly ?int $customerNumber = null,
     ) {
     }
 

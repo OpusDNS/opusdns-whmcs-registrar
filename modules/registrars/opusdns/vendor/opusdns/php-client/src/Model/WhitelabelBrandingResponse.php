@@ -19,7 +19,7 @@ use OpusDNS\Client\Serializer;
 /**
  * Public read shape for an organization's whitelabel branding config.
  */
-final readonly class WhitelabelBrandingResponse implements ApiModel
+final class WhitelabelBrandingResponse implements ApiModel
 {
     /**
      * @param string $authHostname Auth/login hostname served by the authentication system (e.g. auth.customer.com)
@@ -47,24 +47,24 @@ final readonly class WhitelabelBrandingResponse implements ApiModel
      *     subscription (provisioning or terminated)
      */
     public function __construct(
-        public string $authHostname,
-        public string $baseLabel,
-        public \DateTimeImmutable $createdOn,
-        public string $hostname,
-        public WhitelabelOnboardingStatus|string $onboardingStatus,
-        public string $organizationId,
-        public WhitelabelBrandingTier|string $tier,
-        public \DateTimeImmutable $updatedOn,
-        public string $verificationDomain,
-        public string $whitelabelBrandingId,
-        public ?string $baseAuthHostname = null,
-        public ?string $baseHostname = null,
-        public bool $enabled = true,
-        public WhitelabelOnboardingFailureCode|string|null $failureCode = null,
-        public ?string $failureDetail = null,
-        public WhitelabelOnboardingFailureType|string|null $failureType = null,
-        public ?string $keycloakClientId = null,
-        public ?WhitelabelSubscriptionInfo $subscription = null,
+        public readonly string $authHostname,
+        public readonly string $baseLabel,
+        public readonly \DateTimeImmutable $createdOn,
+        public readonly string $hostname,
+        public readonly WhitelabelOnboardingStatus|string $onboardingStatus,
+        public readonly string $organizationId,
+        public readonly WhitelabelBrandingTier|string $tier,
+        public readonly \DateTimeImmutable $updatedOn,
+        public readonly string $verificationDomain,
+        public readonly string $whitelabelBrandingId,
+        public readonly ?string $baseAuthHostname = null,
+        public readonly ?string $baseHostname = null,
+        public readonly bool $enabled = true,
+        public readonly WhitelabelOnboardingFailureCode|string|null $failureCode = null,
+        public readonly ?string $failureDetail = null,
+        public readonly WhitelabelOnboardingFailureType|string|null $failureType = null,
+        public readonly ?string $keycloakClientId = null,
+        public readonly ?WhitelabelSubscriptionInfo $subscription = null,
     ) {
     }
 

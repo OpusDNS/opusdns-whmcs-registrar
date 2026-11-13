@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainWithdrawRequest implements ApiModel
+final class DomainWithdrawRequest implements ApiModel
 {
     /**
      * @param bool $zoneDelete Informs the registry whether the zone for that domain has been already deleted - as
@@ -20,7 +20,7 @@ final readonly class DomainWithdrawRequest implements ApiModel
      *     specified domain"
      */
     public function __construct(
-        public bool $zoneDelete,
+        public readonly bool $zoneDelete,
     ) {
     }
 

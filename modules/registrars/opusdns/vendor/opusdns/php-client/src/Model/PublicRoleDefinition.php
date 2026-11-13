@@ -15,7 +15,7 @@ use OpusDNS\Client\Serializer;
 /**
  * A role as listed/read through the public API — built-in or custom.
  */
-final readonly class PublicRoleDefinition implements ApiModel
+final class PublicRoleDefinition implements ApiModel
 {
     /**
      * @param bool $builtIn Built-in roles are immutable; custom roles are organization-owned.
@@ -28,13 +28,13 @@ final readonly class PublicRoleDefinition implements ApiModel
      * @param \DateTimeImmutable|null $updatedOn Last update time (custom roles only).
      */
     public function __construct(
-        public bool $builtIn,
-        public string $label,
-        public string $name,
-        public array $permissions,
-        public ?\DateTimeImmutable $createdOn = null,
-        public ?string $description = null,
-        public ?\DateTimeImmutable $updatedOn = null,
+        public readonly bool $builtIn,
+        public readonly string $label,
+        public readonly string $name,
+        public readonly array $permissions,
+        public readonly ?\DateTimeImmutable $createdOn = null,
+        public readonly ?string $description = null,
+        public readonly ?\DateTimeImmutable $updatedOn = null,
     ) {
     }
 

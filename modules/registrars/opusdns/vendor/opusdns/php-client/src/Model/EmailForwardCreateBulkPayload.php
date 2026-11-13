@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class EmailForwardCreateBulkPayload implements ApiModel
+final class EmailForwardCreateBulkPayload implements ApiModel
 {
     /**
      * @param list<EmailForwardCreateBulkInstance> $instances List of email forwards to create (1-1000)
      * @param EmailForwardCreateBulkTemplate $template Shared settings for all email forwards
      */
     public function __construct(
-        public array $instances,
-        public EmailForwardCreateBulkTemplate $template,
+        public readonly array $instances,
+        public readonly EmailForwardCreateBulkTemplate $template,
     ) {
     }
 

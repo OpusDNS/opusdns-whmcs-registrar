@@ -34,6 +34,7 @@ use OpusDNS\Client\Model\ApiDomainTldSpecificWalesModelsRequestAuthcodeResponse;
 use OpusDNS\Client\Model\ClaimsNoticesRequest;
 use OpusDNS\Client\Model\ClaimsNoticesResponse;
 use OpusDNS\Client\Model\DomainAuthCodeResponse;
+use OpusDNS\Client\Model\DomainAuthinfo2Response;
 use OpusDNS\Client\Model\DomainCheckResponse;
 use OpusDNS\Client\Model\DomainCreate;
 use OpusDNS\Client\Model\DomainDnssecDataCreate;
@@ -94,8 +95,10 @@ final class DomainService
      *     supplied; to filter on whether an object has any user tag, use has_tags. Server default: match_any.
      * @param bool|null $hasTags true returns only objects that carry at least one user tag, false only objects that
      *     carry none. Status tags are not counted. Combines with tag_ids and the other filters.
-     * @param string|null $name Filter by exact domain name
-     * @param string|null $search Search domains by name (contains) or domain ID (exact match)
+     * @param string|null $name Filter by exact domain name, in Unicode or punycode: either stored form matches. Only
+     *     whole labels match across forms.
+     * @param string|null $search Search domains by name (contains) or domain ID (exact match). A name matches in
+     *     Unicode or punycode, either stored form; only whole labels match across forms.
      * @param list<string>|null $tld Filter by top-level domain (e.g., 'com', 'org'). Can be specified multiple times
      *     (union of all provided values).
      * @param string|null $sld Filter by second-level domain
@@ -323,7 +326,7 @@ final class DomainService
      * bucket with null counts is partial too.
      *
      * These counts are read from the domain event log, which begins later than the domains themselves;
-     * `data_available_from` reports the oldest event it holds.
+     * `data_available_from` reports the oldest event it holds and `data_available_to` when it was read.
      *
      * Required permissions: domains:read
      *
@@ -506,6 +509,27 @@ final class DomainService
         );
 
         return $this->client->hydrate($response, static fn (array $data): ApiDomainTldSpecificCzModelsRequestAuthcodeResponse => ApiDomainTldSpecificCzModelsRequestAuthcodeResponse::fromArray($data));
+    }
+
+    /**
+     * Create an AuthInfo2 for a DENIC domain
+     *
+     * Required permissions: domains:manage
+     *
+     * @param string|null $xDatetimeFormat Deprecated: has no effect and will be removed from this specification on
+     *     2026-11-12; the API keeps ignoring it if sent. Response datetimes are always normalized to UTC and
+     *     serialized as RFC 3339 with a `Z` suffix.
+     */
+    public function createAuthinfo2(string $domainReference, ?string $xDatetimeFormat = null): DomainAuthinfo2Response
+    {
+        $response = $this->client->request(
+            'POST',
+            Endpoint::DOMAINS_TLD_SPECIFIC_DE_BY_DOMAIN_REFERENCE_AUTHINFO2,
+            path: ['domain_reference' => $domainReference],
+            headers: ['X-Datetime-Format' => $xDatetimeFormat],
+        );
+
+        return $this->client->hydrate($response, static fn (array $data): DomainAuthinfo2Response => DomainAuthinfo2Response::fromArray($data));
     }
 
     /**

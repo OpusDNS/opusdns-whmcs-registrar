@@ -17,7 +17,7 @@ use OpusDNS\Client\Enum\InvoiceResponseStatus;
 use OpusDNS\Client\Enum\InvoiceResponseType;
 use OpusDNS\Client\Serializer;
 
-final readonly class InvoiceResponse implements ApiModel
+final class InvoiceResponse implements ApiModel
 {
     /**
      * @param string $amount Total invoice amount
@@ -36,20 +36,20 @@ final readonly class InvoiceResponse implements ApiModel
      * @param string|null $fileUrl URL to invoice PDF file
      */
     public function __construct(
-        public string $amount,
-        public Currency|string $currency,
-        public InvoiceDocumentType|string $documentType,
-        public string $externalId,
-        public string $feesAmount,
-        public InvoiceResponseType|string $invoiceType,
-        public \DateTimeImmutable $issuingDate,
-        public string $number,
-        public \DateTimeImmutable $paymentDueDate,
-        public bool $paymentOverdue,
-        public InvoiceResponsePaymentStatus|string $paymentStatus,
-        public InvoiceResponseStatus|string $status,
-        public string $taxesAmount,
-        public ?string $fileUrl = null,
+        public readonly string $amount,
+        public readonly Currency|string $currency,
+        public readonly InvoiceDocumentType|string $documentType,
+        public readonly string $externalId,
+        public readonly string $feesAmount,
+        public readonly InvoiceResponseType|string $invoiceType,
+        public readonly \DateTimeImmutable $issuingDate,
+        public readonly string $number,
+        public readonly \DateTimeImmutable $paymentDueDate,
+        public readonly bool $paymentOverdue,
+        public readonly InvoiceResponsePaymentStatus|string $paymentStatus,
+        public readonly InvoiceResponseStatus|string $status,
+        public readonly string $taxesAmount,
+        public readonly ?string $fileUrl = null,
     ) {
     }
 

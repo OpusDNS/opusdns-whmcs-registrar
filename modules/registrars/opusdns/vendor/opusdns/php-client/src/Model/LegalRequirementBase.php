@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\LegalRequirementOperationType;
 use OpusDNS\Client\Enum\LegalRequirementType;
 use OpusDNS\Client\Serializer;
 
-final readonly class LegalRequirementBase implements ApiModel
+final class LegalRequirementBase implements ApiModel
 {
     /**
      * @param string $key Unique identifier for the legal requirement
@@ -24,10 +24,10 @@ final readonly class LegalRequirementBase implements ApiModel
      * @param string|null $url Link to the legal document
      */
     public function __construct(
-        public string $key,
-        public array $operations,
-        public LegalRequirementType|string $type,
-        public ?string $url = null,
+        public readonly string $key,
+        public readonly array $operations,
+        public readonly LegalRequirementType|string $type,
+        public readonly ?string $url = null,
     ) {
     }
 

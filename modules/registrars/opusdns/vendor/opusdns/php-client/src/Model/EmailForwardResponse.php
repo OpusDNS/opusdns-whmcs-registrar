@@ -12,19 +12,19 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class EmailForwardResponse implements ApiModel
+final class EmailForwardResponse implements ApiModel
 {
     /**
      * @param list<EmailForwardAlias> $aliases
      * @param string $emailForwardId TypeID prefix: email_forward.
      */
     public function __construct(
-        public array $aliases,
-        public \DateTimeImmutable $createdOn,
-        public string $emailForwardId,
-        public bool $enabled,
-        public string $hostname,
-        public \DateTimeImmutable $updatedOn,
+        public readonly array $aliases,
+        public readonly \DateTimeImmutable $createdOn,
+        public readonly string $emailForwardId,
+        public readonly bool $enabled,
+        public readonly string $hostname,
+        public readonly \DateTimeImmutable $updatedOn,
     ) {
     }
 

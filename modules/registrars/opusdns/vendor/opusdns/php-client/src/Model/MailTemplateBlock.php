@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class MailTemplateBlock implements ApiModel
+final class MailTemplateBlock implements ApiModel
 {
     /**
      * @param array<string, string>|null $default Default copy per locale
@@ -21,10 +21,10 @@ final readonly class MailTemplateBlock implements ApiModel
      * @param bool $multiline Render the editor field as a textarea
      */
     public function __construct(
-        public ?array $default = null,
-        public string $label = '',
-        public int $maxLen = 0,
-        public bool $multiline = false,
+        public readonly ?array $default = null,
+        public readonly string $label = '',
+        public readonly int $maxLen = 0,
+        public readonly bool $multiline = false,
     ) {
     }
 

@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ListBrandingAssetsResponse implements ApiModel
+final class ListBrandingAssetsResponse implements ApiModel
 {
     /**
      * @param list<BrandingAsset>|null $assets Uploaded assets, most recent first
      */
     public function __construct(
-        public ?array $assets = null,
+        public readonly ?array $assets = null,
     ) {
     }
 

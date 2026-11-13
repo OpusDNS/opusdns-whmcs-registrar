@@ -15,7 +15,7 @@ use OpusDNS\Client\Serializer;
 /**
  * Request body for creating a custom role.
  */
-final readonly class CustomRoleCreate implements ApiModel
+final class CustomRoleCreate implements ApiModel
 {
     /**
      * @param string $name Display name of the custom role as provided by the user (e.g. 'Support Staff').
@@ -24,9 +24,9 @@ final readonly class CustomRoleCreate implements ApiModel
      * @param string|null $description Description of the custom role.
      */
     public function __construct(
-        public string $name,
-        public array $permissions,
-        public ?string $description = null,
+        public readonly string $name,
+        public readonly array $permissions,
+        public readonly ?string $description = null,
     ) {
     }
 

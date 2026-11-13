@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class Problem implements ApiModel
+final class Problem implements ApiModel
 {
     public function __construct(
-        public int $status,
-        public string $title,
-        public string $type,
-        public ?string $detail = null,
+        public readonly int $status,
+        public readonly string $title,
+        public readonly string $type,
+        public readonly ?string $detail = null,
     ) {
     }
 

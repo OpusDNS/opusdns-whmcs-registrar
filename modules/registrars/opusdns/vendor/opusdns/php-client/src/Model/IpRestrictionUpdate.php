@@ -17,15 +17,15 @@ use OpusDNS\Client\Serializer;
  *
  * You can update the IP network range or the last usage timestamp.
  */
-final readonly class IpRestrictionUpdate implements ApiModel
+final class IpRestrictionUpdate implements ApiModel
 {
     /**
      * @param string|null $ipNetwork IP address or CIDR network range to replace the existing restriction.
      * @param \DateTimeImmutable|null $lastUsedOn Timestamp of the last usage.
      */
     public function __construct(
-        public ?string $ipNetwork = null,
-        public ?\DateTimeImmutable $lastUsedOn = null,
+        public readonly ?string $ipNetwork = null,
+        public readonly ?\DateTimeImmutable $lastUsedOn = null,
     ) {
     }
 

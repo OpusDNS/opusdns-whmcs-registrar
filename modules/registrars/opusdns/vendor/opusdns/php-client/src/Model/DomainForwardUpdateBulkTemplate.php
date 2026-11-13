@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainForwardUpdateBulkTemplate implements ApiModel
+final class DomainForwardUpdateBulkTemplate implements ApiModel
 {
     /**
      * @param bool $enabled Whether domain forward should be enabled
@@ -20,9 +20,9 @@ final readonly class DomainForwardUpdateBulkTemplate implements ApiModel
      * @param DomainForwardProtocolSetRequest|null $https HTTPS redirect definitions
      */
     public function __construct(
-        public bool $enabled,
-        public ?DomainForwardProtocolSetRequest $http = null,
-        public ?DomainForwardProtocolSetRequest $https = null,
+        public readonly bool $enabled,
+        public readonly ?DomainForwardProtocolSetRequest $http = null,
+        public readonly ?DomainForwardProtocolSetRequest $https = null,
     ) {
     }
 

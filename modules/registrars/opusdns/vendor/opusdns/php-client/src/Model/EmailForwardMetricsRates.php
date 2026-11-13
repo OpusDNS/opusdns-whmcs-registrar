@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class EmailForwardMetricsRates implements ApiModel
+final class EmailForwardMetricsRates implements ApiModel
 {
     /**
      * @param float $bounceRate Bounce rate percentage
@@ -21,10 +21,10 @@ final readonly class EmailForwardMetricsRates implements ApiModel
      * @param float $refusedRate Refused rate percentage
      */
     public function __construct(
-        public float $bounceRate,
-        public float $deliveryRate,
-        public float $queuedRate,
-        public float $refusedRate,
+        public readonly float $bounceRate,
+        public readonly float $deliveryRate,
+        public readonly float $queuedRate,
+        public readonly float $refusedRate,
     ) {
     }
 

@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class EmailForwardAliasMetrics implements ApiModel
+final class EmailForwardAliasMetrics implements ApiModel
 {
     /**
      * @param string $alias Email alias address
@@ -20,9 +20,9 @@ final readonly class EmailForwardAliasMetrics implements ApiModel
      * @param int $totalLogs Total number of logs for this alias
      */
     public function __construct(
-        public string $alias,
-        public array $byStatus,
-        public int $totalLogs,
+        public readonly string $alias,
+        public readonly array $byStatus,
+        public readonly int $totalLogs,
     ) {
     }
 

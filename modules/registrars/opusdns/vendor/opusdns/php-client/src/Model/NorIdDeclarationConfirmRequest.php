@@ -12,14 +12,14 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class NorIdDeclarationConfirmRequest implements ApiModel
+final class NorIdDeclarationConfirmRequest implements ApiModel
 {
     /**
      * @param string $acceptName The full name of the person signing the applicant declaration. For private
      *     individuals this is the subscriber personally; for organizations it must be an authorized representative.
      */
     public function __construct(
-        public string $acceptName,
+        public readonly string $acceptName,
     ) {
     }
 

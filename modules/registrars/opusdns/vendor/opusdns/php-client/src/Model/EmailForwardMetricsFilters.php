@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class EmailForwardMetricsFilters implements ApiModel
+final class EmailForwardMetricsFilters implements ApiModel
 {
     /**
      * @param string $domain Domain name
@@ -21,10 +21,10 @@ final readonly class EmailForwardMetricsFilters implements ApiModel
      * @param string|null $startTime Start time filter (RFC3339)
      */
     public function __construct(
-        public string $domain,
-        public ?string $endTime = null,
-        public ?bool $includeAliases = null,
-        public ?string $startTime = null,
+        public readonly string $domain,
+        public readonly ?string $endTime = null,
+        public readonly ?bool $includeAliases = null,
+        public readonly ?string $startTime = null,
     ) {
     }
 

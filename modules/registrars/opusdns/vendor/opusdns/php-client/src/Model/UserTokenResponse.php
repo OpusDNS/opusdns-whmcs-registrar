@@ -12,14 +12,14 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class UserTokenResponse implements ApiModel
+final class UserTokenResponse implements ApiModel
 {
     public function __construct(
-        public string $accessToken,
-        public int $expiresIn,
-        public int $refreshExpiresIn,
-        public string $refreshToken,
-        public string $tokenType = 'Bearer',
+        public readonly string $accessToken,
+        public readonly int $expiresIn,
+        public readonly int $refreshExpiresIn,
+        public readonly string $refreshToken,
+        public readonly string $tokenType = 'Bearer',
     ) {
     }
 

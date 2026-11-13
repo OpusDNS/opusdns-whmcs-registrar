@@ -16,15 +16,15 @@ use OpusDNS\Client\Serializer;
  * Public per-model AI inference usage. Deliberately excludes billing-gateway's internal COGS fields
  * (cost_amount, per-million rates, has_rate).
  */
-final readonly class AiInferenceUsageGroup implements ApiModel
+final class AiInferenceUsageGroup implements ApiModel
 {
     public function __construct(
-        public int $cacheReadTokens,
-        public int $cacheWriteTokens,
-        public int $inputTokens,
-        public string $model,
-        public int $outputTokens,
-        public int $requestCount,
+        public readonly int $cacheReadTokens,
+        public readonly int $cacheWriteTokens,
+        public readonly int $inputTokens,
+        public readonly string $model,
+        public readonly int $outputTokens,
+        public readonly int $requestCount,
     ) {
     }
 

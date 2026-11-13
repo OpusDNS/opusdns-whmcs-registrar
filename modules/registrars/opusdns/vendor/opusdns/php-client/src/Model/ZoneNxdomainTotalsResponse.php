@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ZoneNxdomainTotalsResponse implements ApiModel
+final class ZoneNxdomainTotalsResponse implements ApiModel
 {
     /**
      * @param int $listedNxdomainCount NXDOMAIN answers to all listed names in the window of `qtype`, not only those
@@ -24,8 +24,8 @@ final readonly class ZoneNxdomainTotalsResponse implements ApiModel
      *     day of the window
      */
     public function __construct(
-        public int $listedNxdomainCount,
-        public ?int $nxdomainCount = null,
+        public readonly int $listedNxdomainCount,
+        public readonly ?int $nxdomainCount = null,
     ) {
     }
 

@@ -13,17 +13,17 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\MemoryFactKind;
 use OpusDNS\Client\Serializer;
 
-final readonly class MemoryFactCreateRequest implements ApiModel
+final class MemoryFactCreateRequest implements ApiModel
 {
     /**
      * @param int|null $ttlSeconds Optional TTL; if set, the fact expires after this many seconds.
      * @param array<string, mixed>|null $value
      */
     public function __construct(
-        public string $key,
-        public MemoryFactKind|string $kind,
-        public ?int $ttlSeconds = null,
-        public ?array $value = null,
+        public readonly string $key,
+        public readonly MemoryFactKind|string $kind,
+        public readonly ?int $ttlSeconds = null,
+        public readonly ?array $value = null,
     ) {
     }
 

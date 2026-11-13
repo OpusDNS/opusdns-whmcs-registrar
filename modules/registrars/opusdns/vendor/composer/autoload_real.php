@@ -24,14 +24,14 @@ class ComposerAutoloaderInit33aa8c05a69a7b2d0a1d07d64b1c929d
 
         require __DIR__ . '/platform_check.php';
 
-        spl_autoload_register(array('ComposerAutoloaderInit33aa8c05a69a7b2d0a1d07d64b1c929d', 'loadClassLoader'), true, true);
+        spl_autoload_register(array('ComposerAutoloaderInit33aa8c05a69a7b2d0a1d07d64b1c929d', 'loadClassLoader'), true, false);
         self::$loader = $loader = new \Composer\Autoload\ClassLoader(\dirname(__DIR__));
         spl_autoload_unregister(array('ComposerAutoloaderInit33aa8c05a69a7b2d0a1d07d64b1c929d', 'loadClassLoader'));
 
         require __DIR__ . '/autoload_static.php';
         call_user_func(\Composer\Autoload\ComposerStaticInit33aa8c05a69a7b2d0a1d07d64b1c929d::getInitializer($loader));
 
-        $loader->register(true);
+        $loader->register(false);
 
         return $loader;
     }

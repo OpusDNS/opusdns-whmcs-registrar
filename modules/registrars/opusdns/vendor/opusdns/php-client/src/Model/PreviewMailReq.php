@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class PreviewMailReq implements ApiModel
+final class PreviewMailReq implements ApiModel
 {
     /**
      * @param string $languageCode Locale to render in (e.g. en); falls back to the template's default
@@ -22,9 +22,9 @@ final readonly class PreviewMailReq implements ApiModel
      *     ignored.
      */
     public function __construct(
-        public string $languageCode,
-        public string $templateName,
-        public ?BrandingDocument $brandingDocument = null,
+        public readonly string $languageCode,
+        public readonly string $templateName,
+        public readonly ?BrandingDocument $brandingDocument = null,
     ) {
     }
 

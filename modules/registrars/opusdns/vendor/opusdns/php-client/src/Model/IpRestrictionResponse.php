@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class IpRestrictionResponse implements ApiModel
+final class IpRestrictionResponse implements ApiModel
 {
     /**
      * @param string $ipNetwork IP address or CIDR network range. Single IPs are returned with /32 (IPv4) or /128
@@ -20,11 +20,11 @@ final readonly class IpRestrictionResponse implements ApiModel
      * @param string $organizationId TypeID prefix: organization.
      */
     public function __construct(
-        public \DateTimeImmutable $createdOn,
-        public string $ipNetwork,
-        public int $ipRestrictionId,
-        public string $organizationId,
-        public ?\DateTimeImmutable $lastUsedOn = null,
+        public readonly \DateTimeImmutable $createdOn,
+        public readonly string $ipNetwork,
+        public readonly int $ipRestrictionId,
+        public readonly string $organizationId,
+        public readonly ?\DateTimeImmutable $lastUsedOn = null,
     ) {
     }
 

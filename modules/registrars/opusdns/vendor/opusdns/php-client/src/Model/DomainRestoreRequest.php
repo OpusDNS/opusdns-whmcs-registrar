@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainRestoreRequest implements ApiModel
+final class DomainRestoreRequest implements ApiModel
 {
     /**
      * @param string|null $additionalInfo Additional information to include in the restore operation
@@ -20,9 +20,9 @@ final readonly class DomainRestoreRequest implements ApiModel
      * @param string|null $reason Reason for restoring the domain
      */
     public function __construct(
-        public ?string $additionalInfo = null,
-        public ?string $expectedPrice = null,
-        public ?string $reason = null,
+        public readonly ?string $additionalInfo = null,
+        public readonly ?string $expectedPrice = null,
+        public readonly ?string $reason = null,
     ) {
     }
 

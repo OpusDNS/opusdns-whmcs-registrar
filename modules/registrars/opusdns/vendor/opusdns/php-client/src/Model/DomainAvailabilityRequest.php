@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\MarketplaceName;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainAvailabilityRequest implements ApiModel
+final class DomainAvailabilityRequest implements ApiModel
 {
     /**
      * @param list<string> $domains
@@ -23,8 +23,8 @@ final readonly class DomainAvailabilityRequest implements ApiModel
      *     checked.
      */
     public function __construct(
-        public array $domains,
-        public ?array $marketplaces = null,
+        public readonly array $domains,
+        public readonly ?array $marketplaces = null,
     ) {
     }
 

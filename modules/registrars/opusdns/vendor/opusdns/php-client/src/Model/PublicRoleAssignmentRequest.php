@@ -13,13 +13,13 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\AssignablePublicRole;
 use OpusDNS\Client\Serializer;
 
-final readonly class PublicRoleAssignmentRequest implements ApiModel
+final class PublicRoleAssignmentRequest implements ApiModel
 {
     /**
      * @param AssignablePublicRole|string|null $role
      */
     public function __construct(
-        public AssignablePublicRole|string|null $role = null,
+        public readonly AssignablePublicRole|string|null $role = null,
     ) {
     }
 

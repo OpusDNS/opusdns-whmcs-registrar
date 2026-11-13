@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class OrganizationAttributeResponse implements ApiModel
+final class OrganizationAttributeResponse implements ApiModel
 {
     /**
      * @param string $key Key of the attribute.
@@ -22,12 +22,12 @@ final readonly class OrganizationAttributeResponse implements ApiModel
      * @param mixed $value Value of the attribute.
      */
     public function __construct(
-        public string $key,
-        public int $organizationAttributeId,
-        public ?\DateTimeImmutable $createdOn = null,
-        public bool $protected = false,
-        public ?\DateTimeImmutable $updatedOn = null,
-        public mixed $value = null,
+        public readonly string $key,
+        public readonly int $organizationAttributeId,
+        public readonly ?\DateTimeImmutable $createdOn = null,
+        public readonly bool $protected = false,
+        public readonly ?\DateTimeImmutable $updatedOn = null,
+        public readonly mixed $value = null,
     ) {
     }
 

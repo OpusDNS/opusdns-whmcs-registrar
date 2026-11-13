@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\DnsStatisticsPeriod;
 use OpusDNS\Client\Enum\DnsZoneRank;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsTopZonesResponse implements ApiModel
+final class DnsTopZonesResponse implements ApiModel
 {
     /**
      * @param DnsStatisticsPeriod|string $period The period the ranking covers
@@ -27,12 +27,12 @@ final readonly class DnsTopZonesResponse implements ApiModel
      *     show
      */
     public function __construct(
-        public DnsStatisticsPeriod|string $period,
-        public \DateTimeImmutable $periodEnd,
-        public \DateTimeImmutable $periodStart,
-        public DnsZoneRank|string $rankBy,
-        public array $results,
-        public \DateTimeImmutable $statisticsUpdatedAt,
+        public readonly DnsStatisticsPeriod|string $period,
+        public readonly \DateTimeImmutable $periodEnd,
+        public readonly \DateTimeImmutable $periodStart,
+        public readonly DnsZoneRank|string $rankBy,
+        public readonly array $results,
+        public readonly \DateTimeImmutable $statisticsUpdatedAt,
     ) {
     }
 

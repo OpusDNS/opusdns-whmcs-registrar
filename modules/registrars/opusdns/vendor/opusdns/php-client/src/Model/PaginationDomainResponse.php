@@ -18,14 +18,14 @@ use OpusDNS\Client\Serializer;
  *
  * @implements Page<DomainResponse>
  */
-final readonly class PaginationDomainResponse implements ApiModel, Page
+final class PaginationDomainResponse implements ApiModel, Page
 {
     /**
      * @param list<DomainResponse> $results
      */
     public function __construct(
-        public PaginationMetadata $pagination,
-        public array $results,
+        public readonly PaginationMetadata $pagination,
+        public readonly array $results,
     ) {
     }
 

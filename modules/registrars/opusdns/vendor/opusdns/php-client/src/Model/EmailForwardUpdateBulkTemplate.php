@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class EmailForwardUpdateBulkTemplate implements ApiModel
+final class EmailForwardUpdateBulkTemplate implements ApiModel
 {
     /**
      * @param bool $enabled Whether email forwarding should be enabled
      * @param list<EmailForwardAliasCreate>|null $aliases Aliases to set (replace-all)
      */
     public function __construct(
-        public bool $enabled,
-        public ?array $aliases = null,
+        public readonly bool $enabled,
+        public readonly ?array $aliases = null,
     ) {
     }
 

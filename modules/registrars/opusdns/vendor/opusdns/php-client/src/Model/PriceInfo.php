@@ -12,18 +12,18 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class PriceInfo implements ApiModel
+final class PriceInfo implements ApiModel
 {
     /**
      * @param PricingPeriod|null $period Pricing period (e.g., 1 year, 2 months)
      */
     public function __construct(
-        public string $currency,
-        public string $price,
-        public string $productType,
-        public ?PricingPeriod $period = null,
-        public ?string $productAction = null,
-        public ?string $productClass = null,
+        public readonly string $currency,
+        public readonly string $price,
+        public readonly string $productType,
+        public readonly ?PricingPeriod $period = null,
+        public readonly ?string $productAction = null,
+        public readonly ?string $productClass = null,
     ) {
     }
 

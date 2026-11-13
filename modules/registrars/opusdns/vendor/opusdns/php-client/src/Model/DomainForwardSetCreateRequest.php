@@ -13,14 +13,14 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\HttpProtocol;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainForwardSetCreateRequest implements ApiModel
+final class DomainForwardSetCreateRequest implements ApiModel
 {
     /**
      * @param list<HttpRedirectRequest> $redirects
      */
     public function __construct(
-        public HttpProtocol|string $protocol,
-        public array $redirects,
+        public readonly HttpProtocol|string $protocol,
+        public readonly array $redirects,
     ) {
     }
 

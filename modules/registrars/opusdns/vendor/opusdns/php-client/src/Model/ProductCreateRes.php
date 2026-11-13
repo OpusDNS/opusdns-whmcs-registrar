@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ProductCreateRes implements ApiModel
+final class ProductCreateRes implements ApiModel
 {
     /**
      * @param string $productName The product name
@@ -20,9 +20,9 @@ final readonly class ProductCreateRes implements ApiModel
      * @param string $subscriptionId The created subscription ID TypeID prefix: subscription.
      */
     public function __construct(
-        public string $productName,
-        public string $subscribableId,
-        public string $subscriptionId,
+        public readonly string $productName,
+        public readonly string $subscribableId,
+        public readonly string $subscriptionId,
     ) {
     }
 

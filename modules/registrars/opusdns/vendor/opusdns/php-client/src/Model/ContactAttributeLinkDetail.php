@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ContactAttributeLinkDetail implements ApiModel
+final class ContactAttributeLinkDetail implements ApiModel
 {
     /**
      * @param array<string, string> $attributes The attributes from the linked set
@@ -22,10 +22,10 @@ final readonly class ContactAttributeLinkDetail implements ApiModel
      * @param string $tld The TLD this link applies to
      */
     public function __construct(
-        public array $attributes,
-        public string $contactAttributeSetId,
-        public string $label,
-        public string $tld,
+        public readonly array $attributes,
+        public readonly string $contactAttributeSetId,
+        public readonly string $label,
+        public readonly string $tld,
     ) {
     }
 

@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\AuthCodeDelivery;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainAuthCodeResponse implements ApiModel
+final class DomainAuthCodeResponse implements ApiModel
 {
     /**
      * @param AuthCodeDelivery|string $delivery Where the auth code ends up: `response` returns it in `auth_code`,
@@ -26,11 +26,11 @@ final readonly class DomainAuthCodeResponse implements ApiModel
      * @param list<string>|null $recipients The addresses the registry sent the auth code to, when it reports them
      */
     public function __construct(
-        public AuthCodeDelivery|string $delivery,
-        public string $name,
-        public ?string $authCode = null,
-        public ?\DateTimeImmutable $authCodeExpiresOn = null,
-        public ?array $recipients = null,
+        public readonly AuthCodeDelivery|string $delivery,
+        public readonly string $name,
+        public readonly ?string $authCode = null,
+        public readonly ?\DateTimeImmutable $authCodeExpiresOn = null,
+        public readonly ?array $recipients = null,
     ) {
     }
 

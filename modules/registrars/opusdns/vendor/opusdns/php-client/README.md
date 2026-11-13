@@ -7,7 +7,7 @@ so every operation, model and enumeration of the API is available with full type
 
 ## Requirements
 
-- PHP 8.3 or newer
+- PHP 8.1 or newer
 - A PSR-18 HTTP client and PSR-17 factories. [Guzzle](https://docs.guzzlephp.org/) is used automatically when
   it is installed.
 - An OpusDNS API key
@@ -146,8 +146,8 @@ $page = $client->domain()->getDomains(search: 'example', expiresIn30Days: true, 
 
 ## Models
 
-Every request and response schema is a `final readonly class` in `OpusDNS\Client\Model`, and every enumeration
-is a backed `enum` in `OpusDNS\Client\Enum`.
+Every request and response schema is a `final` class with `readonly` properties in `OpusDNS\Client\Model`, and
+every enumeration is a backed `enum` in `OpusDNS\Client\Enum`.
 
 - Properties are public and camelCase: `$domain->expiresOn`, `$zone->dnssecStatus`. The JSON keys stay
   snake_case and are mapped by `fromArray()` and `toArray()`.
@@ -332,7 +332,7 @@ through its GitHub hook.
 
 | Specification | PHP |
 |---|---|
-| Object schema | `final readonly class` with promoted public properties, `fromArray()` and `toArray()` |
+| Object schema | `final` class with promoted public `readonly` properties, `fromArray()` and `toArray()` |
 | Enum schema | Backed `enum`; case names are upper snake case, values starting with a digit get a leading underscore |
 | `anyOf` with `null` | Nullable type |
 | Union of objects | PHP union type, resolved by discriminator or by required keys |

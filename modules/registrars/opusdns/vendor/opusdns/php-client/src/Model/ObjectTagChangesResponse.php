@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ObjectTagChangesResponse implements ApiModel
+final class ObjectTagChangesResponse implements ApiModel
 {
     /**
      * @param int $added Number of objects tagged
@@ -20,9 +20,9 @@ final readonly class ObjectTagChangesResponse implements ApiModel
      * @param list<string>|null $unresolved References that could not be resolved
      */
     public function __construct(
-        public int $added,
-        public int $removed,
-        public ?array $unresolved = null,
+        public readonly int $added,
+        public readonly int $removed,
+        public readonly ?array $unresolved = null,
     ) {
     }
 

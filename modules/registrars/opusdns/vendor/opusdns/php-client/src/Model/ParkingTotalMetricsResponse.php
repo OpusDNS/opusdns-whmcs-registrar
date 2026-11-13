@@ -12,15 +12,15 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ParkingTotalMetricsResponse implements ApiModel
+final class ParkingTotalMetricsResponse implements ApiModel
 {
     /**
      * @param int $totalCount Total number of parking entries
      * @param ParkingStatistics $totalMetrics Aggregated metrics for all parking entries
      */
     public function __construct(
-        public int $totalCount,
-        public ParkingStatistics $totalMetrics,
+        public readonly int $totalCount,
+        public readonly ParkingStatistics $totalMetrics,
     ) {
     }
 

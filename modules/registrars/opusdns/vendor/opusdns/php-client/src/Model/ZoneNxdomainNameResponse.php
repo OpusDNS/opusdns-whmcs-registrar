@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ZoneNxdomainNameResponse implements ApiModel
+final class ZoneNxdomainNameResponse implements ApiModel
 {
     /**
      * @param \DateTimeImmutable $firstListedDate First day in the window the name was listed on (UTC)
@@ -25,12 +25,12 @@ final readonly class ZoneNxdomainNameResponse implements ApiModel
      * @param string $qtype The type it was queried with, such as A, AAAA or TXT
      */
     public function __construct(
-        public \DateTimeImmutable $firstListedDate,
-        public \DateTimeImmutable $lastListedDate,
-        public int $listedDays,
-        public int $nxdomainCount,
-        public string $qname,
-        public string $qtype,
+        public readonly \DateTimeImmutable $firstListedDate,
+        public readonly \DateTimeImmutable $lastListedDate,
+        public readonly int $listedDays,
+        public readonly int $nxdomainCount,
+        public readonly string $qname,
+        public readonly string $qtype,
     ) {
     }
 

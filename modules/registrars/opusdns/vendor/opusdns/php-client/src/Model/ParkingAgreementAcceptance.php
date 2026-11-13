@@ -15,7 +15,7 @@ use OpusDNS\Client\Serializer;
 /**
  * Parking agreement acceptance details.
  */
-final readonly class ParkingAgreementAcceptance implements ApiModel
+final class ParkingAgreementAcceptance implements ApiModel
 {
     /**
      * @param bool $accepted Whether the agreement has been accepted
@@ -23,9 +23,9 @@ final readonly class ParkingAgreementAcceptance implements ApiModel
      * @param string $version Version of the parking agreement being accepted
      */
     public function __construct(
-        public bool $accepted,
-        public string $url,
-        public string $version,
+        public readonly bool $accepted,
+        public readonly string $url,
+        public readonly string $version,
     ) {
     }
 

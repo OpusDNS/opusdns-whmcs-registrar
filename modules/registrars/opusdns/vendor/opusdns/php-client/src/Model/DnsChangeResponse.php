@@ -14,14 +14,14 @@ use OpusDNS\Client\Enum\DnsChangeAction;
 use OpusDNS\Client\Enum\DnsRrsetType;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsChangeResponse implements ApiModel
+final class DnsChangeResponse implements ApiModel
 {
     public function __construct(
-        public DnsChangeAction|string $action,
-        public ?string $recordData = null,
-        public ?string $rrsetName = null,
-        public DnsRrsetType|string|null $rrsetType = null,
-        public ?int $ttl = null,
+        public readonly DnsChangeAction|string $action,
+        public readonly ?string $recordData = null,
+        public readonly ?string $rrsetName = null,
+        public readonly DnsRrsetType|string|null $rrsetType = null,
+        public readonly ?int $ttl = null,
     ) {
     }
 

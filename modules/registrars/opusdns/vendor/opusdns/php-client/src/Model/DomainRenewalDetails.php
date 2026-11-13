@@ -12,11 +12,11 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainRenewalDetails implements ApiModel
+final class DomainRenewalDetails implements ApiModel
 {
     public function __construct(
-        public \DateTimeImmutable $expiresOn,
-        public string $detailType = 'domain_renewal',
+        public readonly \DateTimeImmutable $expiresOn,
+        public readonly string $detailType = 'domain_renewal',
     ) {
     }
 

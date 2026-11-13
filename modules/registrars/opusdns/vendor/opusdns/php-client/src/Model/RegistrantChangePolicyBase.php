@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\RegistrantChangeConfirmationType;
 use OpusDNS\Client\Enum\RegistrantChangeFeeType;
 use OpusDNS\Client\Serializer;
 
-final readonly class RegistrantChangePolicyBase implements ApiModel
+final class RegistrantChangePolicyBase implements ApiModel
 {
     /**
      * @param RegistrantChangeConfirmationType|string $confirmation Who confirms a change of registrant before it is
@@ -34,15 +34,15 @@ final readonly class RegistrantChangePolicyBase implements ApiModel
      *     registrant change request
      */
     public function __construct(
-        public RegistrantChangeConfirmationType|string $confirmation,
-        public bool $designatedAgentAllowed,
-        public RegistrantChangeFeeType|string $fee,
-        public bool $priorRegistrantNotice,
-        public bool $renewsDomain,
-        public string $transferLockAfterChange,
-        public ?array $confirmationFields = null,
-        public ?string $confirmationWindow = null,
-        public ?array $requestFields = null,
+        public readonly RegistrantChangeConfirmationType|string $confirmation,
+        public readonly bool $designatedAgentAllowed,
+        public readonly RegistrantChangeFeeType|string $fee,
+        public readonly bool $priorRegistrantNotice,
+        public readonly bool $renewsDomain,
+        public readonly string $transferLockAfterChange,
+        public readonly ?array $confirmationFields = null,
+        public readonly ?string $confirmationWindow = null,
+        public readonly ?array $requestFields = null,
     ) {
     }
 

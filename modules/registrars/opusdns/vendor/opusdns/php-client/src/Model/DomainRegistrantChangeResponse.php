@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\RegistrantChangeConfirmationMethod;
 use OpusDNS\Client\Enum\RegistrantChangeStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainRegistrantChangeResponse implements ApiModel
+final class DomainRegistrantChangeResponse implements ApiModel
 {
     /**
      * @param \DateTimeImmutable $createdOn When the request was created
@@ -33,18 +33,18 @@ final readonly class DomainRegistrantChangeResponse implements ApiModel
      *     registrar because of the change, null when no transfer lock applies
      */
     public function __construct(
-        public \DateTimeImmutable $createdOn,
-        public string $domainId,
-        public bool $material,
-        public string $newRegistrant,
-        public string $previousRegistrant,
-        public string $registrantChangeId,
-        public RegistrantChangeStatus|string $status,
-        public bool $transferLockOptOut,
-        public ?\DateTimeImmutable $confirmationDeadline = null,
-        public RegistrantChangeConfirmationMethod|string|null $confirmationMethod = null,
-        public ?string $failureReason = null,
-        public ?\DateTimeImmutable $transferLockUntil = null,
+        public readonly \DateTimeImmutable $createdOn,
+        public readonly string $domainId,
+        public readonly bool $material,
+        public readonly string $newRegistrant,
+        public readonly string $previousRegistrant,
+        public readonly string $registrantChangeId,
+        public readonly RegistrantChangeStatus|string $status,
+        public readonly bool $transferLockOptOut,
+        public readonly ?\DateTimeImmutable $confirmationDeadline = null,
+        public readonly RegistrantChangeConfirmationMethod|string|null $confirmationMethod = null,
+        public readonly ?string $failureReason = null,
+        public readonly ?\DateTimeImmutable $transferLockUntil = null,
     ) {
     }
 

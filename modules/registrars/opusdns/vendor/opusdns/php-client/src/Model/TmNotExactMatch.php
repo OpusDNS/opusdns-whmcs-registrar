@@ -15,7 +15,7 @@ use OpusDNS\Client\Serializer;
 /**
  * Signals claim was added by non-exact match rules (noExactMatchType in RFC 9361)
  */
-final readonly class TmNotExactMatch implements ApiModel
+final class TmNotExactMatch implements ApiModel
 {
     /**
      * @param list<TmCourt>|null $court
@@ -23,9 +23,9 @@ final readonly class TmNotExactMatch implements ApiModel
      * @param list<TmUdrp>|null $udrp
      */
     public function __construct(
-        public ?array $court = null,
-        public string $intro = 'This domain name label has previously been found to be used or registered abusively against the following trademarks according to the referenced decisions:',
-        public ?array $udrp = null,
+        public readonly ?array $court = null,
+        public readonly string $intro = 'This domain name label has previously been found to be used or registered abusively against the following trademarks according to the referenced decisions:',
+        public readonly ?array $udrp = null,
     ) {
     }
 

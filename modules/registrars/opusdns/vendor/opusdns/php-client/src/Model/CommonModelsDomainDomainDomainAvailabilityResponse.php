@@ -15,7 +15,7 @@ use OpusDNS\Client\Serializer;
 /**
  * DomainAvailabilityResponse
  */
-final readonly class CommonModelsDomainDomainDomainAvailabilityResponse implements ApiModel
+final class CommonModelsDomainDomainDomainAvailabilityResponse implements ApiModel
 {
     /**
      * @param bool $available True if the domain is available for registration
@@ -34,13 +34,13 @@ final readonly class CommonModelsDomainDomainDomainAvailabilityResponse implemen
      *     registry.
      */
     public function __construct(
-        public bool $available,
-        public string $domain,
-        public ?string $claimsKey = null,
-        public ?DomainAvailabilityError $error = null,
-        public bool $isPremium = false,
-        public ?PremiumPricingResponse $premiumPricing = null,
-        public ?string $reason = null,
+        public readonly bool $available,
+        public readonly string $domain,
+        public readonly ?string $claimsKey = null,
+        public readonly ?DomainAvailabilityError $error = null,
+        public readonly bool $isPremium = false,
+        public readonly ?PremiumPricingResponse $premiumPricing = null,
+        public readonly ?string $reason = null,
     ) {
     }
 

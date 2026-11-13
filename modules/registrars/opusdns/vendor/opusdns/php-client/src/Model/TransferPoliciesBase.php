@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\PostTransferRequirements;
 use OpusDNS\Client\Enum\TransferAckType;
 use OpusDNS\Client\Serializer;
 
-final readonly class TransferPoliciesBase implements ApiModel
+final class TransferPoliciesBase implements ApiModel
 {
     /**
      * @param bool $authinfoRequired Whether an auth info is required for transfers
@@ -43,25 +43,25 @@ final readonly class TransferPoliciesBase implements ApiModel
      *     the policy, 0 = real-time
      */
     public function __construct(
-        public bool $authinfoRequired,
-        public TransferLockPolicyBase $transferLockPolicy,
-        public ?int $authinfoMaxLength = null,
-        public ?int $authinfoMinLength = null,
-        public ?string $authinfoPattern = null,
-        public bool $authinfoSetByRegistrar = true,
-        public ?bool $authinfoTimeLimited = null,
-        public ?string $authinfoValidityPeriod = null,
-        public bool $contactsInTransferCommand = false,
-        public ?bool $infoContactAuthinfo = null,
-        public ?bool $infoDomainAuthinfo = null,
-        public ?array $postTransferRequirements = null,
-        public bool $supported = true,
-        public TransferAckType|string|null $transferAck = null,
-        public ?bool $transferEmailRequired = null,
-        public TransferAckType|string|null $transferNack = null,
-        public ?string $transferRenewalPeriod = null,
-        public ?bool $transferRenewsDomain = null,
-        public ?string $transferTime = null,
+        public readonly bool $authinfoRequired,
+        public readonly TransferLockPolicyBase $transferLockPolicy,
+        public readonly ?int $authinfoMaxLength = null,
+        public readonly ?int $authinfoMinLength = null,
+        public readonly ?string $authinfoPattern = null,
+        public readonly bool $authinfoSetByRegistrar = true,
+        public readonly ?bool $authinfoTimeLimited = null,
+        public readonly ?string $authinfoValidityPeriod = null,
+        public readonly bool $contactsInTransferCommand = false,
+        public readonly ?bool $infoContactAuthinfo = null,
+        public readonly ?bool $infoDomainAuthinfo = null,
+        public readonly ?array $postTransferRequirements = null,
+        public readonly bool $supported = true,
+        public readonly TransferAckType|string|null $transferAck = null,
+        public readonly ?bool $transferEmailRequired = null,
+        public readonly TransferAckType|string|null $transferNack = null,
+        public readonly ?string $transferRenewalPeriod = null,
+        public readonly ?bool $transferRenewsDomain = null,
+        public readonly ?string $transferTime = null,
     ) {
     }
 

@@ -15,15 +15,15 @@ use OpusDNS\Client\Serializer;
 /**
  * ContextPayload[RegistrarDomain]
  */
-final readonly class ContextPayloadRegistrarDomain implements ApiModel
+final class ContextPayloadRegistrarDomain implements ApiModel
 {
     /**
      * @param list<RegistrarDomain> $results
      */
     public function __construct(
-        public array $results,
-        public ?ContextMeta $meta = null,
-        public ?PaginationMetadata $pagination = null,
+        public readonly array $results,
+        public readonly ?ContextMeta $meta = null,
+        public readonly ?PaginationMetadata $pagination = null,
     ) {
     }
 

@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class EmailForwardsContext implements ApiModel
+final class EmailForwardsContext implements ApiModel
 {
     /**
      * @param string $contextId TypeID prefix: ctx.
@@ -20,13 +20,13 @@ final readonly class EmailForwardsContext implements ApiModel
      * @param string $organizationId TypeID prefix: organization.
      */
     public function __construct(
-        public string $contextId,
-        public string $conversationId,
-        public \DateTimeImmutable $createdAt,
-        public string $organizationId,
-        public ContextPayloadEmailForwardResponse $payload,
-        public string $userId,
-        public string $kind = 'email_forwards',
+        public readonly string $contextId,
+        public readonly string $conversationId,
+        public readonly \DateTimeImmutable $createdAt,
+        public readonly string $organizationId,
+        public readonly ContextPayloadEmailForwardResponse $payload,
+        public readonly string $userId,
+        public readonly string $kind = 'email_forwards',
     ) {
     }
 

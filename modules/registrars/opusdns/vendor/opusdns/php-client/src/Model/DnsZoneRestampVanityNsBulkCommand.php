@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneRestampVanityNsBulkCommand implements ApiModel
+final class DnsZoneRestampVanityNsBulkCommand implements ApiModel
 {
     /**
      * @param DnsZoneRestampVanityNsBulkPayload $payload Bulk DNS zone vanity NS restamp payload
@@ -20,10 +20,10 @@ final readonly class DnsZoneRestampVanityNsBulkCommand implements ApiModel
      * @param string $version Command version
      */
     public function __construct(
-        public DnsZoneRestampVanityNsBulkPayload $payload,
-        public string $command = 'dns_zone_restamp_vanity_ns_bulk',
-        public ?string $idempotencyKey = null,
-        public string $version = 'v1',
+        public readonly DnsZoneRestampVanityNsBulkPayload $payload,
+        public readonly string $command = 'dns_zone_restamp_vanity_ns_bulk',
+        public readonly ?string $idempotencyKey = null,
+        public readonly string $version = 'v1',
     ) {
     }
 

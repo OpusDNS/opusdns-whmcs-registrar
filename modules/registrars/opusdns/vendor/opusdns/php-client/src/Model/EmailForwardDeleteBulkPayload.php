@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class EmailForwardDeleteBulkPayload implements ApiModel
+final class EmailForwardDeleteBulkPayload implements ApiModel
 {
     /**
      * @param list<EmailForwardDeleteBulkInstance> $instances List of email forwards to delete (1-1000)
      */
     public function __construct(
-        public array $instances,
+        public readonly array $instances,
     ) {
     }
 

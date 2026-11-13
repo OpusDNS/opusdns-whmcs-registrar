@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainSummaryData implements ApiModel
+final class DomainSummaryData implements ApiModel
 {
     /**
      * @param array<string, int> $byAccountType The organization's domain counts by the type of registry account they
@@ -28,13 +28,13 @@ final readonly class DomainSummaryData implements ApiModel
      * @param int $totalCount Total number of domains owned by the organization
      */
     public function __construct(
-        public array $byAccountType,
-        public array $byOrganization,
-        public array $byStatus,
-        public array $byStatusTag,
-        public array $byTld,
-        public DomainsExpiringSoon $expiringSoon,
-        public int $totalCount,
+        public readonly array $byAccountType,
+        public readonly array $byOrganization,
+        public readonly array $byStatus,
+        public readonly array $byStatusTag,
+        public readonly array $byTld,
+        public readonly DomainsExpiringSoon $expiringSoon,
+        public readonly int $totalCount,
     ) {
     }
 

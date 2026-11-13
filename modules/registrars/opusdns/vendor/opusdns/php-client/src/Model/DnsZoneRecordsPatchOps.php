@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneRecordsPatchOps implements ApiModel
+final class DnsZoneRecordsPatchOps implements ApiModel
 {
     /**
      * @param list<DnsRecordPatchOp> $ops
      */
     public function __construct(
-        public array $ops,
+        public readonly array $ops,
     ) {
     }
 

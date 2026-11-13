@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class RdapBase implements ApiModel
+final class RdapBase implements ApiModel
 {
     /**
      * @param string|null $rdapServer RDAP server URL
      */
     public function __construct(
-        public ?string $rdapServer = null,
+        public readonly ?string $rdapServer = null,
     ) {
     }
 

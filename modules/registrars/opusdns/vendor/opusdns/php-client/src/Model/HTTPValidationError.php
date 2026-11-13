@@ -15,16 +15,16 @@ use OpusDNS\Client\Serializer;
 /**
  * RequestValidationError
  */
-final readonly class HTTPValidationError implements ApiModel
+final class HTTPValidationError implements ApiModel
 {
     /**
      * @param list<ValidationError> $errors
      */
     public function __construct(
-        public array $errors,
-        public int $status,
-        public string $title,
-        public string $type,
+        public readonly array $errors,
+        public readonly int $status,
+        public readonly string $title,
+        public readonly string $type,
     ) {
     }
 

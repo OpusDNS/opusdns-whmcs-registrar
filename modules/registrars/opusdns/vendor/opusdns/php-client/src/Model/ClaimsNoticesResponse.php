@@ -12,13 +12,13 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ClaimsNoticesResponse implements ApiModel
+final class ClaimsNoticesResponse implements ApiModel
 {
     /**
      * @param list<ClaimsNotice> $claimsNotices
      */
     public function __construct(
-        public array $claimsNotices,
+        public readonly array $claimsNotices,
     ) {
     }
 

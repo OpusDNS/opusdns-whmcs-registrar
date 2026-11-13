@@ -13,16 +13,16 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DnsRrsetType;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsRrsetCreate implements ApiModel
+final class DnsRrsetCreate implements ApiModel
 {
     /**
      * @param list<DnsRecordCreate> $records
      */
     public function __construct(
-        public string $name,
-        public array $records,
-        public int $ttl,
-        public DnsRrsetType|string $type,
+        public readonly string $name,
+        public readonly array $records,
+        public readonly int $ttl,
+        public readonly DnsRrsetType|string $type,
     ) {
     }
 

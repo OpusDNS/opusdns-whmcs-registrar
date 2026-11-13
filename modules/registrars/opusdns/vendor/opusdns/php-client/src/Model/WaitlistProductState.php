@@ -17,7 +17,7 @@ use OpusDNS\Client\Serializer;
 /**
  * A waitlisted product, and where your own application for it stands.
  */
-final readonly class WaitlistProductState implements ApiModel
+final class WaitlistProductState implements ApiModel
 {
     /**
      * @param bool $canApply Whether an apply from you would be accepted right now; false for an API key
@@ -30,13 +30,13 @@ final readonly class WaitlistProductState implements ApiModel
      *     API key
      */
     public function __construct(
-        public bool $canApply,
-        public string $description,
-        public string $displayName,
-        public WaitlistProduct|string $product,
-        public ?\DateTimeImmutable $appliedOn = null,
-        public ?\DateTimeImmutable $decidedOn = null,
-        public WaitlistEntryStatus|string|null $status = null,
+        public readonly bool $canApply,
+        public readonly string $description,
+        public readonly string $displayName,
+        public readonly WaitlistProduct|string $product,
+        public readonly ?\DateTimeImmutable $appliedOn = null,
+        public readonly ?\DateTimeImmutable $decidedOn = null,
+        public readonly WaitlistEntryStatus|string|null $status = null,
     ) {
     }
 

@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\DnsMoverDirection;
 use OpusDNS\Client\Enum\DnsMoversPeriod;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsZoneMoversResponse implements ApiModel
+final class DnsZoneMoversResponse implements ApiModel
 {
     /**
      * @param DnsMoverDirection|string $direction Whether the list shows drops or rises
@@ -29,14 +29,14 @@ final readonly class DnsZoneMoversResponse implements ApiModel
      *     show
      */
     public function __construct(
-        public DnsMoverDirection|string $direction,
-        public DnsMoversPeriod|string $period,
-        public \DateTimeImmutable $periodEnd,
-        public \DateTimeImmutable $periodStart,
-        public \DateTimeImmutable $previousPeriodEnd,
-        public \DateTimeImmutable $previousPeriodStart,
-        public array $results,
-        public \DateTimeImmutable $statisticsUpdatedAt,
+        public readonly DnsMoverDirection|string $direction,
+        public readonly DnsMoversPeriod|string $period,
+        public readonly \DateTimeImmutable $periodEnd,
+        public readonly \DateTimeImmutable $periodStart,
+        public readonly \DateTimeImmutable $previousPeriodEnd,
+        public readonly \DateTimeImmutable $previousPeriodStart,
+        public readonly array $results,
+        public readonly \DateTimeImmutable $statisticsUpdatedAt,
     ) {
     }
 

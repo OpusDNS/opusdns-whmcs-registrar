@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class DomainStatisticsTotalsResponse implements ApiModel
+final class DomainStatisticsTotalsResponse implements ApiModel
 {
     /**
      * @param int|null $create Domains created (newly registered), summed over the covered buckets. Null when no
@@ -32,14 +32,14 @@ final readonly class DomainStatisticsTotalsResponse implements ApiModel
      *     no bucket is covered
      */
     public function __construct(
-        public ?int $create = null,
-        public ?int $delete = null,
-        public ?int $net = null,
-        public ?int $renew = null,
-        public ?int $restore = null,
-        public ?int $total = null,
-        public ?int $transfer = null,
-        public ?int $transferOut = null,
+        public readonly ?int $create = null,
+        public readonly ?int $delete = null,
+        public readonly ?int $net = null,
+        public readonly ?int $renew = null,
+        public readonly ?int $restore = null,
+        public readonly ?int $total = null,
+        public readonly ?int $transfer = null,
+        public readonly ?int $transferOut = null,
     ) {
     }
 

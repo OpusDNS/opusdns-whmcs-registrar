@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\DnsStatisticsPeriod;
 use OpusDNS\Client\Serializer;
 
-final readonly class DnsInactiveZonesResponse implements ApiModel
+final class DnsInactiveZonesResponse implements ApiModel
 {
     /**
      * @param DnsStatisticsPeriod|string $period The period without queries
@@ -25,12 +25,12 @@ final readonly class DnsInactiveZonesResponse implements ApiModel
      *     show
      */
     public function __construct(
-        public PaginationMetadata $pagination,
-        public DnsStatisticsPeriod|string $period,
-        public \DateTimeImmutable $periodEnd,
-        public \DateTimeImmutable $periodStart,
-        public array $results,
-        public \DateTimeImmutable $statisticsUpdatedAt,
+        public readonly PaginationMetadata $pagination,
+        public readonly DnsStatisticsPeriod|string $period,
+        public readonly \DateTimeImmutable $periodEnd,
+        public readonly \DateTimeImmutable $periodStart,
+        public readonly array $results,
+        public readonly \DateTimeImmutable $statisticsUpdatedAt,
     ) {
     }
 

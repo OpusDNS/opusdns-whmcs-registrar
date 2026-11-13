@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\NorIdDeclarationPurpose;
 use OpusDNS\Client\Enum\NorIdDeclarationStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class NorIdDeclarationResponse implements ApiModel
+final class NorIdDeclarationResponse implements ApiModel
 {
     /**
      * @param string $declarationContractText The fixed Norwegian declaration contract text
@@ -33,18 +33,18 @@ final readonly class NorIdDeclarationResponse implements ApiModel
      *     a change of its registrant
      */
     public function __construct(
-        public string $declarationContractText,
-        public string $declarationHeader,
-        public string $declarationIntroduction,
-        public string $declarationVersion,
-        public string $domainName,
-        public \DateTimeImmutable $expiresOn,
-        public string $organizationId,
-        public NorIdDeclarationStatus|string $status,
-        public string $subscriberName,
-        public ?string $identityType = null,
-        public ?string $identityValue = null,
-        public NorIdDeclarationPurpose|string $purpose = NorIdDeclarationPurpose::REGISTRATION,
+        public readonly string $declarationContractText,
+        public readonly string $declarationHeader,
+        public readonly string $declarationIntroduction,
+        public readonly string $declarationVersion,
+        public readonly string $domainName,
+        public readonly \DateTimeImmutable $expiresOn,
+        public readonly string $organizationId,
+        public readonly NorIdDeclarationStatus|string $status,
+        public readonly string $subscriberName,
+        public readonly ?string $identityType = null,
+        public readonly ?string $identityValue = null,
+        public readonly NorIdDeclarationPurpose|string $purpose = NorIdDeclarationPurpose::REGISTRATION,
     ) {
     }
 

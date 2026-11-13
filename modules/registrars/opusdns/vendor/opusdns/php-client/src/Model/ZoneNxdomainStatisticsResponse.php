@@ -12,7 +12,7 @@ namespace OpusDNS\Client\Model;
 use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Serializer;
 
-final readonly class ZoneNxdomainStatisticsResponse implements ApiModel
+final class ZoneNxdomainStatisticsResponse implements ApiModel
 {
     /**
      * @param \DateTimeImmutable $endDate Last day of the window, inclusive
@@ -30,16 +30,16 @@ final readonly class ZoneNxdomainStatisticsResponse implements ApiModel
      * @param string|null $qtype The query type the names are filtered by; null for all types
      */
     public function __construct(
-        public \DateTimeImmutable $endDate,
-        public PaginationMetadata $pagination,
-        public array $results,
-        public \DateTimeImmutable $startDate,
-        public ZoneNxdomainTotalsResponse $totals,
-        public string $zoneName,
-        public ?\DateTimeImmutable $dataAvailableFrom = null,
-        public ?\DateTimeImmutable $dataAvailableTo = null,
-        public ?\DateTimeImmutable $dataCompleteTo = null,
-        public ?string $qtype = null,
+        public readonly \DateTimeImmutable $endDate,
+        public readonly PaginationMetadata $pagination,
+        public readonly array $results,
+        public readonly \DateTimeImmutable $startDate,
+        public readonly ZoneNxdomainTotalsResponse $totals,
+        public readonly string $zoneName,
+        public readonly ?\DateTimeImmutable $dataAvailableFrom = null,
+        public readonly ?\DateTimeImmutable $dataAvailableTo = null,
+        public readonly ?\DateTimeImmutable $dataCompleteTo = null,
+        public readonly ?string $qtype = null,
     ) {
     }
 

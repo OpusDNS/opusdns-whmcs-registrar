@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\ConditionOperator;
 use OpusDNS\Client\Enum\RegistryHandleAttributeType;
 use OpusDNS\Client\Serializer;
 
-final readonly class AttributeCondition implements ApiModel
+final class AttributeCondition implements ApiModel
 {
     /**
      * @param RegistryHandleAttributeType|string $field The attribute key to evaluate
@@ -22,9 +22,9 @@ final readonly class AttributeCondition implements ApiModel
      * @param string|list<string> $value The value(s) to compare against
      */
     public function __construct(
-        public RegistryHandleAttributeType|string $field,
-        public ConditionOperator|string $operator,
-        public string|array $value,
+        public readonly RegistryHandleAttributeType|string $field,
+        public readonly ConditionOperator|string $operator,
+        public readonly string|array $value,
     ) {
     }
 

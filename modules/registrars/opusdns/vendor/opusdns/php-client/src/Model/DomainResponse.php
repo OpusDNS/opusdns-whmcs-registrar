@@ -14,7 +14,7 @@ use OpusDNS\Client\Enum\RenewalMode;
 use OpusDNS\Client\Serializer;
 use OpusDNS\Client\Union;
 
-final readonly class DomainResponse implements ApiModel
+final class DomainResponse implements ApiModel
 {
     /**
      * @param string $name The domain name
@@ -69,38 +69,38 @@ final readonly class DomainResponse implements ApiModel
      *     each type, merged over all cases. Null when no case is active.
      */
     public function __construct(
-        public string $name,
-        public string $roid,
-        public string $sld,
-        public string $tld,
-        public ?array $activeVerifications = null,
-        public ?string $authCode = null,
-        public ?\DateTimeImmutable $authCodeExpiresOn = null,
-        public ?\DateTimeImmutable $canceledOn = null,
-        public DomainRegistrarCredentialResponse|DomainAmsAccountResponse|null $connectedAccount = null,
-        public ?array $contacts = null,
-        public ?\DateTimeImmutable $createdOn = null,
-        public ?\DateTimeImmutable $deletedOn = null,
-        public ?string $domainId = null,
-        public ?\DateTimeImmutable $expiresOn = null,
-        public ?array $hosts = null,
-        public bool $isPremium = false,
-        public ?array $nameservers = null,
-        public ?string $ownerId = null,
-        public bool $readOnly = false,
-        public ?\DateTimeImmutable $registeredOn = null,
-        public ?DomainRegistrantChangeResponse $registrantChange = null,
-        public ?string $registryAccountId = null,
-        public ?array $registryStatuses = null,
-        public RenewalMode|string|null $renewalMode = null,
-        public ?string $renewalPeriod = null,
-        public ?DomainRenewalPriceResponse $renewalPrice = null,
-        public ?array $statusTags = null,
-        public ?array $tags = null,
-        public bool $transferLock = false,
-        public ?\DateTimeImmutable $transferredOn = null,
-        public ?\DateTimeImmutable $updatedOn = null,
-        public ?VerificationResponse $verificationRequired = null,
+        public readonly string $name,
+        public readonly string $roid,
+        public readonly string $sld,
+        public readonly string $tld,
+        public readonly ?array $activeVerifications = null,
+        public readonly ?string $authCode = null,
+        public readonly ?\DateTimeImmutable $authCodeExpiresOn = null,
+        public readonly ?\DateTimeImmutable $canceledOn = null,
+        public readonly DomainRegistrarCredentialResponse|DomainAmsAccountResponse|null $connectedAccount = null,
+        public readonly ?array $contacts = null,
+        public readonly ?\DateTimeImmutable $createdOn = null,
+        public readonly ?\DateTimeImmutable $deletedOn = null,
+        public readonly ?string $domainId = null,
+        public readonly ?\DateTimeImmutable $expiresOn = null,
+        public readonly ?array $hosts = null,
+        public readonly bool $isPremium = false,
+        public readonly ?array $nameservers = null,
+        public readonly ?string $ownerId = null,
+        public readonly bool $readOnly = false,
+        public readonly ?\DateTimeImmutable $registeredOn = null,
+        public readonly ?DomainRegistrantChangeResponse $registrantChange = null,
+        public readonly ?string $registryAccountId = null,
+        public readonly ?array $registryStatuses = null,
+        public readonly RenewalMode|string|null $renewalMode = null,
+        public readonly ?string $renewalPeriod = null,
+        public readonly ?DomainRenewalPriceResponse $renewalPrice = null,
+        public readonly ?array $statusTags = null,
+        public readonly ?array $tags = null,
+        public readonly bool $transferLock = false,
+        public readonly ?\DateTimeImmutable $transferredOn = null,
+        public readonly ?\DateTimeImmutable $updatedOn = null,
+        public readonly ?VerificationResponse $verificationRequired = null,
     ) {
     }
 

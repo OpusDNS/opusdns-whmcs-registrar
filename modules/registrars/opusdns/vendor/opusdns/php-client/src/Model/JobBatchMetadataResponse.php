@@ -13,7 +13,7 @@ use OpusDNS\Client\ApiModel;
 use OpusDNS\Client\Enum\BatchStatus;
 use OpusDNS\Client\Serializer;
 
-final readonly class JobBatchMetadataResponse implements ApiModel
+final class JobBatchMetadataResponse implements ApiModel
 {
     /**
      * @param string $batchId TypeID identifying this batch TypeID prefix: batch.
@@ -26,14 +26,14 @@ final readonly class JobBatchMetadataResponse implements ApiModel
      * @param \DateTimeImmutable|null $startedAt Timestamp when the first job started (UTC)
      */
     public function __construct(
-        public string $batchId,
-        public \DateTimeImmutable $createdOn,
-        public JobCountsByStatus $jobCounts,
-        public BatchStatus|string $status,
-        public int $totalJobs,
-        public ?\DateTimeImmutable $finishedAt = null,
-        public ?string $label = null,
-        public ?\DateTimeImmutable $startedAt = null,
+        public readonly string $batchId,
+        public readonly \DateTimeImmutable $createdOn,
+        public readonly JobCountsByStatus $jobCounts,
+        public readonly BatchStatus|string $status,
+        public readonly int $totalJobs,
+        public readonly ?\DateTimeImmutable $finishedAt = null,
+        public readonly ?string $label = null,
+        public readonly ?\DateTimeImmutable $startedAt = null,
     ) {
     }
 
