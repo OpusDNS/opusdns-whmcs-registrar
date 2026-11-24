@@ -6,8 +6,16 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
+      # The self-hosted runners have no zip, unlike the GitHub-hosted image.
+      - name: Install zip
+        run: |
+          if ! command -v zip >/dev/null; then
+            sudo apt-get update
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends zip
+          fi
+
       - name: Checkout code
         uses: actions/checkout@v7
 
