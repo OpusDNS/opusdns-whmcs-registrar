@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: self-hosted
+    # Each host runs several runners, so PHP comes from the official image rather
+    # than from setup-php, which would install PHP on the host itself. 8.1 is the
+    # lowest version the module supports, so newer syntax fails here.
+    container: php:8.1-cli
+
+    env:
+      # Keeps Composer's cache in the container instead of the runner's home.
+      COMPOSER_CACHE_DIR: /tmp/composer-cache
+
+    steps:
+      - name: Install Composer
+        env:
+          # Bump both together. The checksum is on https://getcomposer.org/download/.
+          COMPOSER_VERSION: 2.11.3
+          COMPOSER_SHA256: 04f8b003da4e3a2459056591fbfebd02b4dc3e5adeb158616b90cf55a65113ec
+        run: |
+          curl -fsSL -o /usr/local/bin/composer "https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar"
+          echo "${COMPOSER_SHA256}  /usr/local/bin/composer" | sha256sum -c -
+          chmod +x /usr/local/bin/composer
+
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      # The second composer.json is the one the shipped vendor/ directory and
+      # composer.lock come from.
+      - name: Validate composer.json
+        run: |
+          composer validate --strict
+          composer validate --strict --working-dir=modules/registrars/opusdns
+
+      - name: Check the syntax of every PHP file under modules/
+        shell: bash
+        run: |
+          failed=0
+          while IFS= read -r -d '' file; do
+            if ! output=$(php -l "$file" 2>&1); then
+              echo "$output"
+              failed=1
+            fi
+          done < <(find modules -name '*.php' -print0 | sort -z)
+          exit "$failed"
+
+      # Files written in the container belong to root on the host. Hand them back
+      # to the runner user, or the next job on this runner cannot clean them up.
+      - name: Hand the workspace back to the runner user
+        if: always()
+        run: chown -R "$(stat -c '%u:%g' "$GITHUB_WORKSPACE/../..")" "$GITHUB_WORKSPACE" "$HOME"
+
+  # One check that stands for every job above. It is meant to become the only
+  # required status check, so adding a job or a matrix entry does not change
+  # the required checks. Add every new job to `needs`.
+  ci-ok:
+    if: always()
+    needs: [lint]
+    runs-on: self-hosted
+    steps:
+      - run: exit 1
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
