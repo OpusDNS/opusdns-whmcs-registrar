@@ -375,7 +375,14 @@ function opusdns_ResendIRTPVerificationEmail(array $params): array
  */
 function opusdns_GetNameservers(array $params): array
 {
-    return [];
+    try {
+        $api = opusdns_initApiClient($params);
+        $response = $api->domain()->getDomain($params['domain']);
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
+    }
+
+    return NameserverHelper::toWhmcsArray($response->nameservers);
 }
 
 /**
@@ -703,9 +710,27 @@ function opusdns_DeleteNameserver(array $params): array
     }
 }
 
-function opusdns_GetRegistrarLock(array $params): string
+/**
+ * Fetch the registrar lock status.
+ *
+ * Returns "locked" or "unlocked", or an empty string when the registry has no registrar lock.
+ */
+function opusdns_GetRegistrarLock(array $params): string | array
 {
-    return '';
+    try {
+        $api = opusdns_initApiClient($params);
+        $tldInfo = (new Tlds($api))->getTld($params['tld']);
+
+        if (!$tldInfo || !$tldInfo->supportsTransferLock()) {
+            return '';
+        }
+
+        $response = $api->domain()->getDomain($params['domain']);
+    } catch (OpusDnsException | \InvalidArgumentException $exception) {
+        return ['error' => ErrorHelper::message($exception)];
+    }
+
+    return $response->transferLock ? 'locked' : 'unlocked';
 }
 
 /**
